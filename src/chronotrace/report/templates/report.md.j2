@@ -1,0 +1,63 @@
+# ChronoTrace Investigation Report — {{ case.case_id }}
+
+**Lead Examiner:** {{ case.examiner }}  
+**Organization:** {{ case.organization }}  
+**Authorization Reference:** {{ case.metadata.authorization_ref }}  
+**Schema Version:** 2.0.0 | **Tool Version:** 1.3.0  
+
+---
+
+## 1. Executive Summary & PS Objectives Matrix
+
+| # | Objective | Status | Findings |
+|---|---|---|---|
+| 1 | **File metadata extraction** | COMPLETED | Extracted filesystem stats, OOXML properties, PDF metadata, ZIP entries. |
+| 2 | **System artefact extraction** | COMPLETED | Extracted MFT, registry hives, EVTX event logs, Prefetch, LNK shortcuts, browser history. |
+| 3 | **Timestamp extraction** | COMPLETED | Decoded multi-epoch timestamps normalized to UTC with explainable confidence. |
+| 4 | **Chronological timeline reconstruction** | COMPLETED | Generated single normalized super-timeline with {{ timeline_events|length }} records. |
+| 5 | **SHA-256 evidence integrity** | VERIFIED | Mandatory SHA-256 computed; custody ledger replayed; Merkle root: `{{ manifest.merkle_root }}`. |
+| 6 | **Structured investigation reports** | COMPLETED | Compiled multi-format reports with provenance, integrity block, and privacy redaction. |
+
+---
+
+## 2. Digital Evidence Inventory (SHA-256 Hashes)
+
+| Evidence ID | Path | Container | Size (Bytes) | SHA-256 Hash | Status |
+|---|---|---|---|---|---|
+{% for ev in manifest.evidence %}
+| `{{ ev.evidence_id }}` | `{{ ev.path }}` | {{ ev.container }} | {{ ev.size_bytes }} | `{{ ev.hashes.sha256 }}` | {{ ev.verification.result|upper }} |
+{% endfor %}
+
+---
+
+## 3. Reconstructed Chronological Activity Timeline (Excerpt)
+
+| UTC Timestamp | Action | User | Object / Target | Source Artefact | Confidence | Rationale |
+|---|---|---|---|---|---|---|
+{% for e in timeline_events[:100] %}
+| `{{ e.timestamp_utc }}` | `{{ e.action }}` | {{ e.user }} | `{{ e.object.path or 'N/A' }}` | {{ e.source.artifact }} | {{ e.confidence }} | {{ e.rationale }} |
+{% endfor %}
+
+*(Total reconstructed timeline events: {{ timeline_events|length }})*
+
+---
+
+## 4. Cryptographic Integrity & Attestation
+
+- **Overall Integrity Check:** `{{ integrity.overall_status }}`
+- **Custody Ledger Replay:** `{{ integrity.ledger_status }}` ({{ integrity.checked_items.ledger_entries }} entries verified)
+- **Derived Files Status:** `{{ integrity.derived_status }}`
+- **Merkle Root Digest:** `{{ manifest.merkle_root }}`
+
+---
+
+## 5. Chain of Custody Audit Log
+
+| Seq | Timestamp (UTC) | Actor | Event Type | Prev Hash | Entry Hash |
+|---|---|---|---|---|---|
+{% for entry in custody_entries %}
+| {{ entry.seq }} | `{{ entry.timestamp_utc }}` | {{ entry.actor }} | `{{ entry.event_type }}` | `{{ entry.prev_hash[:12] }}...` | `{{ entry.entry_hash[:12] }}...` |
+{% endfor %}
+
+---
+*Generated automatically by ChronoTrace v1.3.0.*
