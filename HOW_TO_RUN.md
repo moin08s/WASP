@@ -118,8 +118,13 @@ python wasp.py --help
 | **Acquire External USB** | `python wasp.py acquire --case ./cases/case001 --device E: --output usb_disk.tar` |
 | **Extract Artifacts** | `python wasp.py extract --case ./cases/case001 --profile all` |
 | **Reconstruct Timeline** | `python wasp.py timeline --case ./cases/case001` |
+| **Process Lineage Tree** | `python wasp.py lineage --case ./cases/case001 [--ascii]` |
+| **Anomaly Spotlight** | `python wasp.py anomaly --case ./cases/case001 [--window 15] [--z-score 2.0]` |
+| **Sigma Rule Scan** | `python wasp.py sigma --case ./cases/case001 [--rules-dir ./rules]` |
 | **Cross-Source Corroboration** | `python wasp.py corroborate --case ./cases/case001 --window 120` |
 | **YARA Threat Scan** | `python wasp.py scan --case ./cases/case001 [--rules custom.yar]` |
+| **Export Signed .wasp Bundle** | `python wasp.py bundle export --case ./cases/case001 [--passphrase KEY]` |
+| **Verify Signed .wasp Bundle** | `python wasp.py bundle verify ./cases/case001.wasp [--passphrase KEY]` |
 | **RFC 3161 TSA Timestamp** | `python wasp.py timestamp ./evidence/sample.raw [--tsa-url https://freetsa.org/tsr]` |
 | **Verify Integrity** | `python wasp.py verify --case ./cases/case001` |
 | **Generate Reports** | `python wasp.py report --case ./cases/case001 --format html,md,json,csv --redact usernames,ips` |
@@ -128,7 +133,7 @@ python wasp.py --help
 
 ## 🧪 5. Running Automated Tests
 
-WASP includes a comprehensive test suite (22 tests) covering all data models, write-guard protection, streaming hashers, hash chains, Merkle trees, device acquisition, hotplug detection, cross-source corroboration, YARA threat scanning, and RFC 3161 trusted timestamping:
+WASP includes a comprehensive test suite (**29 tests**) covering all data models, write-guard protection, streaming hashers, hash chains, Merkle trees, device acquisition, hotplug detection, cross-source corroboration, process lineage tree reconstruction, statistical anomaly burst spotlighting, native Sigma threat scanning, signed `.wasp` container bundles, and RFC 3161 trusted timestamping:
 
 ```powershell
 python -m pytest -v
@@ -138,6 +143,18 @@ python -m pytest -v
 ```powershell
 # RFC 3161 Trusted Timestamping (TSA) Verification
 python -m pytest tests/test_tsa.py -v
+
+# Process Lineage Attack Chain Tree Reconstructor
+python -m pytest tests/test_lineage.py -v
+
+# Statistical Anomaly Spotlight & AI Burst Detector
+python -m pytest tests/test_anomalies.py -v
+
+# Native Sigma Detection Rule Engine
+python -m pytest tests/test_sigma.py -v
+
+# Deterministic Signed .wasp Case Container Bundles
+python -m pytest tests/test_bundle.py -v
 
 # Cross-Source Corroboration & Timestomp Conflict Detection
 python -m pytest tests/test_corroborator.py -v
