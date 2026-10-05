@@ -140,8 +140,17 @@ def run_pipeline():
     print(f"      [+] Super-timeline synthesized: {len(sorted_events)} chronologically sorted events.")
     print(f"      [+] Persisted dual-store: {case.index_dir / 'events.parquet'} & {case.index_dir / 'events.sqlite'}")
 
-    # Step 6: Verify Case Integrity & Chain of Custody
-    print("\n[6/7] Cryptographic Integrity Verification & Ledger Replay...")
+    # Step 6: Process Lineage, Anomaly Spotlight & Sigma Detections
+    print("\n[6/8] Advanced DFIR Analytics (Process Lineage, Anomalies, Sigma)...")
+    lineage_roots = case.build_lineage()
+    print(f"      [+] Process Lineage Reconstructed: {len(lineage_roots)} root process trees.")
+    anomalies = case.detect_anomalies()
+    print(f"      [+] Anomaly Spotlight Completed:   {len(anomalies)} statistical/off-hours anomalies detected.")
+    sigma_matches = case.scan_sigma()
+    print(f"      [+] Sigma Rules Evaluated:         {len(sigma_matches)} threat signatures triggered.")
+
+    # Step 7: Verify Case Integrity & Chain of Custody
+    print("\n[7/8] Cryptographic Integrity Verification & Ledger Replay...")
     verify_res = case.verify(rehash_evidence=True)
     print(f"      [+] Overall Integrity Status:  {verify_res['overall_status']}")
     print(f"      [+] Custody Ledger Replay:     {verify_res['ledger_status']} ({verify_res['checked_items']['ledger_entries']} entries verified)")
@@ -149,8 +158,8 @@ def run_pipeline():
     print(f"      [+] Derived Store Check:       {verify_res['derived_status']}")
     print(f"      [+] Merkle Root Digest:        {case.manifest.data['merkle_root']}")
 
-    # Step 7: Produce Structured Investigation Reports
-    print("\n[7/7] Generating Structured Investigation Reports...")
+    # Step 8: Produce Structured Reports & Export Signed .wasp Case Bundle
+    print("\n[8/8] Generating Structured Reports & Deterministic .wasp Signed Bundle...")
     reports = case.report(
         template="full",
         formats=("html", "json", "csv", "md"),
@@ -158,6 +167,14 @@ def run_pipeline():
     )
     for fmt_name, path_str in reports.items():
         print(f"      [+] {fmt_name.upper():5} Report: {path_str}")
+
+    from chronotrace.core.bundle import CaseBundleManager
+    passphrase = "ForensicInvestigatorKey2026!"
+    bundle_file = base_dir / "CASE-2026-LIVE.wasp"
+    exported_bundle = case.export_bundle(output_file=bundle_file, passphrase=passphrase)
+    print(f"      [+] Exported .wasp Bundle:     {exported_bundle}")
+    bundle_verify_res = CaseBundleManager.verify_bundle(exported_bundle, passphrase=passphrase)
+    print(f"      [+] .wasp Bundle Integrity:    PASS (Signature Valid: {bundle_verify_res.signature_valid}, {bundle_verify_res.files_checked} files sealed)")
 
     # Query Timeline Summary
     print("\n" + "=" * 75)

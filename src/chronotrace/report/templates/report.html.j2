@@ -469,10 +469,54 @@
       transition: all 0.2s ease;
     }
 
-    .btn-copy:hover {
-      color: #ffffff;
-      border-color: var(--accent-blue);
-      background: #0284c7;
+    /* Tactical Process Tree Lineage */
+    .tree-container {
+      background: #080c14;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 1.2rem;
+      font-family: ui-monospace, SFMono-Regular, "Cascadia Code", Menlo, monospace;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+      overflow-x: auto;
+    }
+    .tree-node-line {
+      margin: 4px 0;
+      white-space: pre;
+    }
+    .tree-node-alert {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--accent-crimson);
+      color: #fca5a5;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin-left: 6px;
+    }
+
+    /* Anomaly Spotlight Cards */
+    .anomaly-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.1rem;
+      margin-top: 1rem;
+    }
+    .anomaly-card {
+      background: #0d121d;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 1.1rem;
+    }
+    .anomaly-card.critical {
+      border-left: 4px solid var(--accent-crimson);
+    }
+    .anomaly-card.high {
+      border-left: 4px solid var(--accent-amber);
+    }
+    .anomaly-card.medium {
+      border-left: 4px solid var(--accent-blue);
     }
   </style>
 </head>
@@ -811,6 +855,122 @@
         </table>
       </div>
       {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Process Execution Lineage Tree (Attack Chain Visualizer) -->
+  {% if process_lineage %}
+  <div class="ui-card">
+    <div class="ui-card-header">
+      <h2>🌲 Process Lineage Tree &amp; Attack Chain Visualizer</h2>
+      <span style="color: var(--text-muted); font-size: 0.85rem; font-weight: 700;">
+        PPID &rarr; PID Hierarchical Execution Graph
+      </span>
+    </div>
+    <div class="ui-card-body">
+      <p style="color: var(--text-muted); margin-top: 0; margin-bottom: 1rem;">
+        Reconstructed parent-to-child process executions revealing execution vectors, LOLBin misuse, and suspicious process spawning:
+      </p>
+      <div class="tree-container">
+        {% for root in process_lineage %}
+        <div class="tree-node-line">
+          <strong>{{ root.process_name }}</strong> (PID: {{ root.pid }}) [{{ root.user }}] &mdash; <code>{{ root.command_line }}</code>
+          {% for alert in root.threat_alerts %}
+          <span class="tree-node-alert">🚨 {{ alert }}</span>
+          {% endfor %}
+        </div>
+        {% for child in root.children %}
+        <div class="tree-node-line" style="padding-left: 20px;">
+          &boxur;&boxh;&boxh; <strong>{{ child.process_name }}</strong> (PID: {{ child.pid }}) [{{ child.user }}] &mdash; <code>{{ child.command_line }}</code>
+          {% for alert in child.threat_alerts %}
+          <span class="tree-node-alert">🚨 {{ alert }}</span>
+          {% endfor %}
+        </div>
+        {% for gchild in child.children %}
+        <div class="tree-node-line" style="padding-left: 45px;">
+          &boxur;&boxh;&boxh; <strong>{{ gchild.process_name }}</strong> (PID: {{ gchild.pid }}) [{{ gchild.user }}] &mdash; <code>{{ gchild.command_line }}</code>
+          {% for alert in gchild.threat_alerts %}
+          <span class="tree-node-alert">🚨 {{ alert }}</span>
+          {% endfor %}
+        </div>
+        {% endfor %}
+        {% endfor %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Statistical Anomaly Spotlight -->
+  {% if anomalies %}
+  <div class="ui-card">
+    <div class="ui-card-header">
+      <h2>⚡ Statistical &amp; Off-Hours Anomaly Spotlight</h2>
+      <span style="color: var(--text-muted); font-size: 0.85rem; font-weight: 700;">
+        Rolling Z-Score &amp; Ransomware Pattern Detection
+      </span>
+    </div>
+    <div class="ui-card-body">
+      <p style="color: var(--text-muted); margin-top: 0;">
+        Automated baseline deviation detection identifying volume spikes, off-hours administrative sessions, and rapid file modification loops:
+      </p>
+      <div class="anomaly-grid">
+        {% for a in anomalies %}
+        <div class="anomaly-card {{ a.severity|lower }}">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+            <span class="badge {% if a.severity == 'CRITICAL' %}badge-danger{% elif a.severity == 'HIGH' %}badge-warn{% else %}badge-pass{% endif %}">{{ a.severity }}</span>
+            <code style="font-size: 0.75rem;">Z-Score: {{ a.z_score }}</code>
+          </div>
+          <h4 style="color: #ffffff; margin: 0 0 0.5rem 0;">{{ a.title }}</h4>
+          <p style="color: var(--text-muted); font-size: 0.82rem; margin: 0 0 0.8rem 0;">{{ a.description }}</p>
+          <div style="font-size: 0.78rem; color: var(--text-dim);">
+            <div><strong>Window:</strong> <code>{{ a.window_start_utc }}</code></div>
+            <div><strong>Users:</strong> {{ a.affected_users|join(', ') or 'N/A' }}</div>
+          </div>
+        </div>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Sigma Rule Detections -->
+  {% if sigma_alerts %}
+  <div class="ui-card">
+    <div class="ui-card-header">
+      <h2>📜 Sigma Rule Detections</h2>
+      <span style="color: var(--text-muted); font-size: 0.85rem; font-weight: 700;">
+        DFIR Industry-Standard Threat Signatures
+      </span>
+    </div>
+    <div class="ui-card-body">
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Level</th>
+              <th>Rule Title</th>
+              <th>Rule ID</th>
+              <th>MITRE ATT&amp;CK</th>
+              <th>Event ID</th>
+              <th>Timestamp (UTC)</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for s in sigma_alerts %}
+            <tr>
+              <td><span class="badge {% if s.level == 'CRITICAL' %}badge-danger{% elif s.level == 'HIGH' %}badge-warn{% else %}badge-pass{% endif %}">{{ s.level }}</span></td>
+              <td><strong style="color: #ffffff;">{{ s.title }}</strong></td>
+              <td><code>{{ s.rule_id }}</code></td>
+              <td><code>{{ s.mitre_tags|join(', ') }}</code></td>
+              <td><code>{{ s.event_id }}</code></td>
+              <td><code>{{ s.timestamp_utc }}</code></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
   {% endif %}

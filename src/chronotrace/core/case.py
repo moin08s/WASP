@@ -371,3 +371,129 @@ class Case:
             builder.redact(*redact)
         return builder.build()
 
+    def build_lineage(self):
+        """Reconstruct parent-child process execution trees from timeline events."""
+        from chronotrace.core.models import Event
+        from chronotrace.analysis.lineage import ProcessLineageReconstructor
+
+        timeline_jsonl = self.derived_dir / "timeline.jsonl"
+        events: List[Event] = []
+        if timeline_jsonl.exists():
+            with open(timeline_jsonl, "r", encoding="utf-8") as f:
+                for line in f:
+                    if line.strip():
+                        events.append(Event.model_validate_json(line))
+
+        reconstructor = ProcessLineageReconstructor(events)
+        roots = reconstructor.build_trees()
+
+        out_path = self.derived_dir / "process_lineage.json"
+        with open(out_path, "w", encoding="utf-8") as f:
+            json.dump([r.to_dict() for r in roots], f, indent=2)
+
+        if self.manifest:
+            self.manifest.add_derived_file(
+                "derived/process_lineage.json",
+                out_path.stat().st_size,
+                Hasher.sha256_file(out_path),
+            )
+            self.manifest.save()
+
+        if self.ledger:
+            self.ledger.append_event(
+                event_type="process_lineage_reconstructed",
+                actor=self.examiner,
+                payload={"root_processes": len(roots)},
+            )
+
+        return roots
+
+    def detect_anomalies(self, window_minutes: int = 15, z_threshold: float = 2.0):
+        """Detect statistical burst anomalies, off-hours logins, and ransomware patterns."""
+        from chronotrace.core.models import Event
+        from chronotrace.analysis.anomalies import AnomalyDetector
+
+        timeline_jsonl = self.derived_dir / "timeline.jsonl"
+        events: List[Event] = []
+        if timeline_jsonl.exists():
+            with open(timeline_jsonl, "r", encoding="utf-8") as f:
+                for line in f:
+                    if line.strip():
+                        events.append(Event.model_validate_json(line))
+
+        detector = AnomalyDetector(events, window_minutes=window_minutes, z_threshold=z_threshold)
+        findings = detector.detect_all()
+
+        out_path = self.derived_dir / "anomalies.json"
+        with open(out_path, "w", encoding="utf-8") as f:
+            json.dump([f.to_dict() for f in findings], f, indent=2)
+
+        if self.manifest:
+            self.manifest.add_derived_file(
+                "derived/anomalies.json",
+                out_path.stat().st_size,
+                Hasher.sha256_file(out_path),
+            )
+            self.manifest.save()
+
+        if self.ledger:
+            self.ledger.append_event(
+                event_type="anomalies_detected",
+                actor=self.examiner,
+                payload={"total_anomalies": len(findings)},
+            )
+
+        return findings
+
+    def scan_sigma(self, custom_rule_dirs: Optional[List[Path]] = None):
+        """Scan timeline events using the native Sigma rule engine."""
+        from chronotrace.core.models import Event
+        from chronotrace.analysis.sigma import SigmaRuleEngine
+
+        timeline_jsonl = self.derived_dir / "timeline.jsonl"
+        events: List[Event] = []
+        if timeline_jsonl.exists():
+            with open(timeline_jsonl, "r", encoding="utf-8") as f:
+                for line in f:
+                    if line.strip():
+                        events.append(Event.model_validate_json(line))
+
+        engine = SigmaRuleEngine(custom_rule_dirs=custom_rule_dirs)
+        matches = engine.scan_events(events)
+
+        out_path = self.derived_dir / "sigma_alerts.json"
+        with open(out_path, "w", encoding="utf-8") as f:
+            json.dump([m.to_dict() for m in matches], f, indent=2)
+
+        if self.manifest:
+            self.manifest.add_derived_file(
+                "derived/sigma_alerts.json",
+                out_path.stat().st_size,
+                Hasher.sha256_file(out_path),
+            )
+            self.manifest.save()
+
+        if self.ledger:
+            self.ledger.append_event(
+                event_type="sigma_rules_evaluated",
+                actor=self.examiner,
+                payload={"total_matches": len(matches)},
+            )
+
+        return matches
+
+    def export_bundle(self, output_file: Optional[Path] = None, passphrase: Optional[str] = None) -> Path:
+        """Export case into an immutable, deterministically signed .wasp container."""
+        from chronotrace.core.bundle import CaseBundleManager
+
+        bundle_path = CaseBundleManager.export_bundle(self.root, output_file=output_file, passphrase=passphrase)
+
+        if self.ledger:
+            self.ledger.append_event(
+                event_type="bundle_exported",
+                actor=self.examiner,
+                payload={"bundle_path": str(bundle_path), "bundle_hash": Hasher.sha256_file(bundle_path)},
+            )
+
+        return bundle_path
+

@@ -2,7 +2,7 @@
   "case_metadata": {
     "authorization_ref": "WARRANT-2026-0881",
     "case_id": "CASE-2026-LIVE",
-    "created_utc": "2026-10-05T19:27:10.848713+00:00",
+    "created_utc": "2026-10-05T20:05:43.552552+00:00",
     "description": "Investigation into unauthorized access and privilege escalation",
     "examiner": "Alex Mercer (Senior Forensics Examiner)",
     "organization": "Cyber Incident Response Unit",
@@ -15,11 +15,11 @@
     "conflicts": [
       {
         "conflict_type": "MODIFIED_PRE_CREATION",
-        "description": "Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T19:27:15.114128+00:00",
+        "description": "Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T20:05:47.522842+00:00",
         "entity": "investigation_memo.docx",
         "event_ids": [
-          "50ad435d-7188-5d31-8786-2b22338419ef",
-          "e9123dd8-8477-5c56-a1a0-4bc8c9fb7b18"
+          "5a8b4b7e-ec4d-5d7e-a77f-5e7d30c05c87",
+          "9d37d819-673e-5473-8145-ac8403723b13"
         ],
         "evidence_ids": [
           "EV-INVEST"
@@ -39,7 +39,7 @@
   "custody_ledger": [
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "e9da1e58d301df3293b672aea1b05a10dd67c70c15e78622953a078fb22af293",
+      "entry_hash": "b0f6f15e46ecf598f3dd0850501f4c68c2d0da078dbab4e47ae46a16aab8e0a6",
       "event_type": "case_created",
       "payload": {
         "authorization_ref": "WARRANT-2026-0881",
@@ -48,11 +48,11 @@
       },
       "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
       "seq": 1,
-      "timestamp_utc": "2026-10-05T19:27:10.848713+00:00"
+      "timestamp_utc": "2026-10-05T20:05:43.552552+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "6b06238de2c16b8b7072004f4c68ea5be9bb74d64538a750b945faee623ff7e6",
+      "entry_hash": "80d41de578c8e0d623a3a263cbad1c884a65a5125ebc9215ca1304d3a7e848b8",
       "event_type": "evidence_acquired",
       "payload": {
         "evidence_id": "EV-AUTH.L",
@@ -62,21 +62,21 @@
         "size_bytes": 283,
         "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\auth.log",
         "timestamp_tsa": {
-          "serial_number": "TSA-F613DCDC04928449",
+          "serial_number": "TSA-D68D927E0319754F",
           "sha256_digest": "b544dfd8cc0d4521f4ba801cd4b9215ef76b6a5f76149038b6171cd664e095e4",
           "status": "VERIFIED_RFC3161",
-          "timestamp_utc": "2026-10-05T19:27:10.976162+00:00",
-          "token_size_bytes": 4642,
+          "timestamp_utc": "2026-10-05T20:05:43.666761+00:00",
+          "token_size_bytes": 4644,
           "tsa_authority": "https://freetsa.org/tsr"
         }
       },
-      "prev_hash": "e9da1e58d301df3293b672aea1b05a10dd67c70c15e78622953a078fb22af293",
+      "prev_hash": "b0f6f15e46ecf598f3dd0850501f4c68c2d0da078dbab4e47ae46a16aab8e0a6",
       "seq": 2,
-      "timestamp_utc": "2026-10-05T19:27:12.037723+00:00"
+      "timestamp_utc": "2026-10-05T20:05:44.758483+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "6d6b94acfd7f9d800ef8bf995955d1df508074beaa3308d74ff1c2fc41e13f28",
+      "entry_hash": "2aaffeaf70a18df3731ef6489f808122611ec3ff495550dad1a6173aa5325cae",
       "event_type": "evidence_acquired",
       "payload": {
         "evidence_id": "EV-BASH_H",
@@ -86,45 +86,45 @@
         "size_bytes": 112,
         "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\bash_history",
         "timestamp_tsa": {
-          "serial_number": "TSA-E6EB7F9FC336DAD1",
+          "serial_number": "TSA-E142B2526BDA6DE4",
           "sha256_digest": "a45c0410ad9fea5a6fec7056a904d518673c2e1950f124d9383dbdcfbfbdf554",
           "status": "VERIFIED_RFC3161",
-          "timestamp_utc": "2026-10-05T19:27:12.066216+00:00",
-          "token_size_bytes": 4643,
+          "timestamp_utc": "2026-10-05T20:05:44.790146+00:00",
+          "token_size_bytes": 4644,
           "tsa_authority": "https://freetsa.org/tsr"
         }
       },
-      "prev_hash": "6b06238de2c16b8b7072004f4c68ea5be9bb74d64538a750b945faee623ff7e6",
+      "prev_hash": "80d41de578c8e0d623a3a263cbad1c884a65a5125ebc9215ca1304d3a7e848b8",
       "seq": 3,
-      "timestamp_utc": "2026-10-05T19:27:13.178911+00:00"
+      "timestamp_utc": "2026-10-05T20:05:45.657539+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "15db05f378f20bb9a7ca7239a275466dc15ffbf9b2eeed5f800e79fc3cdec642",
+      "entry_hash": "56e2b0237c0157218abe8ebe8ba885199b2da0772511a93bdc31a8ccfbac6d0e",
       "event_type": "evidence_acquired",
       "payload": {
         "evidence_id": "EV-EXFILT",
         "notes": "Forensic acquisition of exfiltrated_files.zip",
         "path": "evidence/exfiltrated_files.zip",
-        "sha256": "80de3b672cc53b95e70cce5448baea5847bfd0858d064010534073169d296803",
+        "sha256": "20d3a642704a96afe13659bd6cbd6c23a5e0035d643ece9cd2914dde158c2d7f",
         "size_bytes": 317,
         "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\exfiltrated_files.zip",
         "timestamp_tsa": {
-          "serial_number": "TSA-67AB111EA8527F64",
-          "sha256_digest": "80de3b672cc53b95e70cce5448baea5847bfd0858d064010534073169d296803",
+          "serial_number": "TSA-BA1102D772192887",
+          "sha256_digest": "20d3a642704a96afe13659bd6cbd6c23a5e0035d643ece9cd2914dde158c2d7f",
           "status": "VERIFIED_RFC3161",
-          "timestamp_utc": "2026-10-05T19:27:13.217417+00:00",
-          "token_size_bytes": 4643,
+          "timestamp_utc": "2026-10-05T20:05:45.684399+00:00",
+          "token_size_bytes": 4644,
           "tsa_authority": "https://freetsa.org/tsr"
         }
       },
-      "prev_hash": "6d6b94acfd7f9d800ef8bf995955d1df508074beaa3308d74ff1c2fc41e13f28",
+      "prev_hash": "2aaffeaf70a18df3731ef6489f808122611ec3ff495550dad1a6173aa5325cae",
       "seq": 4,
-      "timestamp_utc": "2026-10-05T19:27:14.150276+00:00"
+      "timestamp_utc": "2026-10-05T20:05:46.592511+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "5551e82c41788169a8146104e01704714bda32158313b26b1fa2455df2b80a36",
+      "entry_hash": "01454161025e0e993dda747cde073eb9a373d4c3e0c57d4d86476cbce02166c5",
       "event_type": "evidence_acquired",
       "payload": {
         "evidence_id": "EV-HISTOR",
@@ -134,45 +134,45 @@
         "size_bytes": 8192,
         "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\History",
         "timestamp_tsa": {
-          "serial_number": "TSA-4E446888E972BA22",
+          "serial_number": "TSA-E97A82101A23EEDF",
           "sha256_digest": "ddeee48ddcd3e8fd4b88dbe62d5624d7e71983919f0a12ceb3f79844e2322b95",
           "status": "VERIFIED_RFC3161",
-          "timestamp_utc": "2026-10-05T19:27:14.189345+00:00",
-          "token_size_bytes": 4642,
+          "timestamp_utc": "2026-10-05T20:05:46.634534+00:00",
+          "token_size_bytes": 4644,
           "tsa_authority": "https://freetsa.org/tsr"
         }
       },
-      "prev_hash": "15db05f378f20bb9a7ca7239a275466dc15ffbf9b2eeed5f800e79fc3cdec642",
+      "prev_hash": "56e2b0237c0157218abe8ebe8ba885199b2da0772511a93bdc31a8ccfbac6d0e",
       "seq": 5,
-      "timestamp_utc": "2026-10-05T19:27:15.094802+00:00"
+      "timestamp_utc": "2026-10-05T20:05:47.503661+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "d7912ddbd923ab7acba99e9e21606f62df39982b897b5f36f960592c6641ac08",
+      "entry_hash": "2268f1ab0b13bb50c9d358ba8b44a30fc448c9d900737ac9c039e4bc0929fe25",
       "event_type": "evidence_acquired",
       "payload": {
         "evidence_id": "EV-INVEST",
         "notes": "Forensic acquisition of investigation_memo.docx",
         "path": "evidence/investigation_memo.docx",
-        "sha256": "c280f521b6b2e7422ee9ae0f44938c2f63fa24d5b244c76206206008429876ba",
+        "sha256": "2cd52c328126cbce12337a0f94ae1f9037b63ec6f7f6118f9b13fe2198b1cca1",
         "size_bytes": 813,
         "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\investigation_memo.docx",
         "timestamp_tsa": {
-          "serial_number": "TSA-5002BD8BAA662878",
-          "sha256_digest": "c280f521b6b2e7422ee9ae0f44938c2f63fa24d5b244c76206206008429876ba",
+          "serial_number": "TSA-ADCA40013997F321",
+          "sha256_digest": "2cd52c328126cbce12337a0f94ae1f9037b63ec6f7f6118f9b13fe2198b1cca1",
           "status": "VERIFIED_RFC3161",
-          "timestamp_utc": "2026-10-05T19:27:15.131329+00:00",
-          "token_size_bytes": 4643,
+          "timestamp_utc": "2026-10-05T20:05:47.540710+00:00",
+          "token_size_bytes": 4644,
           "tsa_authority": "https://freetsa.org/tsr"
         }
       },
-      "prev_hash": "5551e82c41788169a8146104e01704714bda32158313b26b1fa2455df2b80a36",
+      "prev_hash": "01454161025e0e993dda747cde073eb9a373d4c3e0c57d4d86476cbce02166c5",
       "seq": 6,
-      "timestamp_utc": "2026-10-05T19:27:16.040217+00:00"
+      "timestamp_utc": "2026-10-05T20:05:48.447329+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "7201f494b9aa9ff1b79d1dd69e2f880d6a0664cc46a50d5ed588689de7fccf7d",
+      "entry_hash": "75d81f6e6afff8859ece1d31f491ba6330b48693dd8a335e97f49c9218de0921",
       "event_type": "evidence_acquired",
       "payload": {
         "evidence_id": "EV-SECURI",
@@ -182,21 +182,21 @@
         "size_bytes": 503,
         "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\Security_Events.jsonl",
         "timestamp_tsa": {
-          "serial_number": "TSA-89123BF063609487",
+          "serial_number": "TSA-3B8AFC25DD6D337D",
           "sha256_digest": "15957efb2f1573f54296ac349387196a60825acb65518ab856a5179afe1e8ad0",
           "status": "VERIFIED_RFC3161",
-          "timestamp_utc": "2026-10-05T19:27:16.076856+00:00",
-          "token_size_bytes": 4643,
+          "timestamp_utc": "2026-10-05T20:05:48.490771+00:00",
+          "token_size_bytes": 4644,
           "tsa_authority": "https://freetsa.org/tsr"
         }
       },
-      "prev_hash": "d7912ddbd923ab7acba99e9e21606f62df39982b897b5f36f960592c6641ac08",
+      "prev_hash": "2268f1ab0b13bb50c9d358ba8b44a30fc448c9d900737ac9c039e4bc0929fe25",
       "seq": 7,
-      "timestamp_utc": "2026-10-05T19:27:16.952933+00:00"
+      "timestamp_utc": "2026-10-05T20:05:49.347514+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "d664784a31ce81610e16c0ba5abf826f04a376c9ed0e0dc7cb4b48cd8d40e98a",
+      "entry_hash": "4ae9c6b0fe46c1354c9da54cf7b2b2f57e928353fde192902afb939115fc156d",
       "event_type": "artefacts_extracted",
       "payload": {
         "events_per_plugin": {
@@ -221,13 +221,13 @@
         ],
         "total_events": 28
       },
-      "prev_hash": "7201f494b9aa9ff1b79d1dd69e2f880d6a0664cc46a50d5ed588689de7fccf7d",
+      "prev_hash": "75d81f6e6afff8859ece1d31f491ba6330b48693dd8a335e97f49c9218de0921",
       "seq": 8,
-      "timestamp_utc": "2026-10-05T19:27:17.093957+00:00"
+      "timestamp_utc": "2026-10-05T20:05:49.463608+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "5b52bd73d6141ed6069a626fd97efb04c8b5f6c83ab7ec14a7a15262e6d845cb",
+      "entry_hash": "f741eadec7adcf8d49679679f713124ce7fc306b74d283ee2902997c121f6f55",
       "event_type": "cross_source_corroborated",
       "payload": {
         "conflicts_detected": 1,
@@ -235,47 +235,80 @@
         "corroborated_events": 0,
         "total_entities_analyzed": 14
       },
-      "prev_hash": "d664784a31ce81610e16c0ba5abf826f04a376c9ed0e0dc7cb4b48cd8d40e98a",
+      "prev_hash": "4ae9c6b0fe46c1354c9da54cf7b2b2f57e928353fde192902afb939115fc156d",
       "seq": 9,
-      "timestamp_utc": "2026-10-05T19:27:17.310043+00:00"
+      "timestamp_utc": "2026-10-05T20:05:49.711219+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "a79a964ada0bb5396a89d361ae8029ac41190ddba845727dcdcabf07b4096d5c",
+      "entry_hash": "c49dc25ba4f16c4b0be37f9b72662f5919fc127ee4a8173415509c9cf5e9ae86",
       "event_type": "threat_rules_scanned",
       "payload": {
         "total_findings": 0
       },
-      "prev_hash": "5b52bd73d6141ed6069a626fd97efb04c8b5f6c83ab7ec14a7a15262e6d845cb",
+      "prev_hash": "f741eadec7adcf8d49679679f713124ce7fc306b74d283ee2902997c121f6f55",
       "seq": 10,
-      "timestamp_utc": "2026-10-05T19:27:17.338006+00:00"
+      "timestamp_utc": "2026-10-05T20:05:49.734657+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "1033948aa21642cefad5ee9166c0a2605a031a79215f43fe8bb1aec0787ba5cd",
+      "entry_hash": "e46a48b5a72658c30cf0a1de7264bed435513b963e4a8fc41008833d96d2b515",
       "event_type": "timeline_built",
       "payload": {
         "total_events": 28
       },
-      "prev_hash": "a79a964ada0bb5396a89d361ae8029ac41190ddba845727dcdcabf07b4096d5c",
+      "prev_hash": "c49dc25ba4f16c4b0be37f9b72662f5919fc127ee4a8173415509c9cf5e9ae86",
       "seq": 11,
-      "timestamp_utc": "2026-10-05T19:27:17.982856+00:00"
+      "timestamp_utc": "2026-10-05T20:05:50.428396+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "5a3603fbadb82c3e392afaea8e825b3a965e7e518a48ddd8516c0dfb70ec70db",
+      "entry_hash": "70a408a69b9ebb1ffc4b36a72472430160eee48eaf89d136ea6943522d24bb2d",
+      "event_type": "process_lineage_reconstructed",
+      "payload": {
+        "root_processes": 4
+      },
+      "prev_hash": "e46a48b5a72658c30cf0a1de7264bed435513b963e4a8fc41008833d96d2b515",
+      "seq": 12,
+      "timestamp_utc": "2026-10-05T20:05:50.486584+00:00"
+    },
+    {
+      "actor": "Alex Mercer (Senior Forensics Examiner)",
+      "entry_hash": "19fce83b1ae546c5e0716ba4ea6ef76e1d056830b7c7f060bef833c808746263",
+      "event_type": "anomalies_detected",
+      "payload": {
+        "total_anomalies": 2
+      },
+      "prev_hash": "70a408a69b9ebb1ffc4b36a72472430160eee48eaf89d136ea6943522d24bb2d",
+      "seq": 13,
+      "timestamp_utc": "2026-10-05T20:05:50.539536+00:00"
+    },
+    {
+      "actor": "Alex Mercer (Senior Forensics Examiner)",
+      "entry_hash": "bd29d1c1349f7b89a6d1b71aafaa5b3b3e7b65ec2913d95f4883c85cc2ac7f4b",
+      "event_type": "sigma_rules_evaluated",
+      "payload": {
+        "total_matches": 1
+      },
+      "prev_hash": "19fce83b1ae546c5e0716ba4ea6ef76e1d056830b7c7f060bef833c808746263",
+      "seq": 14,
+      "timestamp_utc": "2026-10-05T20:05:50.584182+00:00"
+    },
+    {
+      "actor": "Alex Mercer (Senior Forensics Examiner)",
+      "entry_hash": "1cb02e271d2df1e1e804088cde8a6fe8b6b6d4d6d57f3d1821aebbba6d204dee",
       "event_type": "integrity_verified",
       "payload": {
         "checked": {
-          "derived_files": 6,
+          "derived_files": 9,
           "evidence_files": 6,
-          "ledger_entries": 11
+          "ledger_entries": 14
         },
         "status": "PASS"
       },
-      "prev_hash": "1033948aa21642cefad5ee9166c0a2605a031a79215f43fe8bb1aec0787ba5cd",
-      "seq": 12,
-      "timestamp_utc": "2026-10-05T19:27:18.114371+00:00"
+      "prev_hash": "bd29d1c1349f7b89a6d1b71aafaa5b3b3e7b65ec2913d95f4883c85cc2ac7f4b",
+      "seq": 15,
+      "timestamp_utc": "2026-10-05T20:05:50.709632+00:00"
     }
   ],
   "events": [
@@ -284,11 +317,11 @@
       "action_class": "file",
       "confidence": 0.98,
       "corroborated_by": [],
-      "event_id": "dd4acfa4-0763-592a-bc06-da239bb6aac0",
+      "event_id": "6eb4e994-beb1-5be3-a470-ae571fcd811a",
       "evidence": {
         "container": null,
         "evidence_id": "EV-INVEST",
-        "sha256": "c280f521b6b2e7422ee9ae0f44938c2f63fa24d5b244c76206206008429876ba"
+        "sha256": "2cd52c328126cbce12337a0f94ae1f9037b63ec6f7f6118f9b13fe2198b1cca1"
       },
       "host": "UNKNOWN",
       "object": {
@@ -438,11 +471,11 @@
       "action_class": "file",
       "confidence": 0.98,
       "corroborated_by": [],
-      "event_id": "50ad435d-7188-5d31-8786-2b22338419ef",
+      "event_id": "5a8b4b7e-ec4d-5d7e-a77f-5e7d30c05c87",
       "evidence": {
         "container": null,
         "evidence_id": "EV-INVEST",
-        "sha256": "c280f521b6b2e7422ee9ae0f44938c2f63fa24d5b244c76206206008429876ba"
+        "sha256": "2cd52c328126cbce12337a0f94ae1f9037b63ec6f7f6118f9b13fe2198b1cca1"
       },
       "host": "UNKNOWN",
       "object": {
@@ -483,7 +516,7 @@
       "user": "[USER_002]",
       "user_sid": null,
       "warnings": [
-        "Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T19:27:15.114128+00:00"
+        "Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T20:05:47.522842+00:00"
       ]
     },
     {
@@ -1001,7 +1034,7 @@
       "action_class": "file",
       "confidence": 0.95,
       "corroborated_by": [],
-      "event_id": "89d4862b-a544-5601-b08f-4a547c099314",
+      "event_id": "20d655a7-c173-5434-a810-9ec27ffc9ac5",
       "evidence": {
         "container": null,
         "evidence_id": "EV-AUTH.L",
@@ -1022,7 +1055,7 @@
       "rationale": "Filesystem stat modification time (mtime)",
       "raw": {
         "mode": "0o100666",
-        "mtime": 1791228430.760665,
+        "mtime": 1791230743.474778,
         "size": 283
       },
       "schema_version": "2.0.0",
@@ -1037,9 +1070,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T19:27:10.760665+00:00",
+      "timestamp_raw": "2026-10-05T20:05:43.474778+00:00",
       "timestamp_type": "modified",
-      "timestamp_utc": "2026-10-05T19:27:10.760665+00:00",
+      "timestamp_utc": "2026-10-05T20:05:43.474778+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1050,7 +1083,7 @@
       "action_class": "file",
       "confidence": 0.95,
       "corroborated_by": [],
-      "event_id": "6659b7a4-d524-50fd-a119-b3ee8254640c",
+      "event_id": "bfd12651-f154-5463-a5b1-3d615d2bbf82",
       "evidence": {
         "container": null,
         "evidence_id": "EV-BASH_H",
@@ -1071,7 +1104,7 @@
       "rationale": "Filesystem stat modification time (mtime)",
       "raw": {
         "mode": "0o100666",
-        "mtime": 1791228430.767165,
+        "mtime": 1791230743.4797783,
         "size": 112
       },
       "schema_version": "2.0.0",
@@ -1086,9 +1119,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T19:27:10.767165+00:00",
+      "timestamp_raw": "2026-10-05T20:05:43.479778+00:00",
       "timestamp_type": "modified",
-      "timestamp_utc": "2026-10-05T19:27:10.767165+00:00",
+      "timestamp_utc": "2026-10-05T20:05:43.479778+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1099,7 +1132,7 @@
       "action_class": "file",
       "confidence": 0.95,
       "corroborated_by": [],
-      "event_id": "2bf90f96-0e7a-5147-8f75-f6cf4acbf3e8",
+      "event_id": "ce212f37-4e2c-5513-a760-c589ab0ac8be",
       "evidence": {
         "container": null,
         "evidence_id": "EV-SECURI",
@@ -1120,7 +1153,7 @@
       "rationale": "Filesystem stat modification time (mtime)",
       "raw": {
         "mode": "0o100666",
-        "mtime": 1791228430.7721717,
+        "mtime": 1791230743.4847784,
         "size": 503
       },
       "schema_version": "2.0.0",
@@ -1135,9 +1168,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T19:27:10.772172+00:00",
+      "timestamp_raw": "2026-10-05T20:05:43.484778+00:00",
       "timestamp_type": "modified",
-      "timestamp_utc": "2026-10-05T19:27:10.772172+00:00",
+      "timestamp_utc": "2026-10-05T20:05:43.484778+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1148,7 +1181,7 @@
       "action_class": "file",
       "confidence": 0.95,
       "corroborated_by": [],
-      "event_id": "a446cc2a-84dd-5e49-a35f-7668269a1e28",
+      "event_id": "1b269f3d-b192-5721-b86f-399ccf5bc418",
       "evidence": {
         "container": null,
         "evidence_id": "EV-HISTOR",
@@ -1169,7 +1202,7 @@
       "rationale": "Filesystem stat modification time (mtime)",
       "raw": {
         "mode": "0o100666",
-        "mtime": 1791228430.8076675,
+        "mtime": 1791230743.5122788,
         "size": 8192
       },
       "schema_version": "2.0.0",
@@ -1184,9 +1217,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T19:27:10.807667+00:00",
+      "timestamp_raw": "2026-10-05T20:05:43.512279+00:00",
       "timestamp_type": "modified",
-      "timestamp_utc": "2026-10-05T19:27:10.807667+00:00",
+      "timestamp_utc": "2026-10-05T20:05:43.512279+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1197,11 +1230,11 @@
       "action_class": "file",
       "confidence": 0.95,
       "corroborated_by": [],
-      "event_id": "c2142fc7-063a-5a1b-b4e7-bcc2182db518",
+      "event_id": "af65ea35-9668-5acd-86bf-1ed01ccb0b13",
       "evidence": {
         "container": null,
         "evidence_id": "EV-INVEST",
-        "sha256": "c280f521b6b2e7422ee9ae0f44938c2f63fa24d5b244c76206206008429876ba"
+        "sha256": "2cd52c328126cbce12337a0f94ae1f9037b63ec6f7f6118f9b13fe2198b1cca1"
       },
       "host": "UNKNOWN",
       "object": {
@@ -1218,7 +1251,7 @@
       "rationale": "Filesystem stat modification time (mtime)",
       "raw": {
         "mode": "0o100666",
-        "mtime": 1791228430.8256705,
+        "mtime": 1791230743.5260456,
         "size": 813
       },
       "schema_version": "2.0.0",
@@ -1233,9 +1266,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T19:27:10.825670+00:00",
+      "timestamp_raw": "2026-10-05T20:05:43.526046+00:00",
       "timestamp_type": "modified",
-      "timestamp_utc": "2026-10-05T19:27:10.825670+00:00",
+      "timestamp_utc": "2026-10-05T20:05:43.526046+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1246,11 +1279,11 @@
       "action_class": "file",
       "confidence": 0.95,
       "corroborated_by": [],
-      "event_id": "7cc8d857-751d-557d-8cb3-20fb6355e417",
+      "event_id": "e40adb35-7106-5629-8ffe-97d835fb5580",
       "evidence": {
         "container": null,
         "evidence_id": "EV-EXFILT",
-        "sha256": "80de3b672cc53b95e70cce5448baea5847bfd0858d064010534073169d296803"
+        "sha256": "20d3a642704a96afe13659bd6cbd6c23a5e0035d643ece9cd2914dde158c2d7f"
       },
       "host": "UNKNOWN",
       "object": {
@@ -1267,7 +1300,7 @@
       "rationale": "Filesystem stat modification time (mtime)",
       "raw": {
         "mode": "0o100666",
-        "mtime": 1791228430.8376772,
+        "mtime": 1791230743.539087,
         "size": 317
       },
       "schema_version": "2.0.0",
@@ -1282,9 +1315,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T19:27:10.837677+00:00",
+      "timestamp_raw": "2026-10-05T20:05:43.539087+00:00",
       "timestamp_type": "modified",
-      "timestamp_utc": "2026-10-05T19:27:10.837677+00:00",
+      "timestamp_utc": "2026-10-05T20:05:43.539087+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1295,7 +1328,7 @@
       "action_class": "file",
       "confidence": 0.9,
       "corroborated_by": [],
-      "event_id": "b3d64901-d282-5cd9-b022-46eef7c982a9",
+      "event_id": "53028db9-99d9-5385-b834-e72eced2cb8b",
       "evidence": {
         "container": null,
         "evidence_id": "EV-AUTH.L",
@@ -1315,7 +1348,7 @@
       },
       "rationale": "Filesystem stat creation/change time (ctime/birthtime)",
       "raw": {
-        "ctime": 1791228430.9573243,
+        "ctime": 1791230743.652646,
         "size": 283
       },
       "schema_version": "2.0.0",
@@ -1330,9 +1363,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T19:27:10.957324+00:00",
+      "timestamp_raw": "2026-10-05T20:05:43.652646+00:00",
       "timestamp_type": "created",
-      "timestamp_utc": "2026-10-05T19:27:10.957324+00:00",
+      "timestamp_utc": "2026-10-05T20:05:43.652646+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1343,7 +1376,7 @@
       "action_class": "file",
       "confidence": 0.9,
       "corroborated_by": [],
-      "event_id": "2298e493-2246-55a2-b7a1-96582a738c42",
+      "event_id": "cc4136bb-fdf2-532b-88f7-d6c058f89fcd",
       "evidence": {
         "container": null,
         "evidence_id": "EV-BASH_H",
@@ -1363,7 +1396,7 @@
       },
       "rationale": "Filesystem stat creation/change time (ctime/birthtime)",
       "raw": {
-        "ctime": 1791228432.0491674,
+        "ctime": 1791230744.7748795,
         "size": 112
       },
       "schema_version": "2.0.0",
@@ -1378,9 +1411,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T19:27:12.049167+00:00",
+      "timestamp_raw": "2026-10-05T20:05:44.774879+00:00",
       "timestamp_type": "created",
-      "timestamp_utc": "2026-10-05T19:27:12.049167+00:00",
+      "timestamp_utc": "2026-10-05T20:05:44.774879+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1391,11 +1424,11 @@
       "action_class": "file",
       "confidence": 0.9,
       "corroborated_by": [],
-      "event_id": "4bc6717b-c9e7-5fb3-9e52-f278bfbe74c2",
+      "event_id": "b1d5645a-9dfc-50fa-9a62-67dcacfeacce",
       "evidence": {
         "container": null,
         "evidence_id": "EV-EXFILT",
-        "sha256": "80de3b672cc53b95e70cce5448baea5847bfd0858d064010534073169d296803"
+        "sha256": "20d3a642704a96afe13659bd6cbd6c23a5e0035d643ece9cd2914dde158c2d7f"
       },
       "host": "UNKNOWN",
       "object": {
@@ -1411,7 +1444,7 @@
       },
       "rationale": "Filesystem stat creation/change time (ctime/birthtime)",
       "raw": {
-        "ctime": 1791228433.1978207,
+        "ctime": 1791230745.6706202,
         "size": 317
       },
       "schema_version": "2.0.0",
@@ -1426,9 +1459,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T19:27:13.197821+00:00",
+      "timestamp_raw": "2026-10-05T20:05:45.670620+00:00",
       "timestamp_type": "created",
-      "timestamp_utc": "2026-10-05T19:27:13.197821+00:00",
+      "timestamp_utc": "2026-10-05T20:05:45.670620+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1439,7 +1472,7 @@
       "action_class": "file",
       "confidence": 0.9,
       "corroborated_by": [],
-      "event_id": "007cc083-dd67-57af-9509-1b34e67f7d28",
+      "event_id": "ff514ab3-b19e-5048-a7b3-caf4e230d990",
       "evidence": {
         "container": null,
         "evidence_id": "EV-HISTOR",
@@ -1459,7 +1492,7 @@
       },
       "rationale": "Filesystem stat creation/change time (ctime/birthtime)",
       "raw": {
-        "ctime": 1791228434.16918,
+        "ctime": 1791230746.6136048,
         "size": 8192
       },
       "schema_version": "2.0.0",
@@ -1474,9 +1507,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T19:27:14.169180+00:00",
+      "timestamp_raw": "2026-10-05T20:05:46.613605+00:00",
       "timestamp_type": "created",
-      "timestamp_utc": "2026-10-05T19:27:14.169180+00:00",
+      "timestamp_utc": "2026-10-05T20:05:46.613605+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1487,11 +1520,11 @@
       "action_class": "file",
       "confidence": 0.9,
       "corroborated_by": [],
-      "event_id": "e9123dd8-8477-5c56-a1a0-4bc8c9fb7b18",
+      "event_id": "9d37d819-673e-5473-8145-ac8403723b13",
       "evidence": {
         "container": null,
         "evidence_id": "EV-INVEST",
-        "sha256": "c280f521b6b2e7422ee9ae0f44938c2f63fa24d5b244c76206206008429876ba"
+        "sha256": "2cd52c328126cbce12337a0f94ae1f9037b63ec6f7f6118f9b13fe2198b1cca1"
       },
       "host": "UNKNOWN",
       "object": {
@@ -1507,7 +1540,7 @@
       },
       "rationale": "Filesystem stat creation/change time (ctime/birthtime)",
       "raw": {
-        "ctime": 1791228435.114128,
+        "ctime": 1791230747.522842,
         "size": 813
       },
       "schema_version": "2.0.0",
@@ -1522,9 +1555,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T19:27:15.114128+00:00",
+      "timestamp_raw": "2026-10-05T20:05:47.522842+00:00",
       "timestamp_type": "created",
-      "timestamp_utc": "2026-10-05T19:27:15.114128+00:00",
+      "timestamp_utc": "2026-10-05T20:05:47.522842+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1535,7 +1568,7 @@
       "action_class": "file",
       "confidence": 0.9,
       "corroborated_by": [],
-      "event_id": "e73abf17-4eef-5ea8-bb1e-7cec280bae09",
+      "event_id": "64991604-ca7b-5f61-a5c3-0c7087ada44a",
       "evidence": {
         "container": null,
         "evidence_id": "EV-SECURI",
@@ -1555,7 +1588,7 @@
       },
       "rationale": "Filesystem stat creation/change time (ctime/birthtime)",
       "raw": {
-        "ctime": 1791228436.0594785,
+        "ctime": 1791230748.4693851,
         "size": 503
       },
       "schema_version": "2.0.0",
@@ -1570,9 +1603,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T19:27:16.059479+00:00",
+      "timestamp_raw": "2026-10-05T20:05:48.469385+00:00",
       "timestamp_type": "created",
-      "timestamp_utc": "2026-10-05T19:27:16.059479+00:00",
+      "timestamp_utc": "2026-10-05T20:05:48.469385+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1583,60 +1616,11 @@
       "action_class": "file",
       "confidence": 0.85,
       "corroborated_by": [],
-      "event_id": "6888e6ff-d3bb-5504-b41f-b8ea8b22e028",
+      "event_id": "66b4c452-e6c5-56b5-9b03-bcc7f18947bd",
       "evidence": {
         "container": null,
         "evidence_id": "EV-EXFILT",
-        "sha256": "80de3b672cc53b95e70cce5448baea5847bfd0858d064010534073169d296803"
-      },
-      "host": "UNKNOWN",
-      "object": {
-        "details": {},
-        "extension": null,
-        "inode": null,
-        "md5": null,
-        "path": "evidence/exfiltrated_files.zip::financial_report.pdf",
-        "path_norm": "evidence/exfiltrated_files.zip::financial_report.pdf",
-        "sha256": null,
-        "size": null,
-        "type": "file"
-      },
-      "rationale": "ZIP entry central directory DOS timestamp",
-      "raw": {
-        "entry_name": "financial_report.pdf",
-        "file_size": 42,
-        "zip_file": "evidence/exfiltrated_files.zip"
-      },
-      "schema_version": "2.0.0",
-      "source": {
-        "artifact": "zip:entry_central_dir",
-        "evidence_id": "EV-EXFILT",
-        "plugin": "file_metadata",
-        "plugin_version": "1.0.0",
-        "record_id": null,
-        "record_offset": null,
-        "record_type": null
-      },
-      "tags": [],
-      "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-06T00:57:10+00:00",
-      "timestamp_type": "modified",
-      "timestamp_utc": "2026-10-06T00:57:10+00:00",
-      "tz": null,
-      "user": "UNKNOWN",
-      "user_sid": null,
-      "warnings": []
-    },
-    {
-      "action": "FILE_WRITE",
-      "action_class": "file",
-      "confidence": 0.85,
-      "corroborated_by": [],
-      "event_id": "9a1cc047-003f-545e-9377-be2b1b1445ed",
-      "evidence": {
-        "container": null,
-        "evidence_id": "EV-EXFILT",
-        "sha256": "80de3b672cc53b95e70cce5448baea5847bfd0858d064010534073169d296803"
+        "sha256": "20d3a642704a96afe13659bd6cbd6c23a5e0035d643ece9cd2914dde158c2d7f"
       },
       "host": "UNKNOWN",
       "object": {
@@ -1668,9 +1652,58 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-06T00:57:10+00:00",
+      "timestamp_raw": "2026-10-06T01:35:42+00:00",
       "timestamp_type": "modified",
-      "timestamp_utc": "2026-10-06T00:57:10+00:00",
+      "timestamp_utc": "2026-10-06T01:35:42+00:00",
+      "tz": null,
+      "user": "UNKNOWN",
+      "user_sid": null,
+      "warnings": []
+    },
+    {
+      "action": "FILE_WRITE",
+      "action_class": "file",
+      "confidence": 0.85,
+      "corroborated_by": [],
+      "event_id": "cda9bea9-0668-5025-97af-d80db108430e",
+      "evidence": {
+        "container": null,
+        "evidence_id": "EV-EXFILT",
+        "sha256": "20d3a642704a96afe13659bd6cbd6c23a5e0035d643ece9cd2914dde158c2d7f"
+      },
+      "host": "UNKNOWN",
+      "object": {
+        "details": {},
+        "extension": null,
+        "inode": null,
+        "md5": null,
+        "path": "evidence/exfiltrated_files.zip::financial_report.pdf",
+        "path_norm": "evidence/exfiltrated_files.zip::financial_report.pdf",
+        "sha256": null,
+        "size": null,
+        "type": "file"
+      },
+      "rationale": "ZIP entry central directory DOS timestamp",
+      "raw": {
+        "entry_name": "financial_report.pdf",
+        "file_size": 42,
+        "zip_file": "evidence/exfiltrated_files.zip"
+      },
+      "schema_version": "2.0.0",
+      "source": {
+        "artifact": "zip:entry_central_dir",
+        "evidence_id": "EV-EXFILT",
+        "plugin": "file_metadata",
+        "plugin_version": "1.0.0",
+        "record_id": null,
+        "record_offset": null,
+        "record_type": null
+      },
+      "tags": [],
+      "timestamp_confidence": 1.0,
+      "timestamp_raw": "2026-10-06T01:35:42+00:00",
+      "timestamp_type": "modified",
+      "timestamp_utc": "2026-10-06T01:35:42+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1681,9 +1714,9 @@
   "integrity_attestation": {
     "case_id": "CASE-2026-LIVE",
     "checked_items": {
-      "derived_files": 6,
+      "derived_files": 9,
       "evidence_files": 0,
-      "ledger_entries": 12
+      "ledger_entries": 15
     },
     "derived_status": "PASS",
     "errors": [],
@@ -1699,7 +1732,7 @@
       "path": "config.effective.toml",
       "sha256": "4f4ff1deb312466eb8d988478467d12ee7558a5398a50d125033237bf5f5215d"
     },
-    "created_utc": "2026-10-05T19:27:10.876164+00:00",
+    "created_utc": "2026-10-05T20:05:43.579827+00:00",
     "derived": [
       {
         "path": "derived/browser.jsonl",
@@ -1719,8 +1752,8 @@
         "path": "derived/file_metadata.jsonl",
         "plugin": "file_metadata",
         "plugin_version": "1.3.0",
-        "sha256": "ff832306be63c3380a1e437f15fac1290f21541f1b8dbdb7f6fb86d72d5ef449",
-        "size_bytes": 17524
+        "sha256": "112452bee02bf27d58b0cb58965342226e71dc843f11ea42b8114d6cd908842d",
+        "size_bytes": 17525
       },
       {
         "path": "derived/linux_logs.jsonl",
@@ -1733,7 +1766,7 @@
         "path": "derived/corroboration.json",
         "plugin": "core",
         "plugin_version": "1.0.0",
-        "sha256": "8e0f92924620267f91bdade7d3fc5c59d0e088465722452cb75a43a6eafb4cc0",
+        "sha256": "4573a70483e3550b3c29770904424f93102062c4101c7af2b677a3c256cd11d6",
         "size_bytes": 732
       },
       {
@@ -1742,11 +1775,32 @@
         "plugin_version": "1.0.0",
         "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
         "size_bytes": 2
+      },
+      {
+        "path": "derived/process_lineage.json",
+        "plugin": "core",
+        "plugin_version": "1.0.0",
+        "sha256": "9f28f8549cbccc6da3f90a56ac1d4fe932bed9466535ee7dee0a15e4158625ee",
+        "size_bytes": 1355
+      },
+      {
+        "path": "derived/anomalies.json",
+        "plugin": "core",
+        "plugin_version": "1.0.0",
+        "sha256": "152d795cb05aea2fcd64a3fc2e0a9c1c3a6135b0d6349201c3cb365495e0d693",
+        "size_bytes": 1486
+      },
+      {
+        "path": "derived/sigma_alerts.json",
+        "plugin": "core",
+        "plugin_version": "1.0.0",
+        "sha256": "c3da4978ca0cac8979c72e5e12108c763ebab4cb9d1d8df870b81734b7d8f015",
+        "size_bytes": 497
       }
     ],
     "evidence": [
       {
-        "acquired_utc": "2026-10-05T19:27:12.033228+00:00",
+        "acquired_utc": "2026-10-05T20:05:44.750535+00:00",
         "container": "raw",
         "evidence_id": "EV-AUTH.L",
         "hashes": {
@@ -1757,21 +1811,21 @@
         "size_bytes": 283,
         "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\auth.log",
         "timestamp_token": {
-          "serial_number": "TSA-F613DCDC04928449",
+          "serial_number": "TSA-D68D927E0319754F",
           "sha256_digest": "b544dfd8cc0d4521f4ba801cd4b9215ef76b6a5f76149038b6171cd664e095e4",
           "status": "VERIFIED_RFC3161",
-          "timestamp_utc": "2026-10-05T19:27:10.976162+00:00",
-          "token_size_bytes": 4642,
+          "timestamp_utc": "2026-10-05T20:05:43.666761+00:00",
+          "token_size_bytes": 4644,
           "tsa_authority": "https://freetsa.org/tsr"
         },
         "verification": {
           "method": "readback",
           "result": "match",
-          "verified_utc": "2026-10-05T19:27:12.033247+00:00"
+          "verified_utc": "2026-10-05T20:05:44.750547+00:00"
         }
       },
       {
-        "acquired_utc": "2026-10-05T19:27:13.170857+00:00",
+        "acquired_utc": "2026-10-05T20:05:45.650423+00:00",
         "container": "raw",
         "evidence_id": "EV-BASH_H",
         "hashes": {
@@ -1782,46 +1836,46 @@
         "size_bytes": 112,
         "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\bash_history",
         "timestamp_token": {
-          "serial_number": "TSA-E6EB7F9FC336DAD1",
+          "serial_number": "TSA-E142B2526BDA6DE4",
           "sha256_digest": "a45c0410ad9fea5a6fec7056a904d518673c2e1950f124d9383dbdcfbfbdf554",
           "status": "VERIFIED_RFC3161",
-          "timestamp_utc": "2026-10-05T19:27:12.066216+00:00",
-          "token_size_bytes": 4643,
+          "timestamp_utc": "2026-10-05T20:05:44.790146+00:00",
+          "token_size_bytes": 4644,
           "tsa_authority": "https://freetsa.org/tsr"
         },
         "verification": {
           "method": "readback",
           "result": "match",
-          "verified_utc": "2026-10-05T19:27:13.170884+00:00"
+          "verified_utc": "2026-10-05T20:05:45.650450+00:00"
         }
       },
       {
-        "acquired_utc": "2026-10-05T19:27:14.142058+00:00",
+        "acquired_utc": "2026-10-05T20:05:46.584721+00:00",
         "container": "raw",
         "evidence_id": "EV-EXFILT",
         "hashes": {
-          "sha256": "80de3b672cc53b95e70cce5448baea5847bfd0858d064010534073169d296803"
+          "sha256": "20d3a642704a96afe13659bd6cbd6c23a5e0035d643ece9cd2914dde158c2d7f"
         },
         "path": "evidence/exfiltrated_files.zip",
         "read_errors": 0,
         "size_bytes": 317,
         "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\exfiltrated_files.zip",
         "timestamp_token": {
-          "serial_number": "TSA-67AB111EA8527F64",
-          "sha256_digest": "80de3b672cc53b95e70cce5448baea5847bfd0858d064010534073169d296803",
+          "serial_number": "TSA-BA1102D772192887",
+          "sha256_digest": "20d3a642704a96afe13659bd6cbd6c23a5e0035d643ece9cd2914dde158c2d7f",
           "status": "VERIFIED_RFC3161",
-          "timestamp_utc": "2026-10-05T19:27:13.217417+00:00",
-          "token_size_bytes": 4643,
+          "timestamp_utc": "2026-10-05T20:05:45.684399+00:00",
+          "token_size_bytes": 4644,
           "tsa_authority": "https://freetsa.org/tsr"
         },
         "verification": {
           "method": "readback",
           "result": "match",
-          "verified_utc": "2026-10-05T19:27:14.142079+00:00"
+          "verified_utc": "2026-10-05T20:05:46.584734+00:00"
         }
       },
       {
-        "acquired_utc": "2026-10-05T19:27:15.086105+00:00",
+        "acquired_utc": "2026-10-05T20:05:47.494675+00:00",
         "container": "raw",
         "evidence_id": "EV-HISTOR",
         "hashes": {
@@ -1832,46 +1886,46 @@
         "size_bytes": 8192,
         "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\History",
         "timestamp_token": {
-          "serial_number": "TSA-4E446888E972BA22",
+          "serial_number": "TSA-E97A82101A23EEDF",
           "sha256_digest": "ddeee48ddcd3e8fd4b88dbe62d5624d7e71983919f0a12ceb3f79844e2322b95",
           "status": "VERIFIED_RFC3161",
-          "timestamp_utc": "2026-10-05T19:27:14.189345+00:00",
-          "token_size_bytes": 4642,
+          "timestamp_utc": "2026-10-05T20:05:46.634534+00:00",
+          "token_size_bytes": 4644,
           "tsa_authority": "https://freetsa.org/tsr"
         },
         "verification": {
           "method": "readback",
           "result": "match",
-          "verified_utc": "2026-10-05T19:27:15.086126+00:00"
+          "verified_utc": "2026-10-05T20:05:47.494697+00:00"
         }
       },
       {
-        "acquired_utc": "2026-10-05T19:27:16.029919+00:00",
+        "acquired_utc": "2026-10-05T20:05:48.435752+00:00",
         "container": "raw",
         "evidence_id": "EV-INVEST",
         "hashes": {
-          "sha256": "c280f521b6b2e7422ee9ae0f44938c2f63fa24d5b244c76206206008429876ba"
+          "sha256": "2cd52c328126cbce12337a0f94ae1f9037b63ec6f7f6118f9b13fe2198b1cca1"
         },
         "path": "evidence/investigation_memo.docx",
         "read_errors": 0,
         "size_bytes": 813,
         "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\investigation_memo.docx",
         "timestamp_token": {
-          "serial_number": "TSA-5002BD8BAA662878",
-          "sha256_digest": "c280f521b6b2e7422ee9ae0f44938c2f63fa24d5b244c76206206008429876ba",
+          "serial_number": "TSA-ADCA40013997F321",
+          "sha256_digest": "2cd52c328126cbce12337a0f94ae1f9037b63ec6f7f6118f9b13fe2198b1cca1",
           "status": "VERIFIED_RFC3161",
-          "timestamp_utc": "2026-10-05T19:27:15.131329+00:00",
-          "token_size_bytes": 4643,
+          "timestamp_utc": "2026-10-05T20:05:47.540710+00:00",
+          "token_size_bytes": 4644,
           "tsa_authority": "https://freetsa.org/tsr"
         },
         "verification": {
           "method": "readback",
           "result": "match",
-          "verified_utc": "2026-10-05T19:27:16.029939+00:00"
+          "verified_utc": "2026-10-05T20:05:48.435774+00:00"
         }
       },
       {
-        "acquired_utc": "2026-10-05T19:27:16.941334+00:00",
+        "acquired_utc": "2026-10-05T20:05:49.340017+00:00",
         "container": "raw",
         "evidence_id": "EV-SECURI",
         "hashes": {
@@ -1882,42 +1936,42 @@
         "size_bytes": 503,
         "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\Security_Events.jsonl",
         "timestamp_token": {
-          "serial_number": "TSA-89123BF063609487",
+          "serial_number": "TSA-3B8AFC25DD6D337D",
           "sha256_digest": "15957efb2f1573f54296ac349387196a60825acb65518ab856a5179afe1e8ad0",
           "status": "VERIFIED_RFC3161",
-          "timestamp_utc": "2026-10-05T19:27:16.076856+00:00",
-          "token_size_bytes": 4643,
+          "timestamp_utc": "2026-10-05T20:05:48.490771+00:00",
+          "token_size_bytes": 4644,
           "tsa_authority": "https://freetsa.org/tsr"
         },
         "verification": {
           "method": "readback",
           "result": "match",
-          "verified_utc": "2026-10-05T19:27:16.941355+00:00"
+          "verified_utc": "2026-10-05T20:05:49.340036+00:00"
         }
       }
     ],
     "index": [
       {
         "path": "index/events.parquet",
-        "sha256": "6b98d5c6254898a6172fd963dd95540d159f699f5ba8fc9bce04873ca7ea74ad",
-        "size_bytes": 11320
+        "sha256": "e508d99e348229d4784285ffaa2aaadfd306a4ac65045cb950e081e02bff58c2",
+        "size_bytes": 11326
       },
       {
         "path": "index/events.sqlite",
-        "sha256": "50c64e02ec97eb1b3b21300f9261104e21b2d936e8e5f2904fa3287b1ba96534",
+        "sha256": "5a125c2bc95fd2be10e9bc70e4efd35e1f01c1ac6ce1a516b333bf635dbb5d92",
         "size_bytes": 73728
       }
     ],
     "manifest_version": "1.1.0",
-    "merkle_root": "1c73170a7c9f65f5f96cf394ce625e7a5ae869079c95f30736c6de3ab77d52ff",
+    "merkle_root": "1f391b61693c7b2b09351f374b6d5df4ace8b03f1b34d866e1d76000262cf4f6",
     "reports": [
       {
         "path": "reports/CASE-2026-LIVE_full.html",
-        "sha256": "cb3edd1c393ac42fcc12a5e5b891f65524ea0f0c686acbb18deff85423eb1196"
+        "sha256": "78415faea350c65e6ca2e6cad9bd2333ab60e589be15efd826f27eefaa182062"
       },
       {
         "path": "reports/CASE-2026-LIVE_summary.md",
-        "sha256": "e5c0325200e796b4208bc064b7fbdf63a58f83e1dc2f4155d34feb2fd4d8a5b8"
+        "sha256": "5afc13f14ffb316191f02bf59fe16c106bbbbe67fe89657a53ea5d38ee64b232"
       }
     ],
     "schema_version": "2.0.0",

@@ -1,0 +1,42 @@
+[
+  {
+    "anomaly_id": "BURST-1990256",
+    "anomaly_type": "BURST_ACTIVITY",
+    "severity": "MEDIUM",
+    "title": "Activity Volume Spike (12 events in 15m)",
+    "description": "Statistical burst detected with Z-score 2.18. Event count (12) is significantly higher than baseline mean (3.5 +/- 3.9).",
+    "window_start_utc": "2026-10-05T20:00:00+00:00",
+    "window_end_utc": "2026-10-05T20:15:00+00:00",
+    "metric_value": 12.0,
+    "baseline_value": 3.5,
+    "z_score": 2.18,
+    "affected_users": [
+      "UNKNOWN"
+    ],
+    "sample_events": [
+      "20d655a7-c173-5434-a810-9ec27ffc9ac5",
+      "bfd12651-f154-5463-a5b1-3d615d2bbf82",
+      "ce212f37-4e2c-5513-a760-c589ab0ac8be",
+      "1b269f3d-b192-5721-b86f-399ccf5bc418",
+      "af65ea35-9668-5acd-86bf-1ed01ccb0b13"
+    ]
+  },
+  {
+    "anomaly_id": "OFFHOURS-83c718bb-4f23-5cb3-a6e3-2e466c4ad678",
+    "anomaly_type": "OFF_HOURS_LOGON",
+    "severity": "HIGH",
+    "title": "Unusual Logon: admin (off-hours logon (02:00 UTC))",
+    "description": "User 'admin' authenticated during atypical operational window (off-hours logon (02:00 UTC)). Action: AUTH_LOGIN on target: None.",
+    "window_start_utc": "2024-03-11T02:14:07+00:00",
+    "window_end_utc": "2024-03-11T02:14:07+00:00",
+    "metric_value": 1.0,
+    "baseline_value": 0.0,
+    "z_score": 3.0,
+    "affected_users": [
+      "admin"
+    ],
+    "sample_events": [
+      "83c718bb-4f23-5cb3-a6e3-2e466c4ad678"
+    ]
+  }
+]

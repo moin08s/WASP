@@ -137,6 +137,34 @@ class ReportBuilder:
         for tech, item in mitre_summary.items():
             item["rule_names"] = sorted(list(item["rule_names"]))
 
+        # Load Process Lineage, Anomalies, and Sigma data if present
+        lineage_data = []
+        l_path = self.case.derived_dir / "process_lineage.json"
+        if l_path.exists():
+            try:
+                with open(l_path, "r", encoding="utf-8") as f:
+                    lineage_data = json.load(f)
+            except Exception:
+                pass
+
+        anomalies_data = []
+        a_path = self.case.derived_dir / "anomalies.json"
+        if a_path.exists():
+            try:
+                with open(a_path, "r", encoding="utf-8") as f:
+                    anomalies_data = json.load(f)
+            except Exception:
+                pass
+
+        sigma_alerts_data = []
+        s_path = self.case.derived_dir / "sigma_alerts.json"
+        if s_path.exists():
+            try:
+                with open(s_path, "r", encoding="utf-8") as f:
+                    sigma_alerts_data = json.load(f)
+            except Exception:
+                pass
+
         context = {
             "case": self.case,
             "manifest": manifest_data,
@@ -146,6 +174,9 @@ class ReportBuilder:
             "corroboration": corroboration_data,
             "threat_alerts": threat_alerts_data,
             "mitre_matrix": list(mitre_summary.values()),
+            "process_lineage": lineage_data,
+            "anomalies": anomalies_data,
+            "sigma_alerts": sigma_alerts_data,
         }
 
         # Setup Jinja2 Environment

@@ -1,0 +1,17 @@
+[
+  {
+    "rule_id": "sigma-log-005",
+    "title": "Windows Security Event Log Cleared (Anti-Forensics)",
+    "level": "CRITICAL",
+    "description": "Detects Event ID 1102 (audit log cleared) or wevtutil cl execution.",
+    "mitre_tags": [
+      "attack.defense_evasion",
+      "attack.t1070.001"
+    ],
+    "event_id": "f1a9c869-8dff-5f41-b867-78e4f450dec2",
+    "timestamp_utc": "2024-03-11T02:20:00+00:00",
+    "matched_fields": {
+      "any_field|contains": "1102"
+    }
+  }
+]

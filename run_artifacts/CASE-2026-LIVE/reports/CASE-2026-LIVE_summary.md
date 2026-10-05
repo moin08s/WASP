@@ -15,7 +15,7 @@
 | 2 | **System artefact extraction** | COMPLETED | Extracted MFT, registry hives, EVTX event logs, Prefetch, LNK shortcuts, browser history. |
 | 3 | **Timestamp extraction** | COMPLETED | Decoded multi-epoch timestamps normalized to UTC with explainable confidence. |
 | 4 | **Chronological timeline reconstruction** | COMPLETED | Generated single normalized super-timeline with 28 records. |
-| 5 | **SHA-256 evidence integrity** | VERIFIED | Mandatory SHA-256 computed; custody ledger replayed; Merkle root: `1c73170a7c9f65f5f96cf394ce625e7a5ae869079c95f30736c6de3ab77d52ff`. |
+| 5 | **SHA-256 evidence integrity** | VERIFIED | Mandatory SHA-256 computed; custody ledger replayed; Merkle root: `1f391b61693c7b2b09351f374b6d5df4ace8b03f1b34d866e1d76000262cf4f6`. |
 | 6 | **Structured investigation reports** | COMPLETED | Compiled multi-format reports with provenance, integrity block, and privacy redaction. |
 
 ---
@@ -29,11 +29,11 @@
 
 | `EV-BASH_H` | `evidence/bash_history` | raw | 112 | `a45c0410ad9fea5a6fec7056a904d518673c2e1950f124d9383dbdcfbfbdf554` | MATCH |
 
-| `EV-EXFILT` | `evidence/exfiltrated_files.zip` | raw | 317 | `80de3b672cc53b95e70cce5448baea5847bfd0858d064010534073169d296803` | MATCH |
+| `EV-EXFILT` | `evidence/exfiltrated_files.zip` | raw | 317 | `20d3a642704a96afe13659bd6cbd6c23a5e0035d643ece9cd2914dde158c2d7f` | MATCH |
 
 | `EV-HISTOR` | `evidence/History` | raw | 8192 | `ddeee48ddcd3e8fd4b88dbe62d5624d7e71983919f0a12ceb3f79844e2322b95` | MATCH |
 
-| `EV-INVEST` | `evidence/investigation_memo.docx` | raw | 813 | `c280f521b6b2e7422ee9ae0f44938c2f63fa24d5b244c76206206008429876ba` | MATCH |
+| `EV-INVEST` | `evidence/investigation_memo.docx` | raw | 813 | `2cd52c328126cbce12337a0f94ae1f9037b63ec6f7f6118f9b13fe2198b1cca1` | MATCH |
 
 | `EV-SECURI` | `evidence/Security_Events.jsonl` | raw | 503 | `15957efb2f1573f54296ac349387196a60825acb65518ab856a5179afe1e8ad0` | MATCH |
 
@@ -54,7 +54,7 @@
 | Severity | Entity | Anomaly Type | Description |
 |---|---|---|---|
 
-| **MEDIUM** | `investigation_memo.docx` | `MODIFIED_PRE_CREATION` | Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T19:27:15.114128+00:00 |
+| **MEDIUM** | `investigation_memo.docx` | `MODIFIED_PRE_CREATION` | Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T20:05:47.522842+00:00 |
 
 
 
@@ -74,7 +74,7 @@
 
 | `2024-03-10T21:00:00+00:00` | `WEB_VISIT` | UNKNOWN | `https://pastebin.com/raw/d849fa` | Browser:Chromium:evidence/History | `-` | 0.97 | Chromium last_visit_time WebKit timestamp |
 
-| `2024-03-11T01:50:00+00:00` | `FILE_WRITE` | [USER_002] | `evidence/investigation_memo.docx` | ooxml:core_properties | `-` | 0.98 | OOXML dcterms:modified metadata (⚠️ Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T19:27:15.114128+00:00) |
+| `2024-03-11T01:50:00+00:00` | `FILE_WRITE` | [USER_002] | `evidence/investigation_memo.docx` | ooxml:core_properties | `-` | 0.98 | OOXML dcterms:modified metadata (⚠️ Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T20:05:47.522842+00:00) |
 
 | `2024-03-11T02:14:07+00:00` | `AUTH_LOGIN` | [USER_003] | `N/A` | EVTX:evidence/Security_Events.jsonl | `-` | 0.99 | Windows Event Log JSON entry for Event ID 4624 |
 
@@ -96,33 +96,33 @@
 
 | `2024-03-11T02:20:00+00:00` | `LOG_CLEARED` | [USER_003] | `N/A` | EVTX:evidence/Security_Events.jsonl | `-` | 0.99 | Windows Event Log JSON entry for Event ID 1102 |
 
-| `2026-10-05T19:27:10.760665+00:00` | `FILE_WRITE` | UNKNOWN | `evidence/auth.log` | filesystem:stat | `-` | 0.95 | Filesystem stat modification time (mtime) |
+| `2026-10-05T20:05:43.474778+00:00` | `FILE_WRITE` | UNKNOWN | `evidence/auth.log` | filesystem:stat | `-` | 0.95 | Filesystem stat modification time (mtime) |
 
-| `2026-10-05T19:27:10.767165+00:00` | `FILE_WRITE` | UNKNOWN | `evidence/bash_history` | filesystem:stat | `-` | 0.95 | Filesystem stat modification time (mtime) |
+| `2026-10-05T20:05:43.479778+00:00` | `FILE_WRITE` | UNKNOWN | `evidence/bash_history` | filesystem:stat | `-` | 0.95 | Filesystem stat modification time (mtime) |
 
-| `2026-10-05T19:27:10.772172+00:00` | `FILE_WRITE` | UNKNOWN | `evidence/Security_Events.jsonl` | filesystem:stat | `-` | 0.95 | Filesystem stat modification time (mtime) |
+| `2026-10-05T20:05:43.484778+00:00` | `FILE_WRITE` | UNKNOWN | `evidence/Security_Events.jsonl` | filesystem:stat | `-` | 0.95 | Filesystem stat modification time (mtime) |
 
-| `2026-10-05T19:27:10.807667+00:00` | `FILE_WRITE` | UNKNOWN | `evidence/History` | filesystem:stat | `-` | 0.95 | Filesystem stat modification time (mtime) |
+| `2026-10-05T20:05:43.512279+00:00` | `FILE_WRITE` | UNKNOWN | `evidence/History` | filesystem:stat | `-` | 0.95 | Filesystem stat modification time (mtime) |
 
-| `2026-10-05T19:27:10.825670+00:00` | `FILE_WRITE` | UNKNOWN | `evidence/investigation_memo.docx` | filesystem:stat | `-` | 0.95 | Filesystem stat modification time (mtime) |
+| `2026-10-05T20:05:43.526046+00:00` | `FILE_WRITE` | UNKNOWN | `evidence/investigation_memo.docx` | filesystem:stat | `-` | 0.95 | Filesystem stat modification time (mtime) |
 
-| `2026-10-05T19:27:10.837677+00:00` | `FILE_WRITE` | UNKNOWN | `evidence/exfiltrated_files.zip` | filesystem:stat | `-` | 0.95 | Filesystem stat modification time (mtime) |
+| `2026-10-05T20:05:43.539087+00:00` | `FILE_WRITE` | UNKNOWN | `evidence/exfiltrated_files.zip` | filesystem:stat | `-` | 0.95 | Filesystem stat modification time (mtime) |
 
-| `2026-10-05T19:27:10.957324+00:00` | `FILE_CREATE` | UNKNOWN | `evidence/auth.log` | filesystem:stat | `-` | 0.9 | Filesystem stat creation/change time (ctime/birthtime) |
+| `2026-10-05T20:05:43.652646+00:00` | `FILE_CREATE` | UNKNOWN | `evidence/auth.log` | filesystem:stat | `-` | 0.9 | Filesystem stat creation/change time (ctime/birthtime) |
 
-| `2026-10-05T19:27:12.049167+00:00` | `FILE_CREATE` | UNKNOWN | `evidence/bash_history` | filesystem:stat | `-` | 0.9 | Filesystem stat creation/change time (ctime/birthtime) |
+| `2026-10-05T20:05:44.774879+00:00` | `FILE_CREATE` | UNKNOWN | `evidence/bash_history` | filesystem:stat | `-` | 0.9 | Filesystem stat creation/change time (ctime/birthtime) |
 
-| `2026-10-05T19:27:13.197821+00:00` | `FILE_CREATE` | UNKNOWN | `evidence/exfiltrated_files.zip` | filesystem:stat | `-` | 0.9 | Filesystem stat creation/change time (ctime/birthtime) |
+| `2026-10-05T20:05:45.670620+00:00` | `FILE_CREATE` | UNKNOWN | `evidence/exfiltrated_files.zip` | filesystem:stat | `-` | 0.9 | Filesystem stat creation/change time (ctime/birthtime) |
 
-| `2026-10-05T19:27:14.169180+00:00` | `FILE_CREATE` | UNKNOWN | `evidence/History` | filesystem:stat | `-` | 0.9 | Filesystem stat creation/change time (ctime/birthtime) |
+| `2026-10-05T20:05:46.613605+00:00` | `FILE_CREATE` | UNKNOWN | `evidence/History` | filesystem:stat | `-` | 0.9 | Filesystem stat creation/change time (ctime/birthtime) |
 
-| `2026-10-05T19:27:15.114128+00:00` | `FILE_CREATE` | UNKNOWN | `evidence/investigation_memo.docx` | filesystem:stat | `-` | 0.9 | Filesystem stat creation/change time (ctime/birthtime) |
+| `2026-10-05T20:05:47.522842+00:00` | `FILE_CREATE` | UNKNOWN | `evidence/investigation_memo.docx` | filesystem:stat | `-` | 0.9 | Filesystem stat creation/change time (ctime/birthtime) |
 
-| `2026-10-05T19:27:16.059479+00:00` | `FILE_CREATE` | UNKNOWN | `evidence/Security_Events.jsonl` | filesystem:stat | `-` | 0.9 | Filesystem stat creation/change time (ctime/birthtime) |
+| `2026-10-05T20:05:48.469385+00:00` | `FILE_CREATE` | UNKNOWN | `evidence/Security_Events.jsonl` | filesystem:stat | `-` | 0.9 | Filesystem stat creation/change time (ctime/birthtime) |
 
-| `2026-10-06T00:57:10+00:00` | `FILE_WRITE` | UNKNOWN | `evidence/exfiltrated_files.zip::financial_report.pdf` | zip:entry_central_dir | `-` | 0.85 | ZIP entry central directory DOS timestamp |
+| `2026-10-06T01:35:42+00:00` | `FILE_WRITE` | UNKNOWN | `evidence/exfiltrated_files.zip::passwords.txt` | zip:entry_central_dir | `-` | 0.85 | ZIP entry central directory DOS timestamp |
 
-| `2026-10-06T00:57:10+00:00` | `FILE_WRITE` | UNKNOWN | `evidence/exfiltrated_files.zip::passwords.txt` | zip:entry_central_dir | `-` | 0.85 | ZIP entry central directory DOS timestamp |
+| `2026-10-06T01:35:42+00:00` | `FILE_WRITE` | UNKNOWN | `evidence/exfiltrated_files.zip::financial_report.pdf` | zip:entry_central_dir | `-` | 0.85 | ZIP entry central directory DOS timestamp |
 
 
 *(Total reconstructed timeline events: 28)*
@@ -132,9 +132,9 @@
 ## 6. Cryptographic Integrity & Attestation
 
 - **Overall Integrity Check:** `PASS`
-- **Custody Ledger Replay:** `PASS` (12 entries verified)
+- **Custody Ledger Replay:** `PASS` (15 entries verified)
 - **Derived Files Status:** `PASS`
-- **Merkle Root Digest:** `1c73170a7c9f65f5f96cf394ce625e7a5ae869079c95f30736c6de3ab77d52ff`
+- **Merkle Root Digest:** `1f391b61693c7b2b09351f374b6d5df4ace8b03f1b34d866e1d76000262cf4f6`
 
 ---
 
@@ -143,29 +143,35 @@
 | Seq | Timestamp (UTC) | Actor | Event Type | Prev Hash | Entry Hash |
 |---|---|---|---|---|---|
 
-| 1 | `2026-10-05T19:27:10.848713+00:00` | Alex Mercer (Senior Forensics Examiner) | `case_created` | `000000000000...` | `e9da1e58d301...` |
+| 1 | `2026-10-05T20:05:43.552552+00:00` | Alex Mercer (Senior Forensics Examiner) | `case_created` | `000000000000...` | `b0f6f15e46ec...` |
 
-| 2 | `2026-10-05T19:27:12.037723+00:00` | Alex Mercer (Senior Forensics Examiner) | `evidence_acquired` | `e9da1e58d301...` | `6b06238de2c1...` |
+| 2 | `2026-10-05T20:05:44.758483+00:00` | Alex Mercer (Senior Forensics Examiner) | `evidence_acquired` | `b0f6f15e46ec...` | `80d41de578c8...` |
 
-| 3 | `2026-10-05T19:27:13.178911+00:00` | Alex Mercer (Senior Forensics Examiner) | `evidence_acquired` | `6b06238de2c1...` | `6d6b94acfd7f...` |
+| 3 | `2026-10-05T20:05:45.657539+00:00` | Alex Mercer (Senior Forensics Examiner) | `evidence_acquired` | `80d41de578c8...` | `2aaffeaf70a1...` |
 
-| 4 | `2026-10-05T19:27:14.150276+00:00` | Alex Mercer (Senior Forensics Examiner) | `evidence_acquired` | `6d6b94acfd7f...` | `15db05f378f2...` |
+| 4 | `2026-10-05T20:05:46.592511+00:00` | Alex Mercer (Senior Forensics Examiner) | `evidence_acquired` | `2aaffeaf70a1...` | `56e2b0237c01...` |
 
-| 5 | `2026-10-05T19:27:15.094802+00:00` | Alex Mercer (Senior Forensics Examiner) | `evidence_acquired` | `15db05f378f2...` | `5551e82c4178...` |
+| 5 | `2026-10-05T20:05:47.503661+00:00` | Alex Mercer (Senior Forensics Examiner) | `evidence_acquired` | `56e2b0237c01...` | `01454161025e...` |
 
-| 6 | `2026-10-05T19:27:16.040217+00:00` | Alex Mercer (Senior Forensics Examiner) | `evidence_acquired` | `5551e82c4178...` | `d7912ddbd923...` |
+| 6 | `2026-10-05T20:05:48.447329+00:00` | Alex Mercer (Senior Forensics Examiner) | `evidence_acquired` | `01454161025e...` | `2268f1ab0b13...` |
 
-| 7 | `2026-10-05T19:27:16.952933+00:00` | Alex Mercer (Senior Forensics Examiner) | `evidence_acquired` | `d7912ddbd923...` | `7201f494b9aa...` |
+| 7 | `2026-10-05T20:05:49.347514+00:00` | Alex Mercer (Senior Forensics Examiner) | `evidence_acquired` | `2268f1ab0b13...` | `75d81f6e6aff...` |
 
-| 8 | `2026-10-05T19:27:17.093957+00:00` | Alex Mercer (Senior Forensics Examiner) | `artefacts_extracted` | `7201f494b9aa...` | `d664784a31ce...` |
+| 8 | `2026-10-05T20:05:49.463608+00:00` | Alex Mercer (Senior Forensics Examiner) | `artefacts_extracted` | `75d81f6e6aff...` | `4ae9c6b0fe46...` |
 
-| 9 | `2026-10-05T19:27:17.310043+00:00` | Alex Mercer (Senior Forensics Examiner) | `cross_source_corroborated` | `d664784a31ce...` | `5b52bd73d614...` |
+| 9 | `2026-10-05T20:05:49.711219+00:00` | Alex Mercer (Senior Forensics Examiner) | `cross_source_corroborated` | `4ae9c6b0fe46...` | `f741eadec7ad...` |
 
-| 10 | `2026-10-05T19:27:17.338006+00:00` | Alex Mercer (Senior Forensics Examiner) | `threat_rules_scanned` | `5b52bd73d614...` | `a79a964ada0b...` |
+| 10 | `2026-10-05T20:05:49.734657+00:00` | Alex Mercer (Senior Forensics Examiner) | `threat_rules_scanned` | `f741eadec7ad...` | `c49dc25ba4f1...` |
 
-| 11 | `2026-10-05T19:27:17.982856+00:00` | Alex Mercer (Senior Forensics Examiner) | `timeline_built` | `a79a964ada0b...` | `1033948aa216...` |
+| 11 | `2026-10-05T20:05:50.428396+00:00` | Alex Mercer (Senior Forensics Examiner) | `timeline_built` | `c49dc25ba4f1...` | `e46a48b5a726...` |
 
-| 12 | `2026-10-05T19:27:18.114371+00:00` | Alex Mercer (Senior Forensics Examiner) | `integrity_verified` | `1033948aa216...` | `5a3603fbadb8...` |
+| 12 | `2026-10-05T20:05:50.486584+00:00` | Alex Mercer (Senior Forensics Examiner) | `process_lineage_reconstructed` | `e46a48b5a726...` | `70a408a69b9e...` |
+
+| 13 | `2026-10-05T20:05:50.539536+00:00` | Alex Mercer (Senior Forensics Examiner) | `anomalies_detected` | `70a408a69b9e...` | `19fce83b1ae5...` |
+
+| 14 | `2026-10-05T20:05:50.584182+00:00` | Alex Mercer (Senior Forensics Examiner) | `sigma_rules_evaluated` | `19fce83b1ae5...` | `bd29d1c1349f...` |
+
+| 15 | `2026-10-05T20:05:50.709632+00:00` | Alex Mercer (Senior Forensics Examiner) | `integrity_verified` | `bd29d1c1349f...` | `1cb02e271d2d...` |
 
 
 ---

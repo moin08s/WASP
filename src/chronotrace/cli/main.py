@@ -29,6 +29,9 @@ app.add_typer(plugin_app, name="plugin")
 device_app = typer.Typer(name="device", help="Discover and manage connected storage & external devices.")
 app.add_typer(device_app, name="device")
 
+bundle_app = typer.Typer(name="bundle", help="Create and verify cryptographically signed .wasp case bundles.")
+app.add_typer(bundle_app, name="bundle")
+
 console = Console()
 
 
@@ -406,6 +409,147 @@ def plugin_list():
             p.version,
             ", ".join(p.capabilities),
             ", ".join(p.applies_to),
+        )
+    console.print(table)
+
+
+# --- BUNDLE COMMANDS ---
+
+@bundle_app.command("export")
+def bundle_export(
+    case_dir: Path = typer.Option(..., "--case", help="Path to target case directory"),
+    output: Optional[Path] = typer.Option(None, "--out", help="Output .wasp bundle container path"),
+    passphrase: Optional[str] = typer.Option(None, "--passphrase", help="Secret passphrase to HMAC-SHA256 sign bundle"),
+):
+    """Package case workspace into an immutable, cryptographically signed .wasp container."""
+    from chronotrace.core.bundle import CaseBundleManager
+    case = Case.open(case_dir)
+    console.print(f"[bold cyan]Packaging case {case.case_id} into deterministic .wasp container...[/bold cyan]")
+    bundle_path = CaseBundleManager.export_bundle(case_dir, output_file=output, passphrase=passphrase)
+    console.print(f"[bold green][+][/bold green] Bundle created successfully: [bold yellow]{bundle_path}[/bold yellow]")
+    if passphrase:
+        console.print("[bold green]  [+] HMAC-SHA256 Cryptographic Signature: Sealed[/bold green]")
+    else:
+        console.print("[dim]  [!] Bundle created without HMAC signature (Merkle root integrity active)[/dim]")
+
+
+@bundle_app.command("verify")
+def bundle_verify(
+    bundle_path: Path = typer.Argument(..., help="Path to .wasp bundle container file"),
+    passphrase: Optional[str] = typer.Option(None, "--passphrase", help="Passphrase to verify HMAC signature"),
+):
+    """Verify cryptographic integrity, Merkle tree root, and signature of a .wasp container."""
+    from chronotrace.core.bundle import CaseBundleManager
+    console.print(f"[bold cyan]Verifying .wasp bundle container:[/bold cyan] {bundle_path.name}")
+    res = CaseBundleManager.verify_bundle(bundle_path, passphrase=passphrase)
+
+    if res.is_valid:
+        console.print(f"[bold green][+] INTEGRITY VERIFIED: PASS[/bold green]")
+        console.print(f"  Case ID:       [bold cyan]{res.case_id}[/bold cyan]")
+        console.print(f"  Files Checked: [green]{res.files_checked}[/green]")
+        console.print(f"  Merkle Root:   [yellow]{res.merkle_root}[/yellow]")
+        if res.signature_present:
+            sig_status = "[bold green]VALID (MATCH)[/bold green]" if res.signature_valid else "[yellow]UNVERIFIED (Passphrase not provided)[/yellow]"
+            console.print(f"  Signature:     {sig_status}")
+    else:
+        console.print(f"[bold red][!] INTEGRITY VERIFICATION FAILED: TAMPERING DETECTED[/bold red]")
+        for err in res.errors:
+            console.print(f"  [red]* {err}[/red]")
+        raise typer.Exit(code=1)
+
+
+# --- PROCESS LINEAGE COMMAND ---
+
+@app.command("lineage")
+def lineage(
+    case_dir: Path = typer.Option(..., "--case", help="Path to target case directory"),
+    ascii_tree: bool = typer.Option(True, "--ascii/--no-ascii", help="Print visual tree to terminal"),
+    json_out: bool = typer.Option(False, "--json", help="Output lineage data in JSON format"),
+):
+    """Reconstruct hierarchical process execution tree (PPID -> PID attack chain)."""
+    from chronotrace.analysis.lineage import ProcessLineageReconstructor
+    case = Case.open(case_dir)
+    console.print(f"[bold cyan]Reconstructing Process Execution Lineage for {case.case_id}...[/bold cyan]")
+    roots = case.build_lineage()
+
+    if json_out:
+        console.print_json(data=[r.to_dict() for r in roots])
+        return
+
+    console.print(f"[bold green][+][/bold green] Identified [bold green]{len(roots)}[/bold green] root process trees.")
+    if ascii_tree and roots:
+        reconstructor = ProcessLineageReconstructor([])
+        tree_text = reconstructor.render_ascii_tree(roots)
+        console.print("\n[bold yellow]Execution Lineage Tree:[/bold yellow]")
+        console.print(tree_text)
+
+
+# --- ANOMALY SPOTLIGHT COMMAND ---
+
+@app.command("anomaly")
+def anomaly(
+    case_dir: Path = typer.Option(..., "--case", help="Path to target case directory"),
+    window: int = typer.Option(15, "--window", "-w", help="Sliding window size in minutes"),
+    z_score: float = typer.Option(2.0, "--z-score", "-z", help="Z-score threshold for burst detection"),
+):
+    """Detect statistical burst spikes, off-hours administrative activity, and ransomware bursts."""
+    case = Case.open(case_dir)
+    console.print(f"[bold cyan]Running Statistical Anomaly Spotlight on {case.case_id}...[/bold cyan]")
+    findings = case.detect_anomalies(window_minutes=window, z_threshold=z_score)
+
+    if not findings:
+        console.print("[green]No abnormal activity bursts or off-hours anomalies detected.[/green]")
+        return
+
+    table = Table(title=f"Anomaly Spotlight Findings ({len(findings)})")
+    table.add_column("ID", style="cyan")
+    table.add_column("Type", style="yellow")
+    table.add_column("Severity", style="red")
+    table.add_column("Title", style="white")
+    table.add_column("Metric / Z-Score", style="magenta")
+
+    for f in findings:
+        table.add_row(
+            f.anomaly_id,
+            f.anomaly_type,
+            f.severity,
+            f.title,
+            f"{f.metric_value} (Z: {f.z_score})",
+        )
+    console.print(table)
+
+
+# --- SIGMA RULE COMMAND ---
+
+@app.command("sigma")
+def sigma_scan(
+    case_dir: Path = typer.Option(..., "--case", help="Path to target case directory"),
+    rules_dir: Optional[Path] = typer.Option(None, "--rules-dir", help="Path to custom Sigma rules directory"),
+):
+    """Evaluate timeline events against native industry-standard Sigma rules."""
+    case = Case.open(case_dir)
+    console.print(f"[bold cyan]Scanning {case.case_id} timeline with Sigma Rule Engine...[/bold cyan]")
+    custom_dirs = [rules_dir] if rules_dir else None
+    matches = case.scan_sigma(custom_rule_dirs=custom_dirs)
+
+    if not matches:
+        console.print("[green]No Sigma detection rules triggered.[/green]")
+        return
+
+    table = Table(title=f"Sigma Detections ({len(matches)})")
+    table.add_column("Rule ID", style="cyan")
+    table.add_column("Level", style="red")
+    table.add_column("Title", style="white")
+    table.add_column("Event ID", style="yellow")
+    table.add_column("Timestamp (UTC)", style="dim")
+
+    for m in matches:
+        table.add_row(
+            m.rule_id,
+            m.level,
+            m.title,
+            m.event_id,
+            m.timestamp_utc,
         )
     console.print(table)
 

