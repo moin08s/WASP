@@ -153,12 +153,19 @@ class Case:
         engine = ExtractionEngine(self)
         return engine.run(plugin_names=plugins, profile=profile, jobs=jobs)
 
-    def build_timeline(self, events: Optional[List[Any]] = None, deduplicate: bool = True) -> List[Any]:
-        """Reconstruct chronological activity timeline and write to index/ and derived/."""
+    def build_timeline(
+        self,
+        events: Optional[List[Any]] = None,
+        deduplicate: bool = True,
+        corroborate: bool = True,
+        scan_threats: bool = True,
+    ) -> List[Any]:
+        """Reconstruct chronological activity timeline, run cross-source corroboration, and scan threats."""
         from chronotrace.timeline.builder import TimelineBuilder
         builder = TimelineBuilder(self.index_dir, derived_dir=self.derived_dir)
+        collected_events = []
         if events is not None:
-            builder.add_events(events)
+            collected_events.extend(events)
         else:
             # Load from derived/*.jsonl
             import json
@@ -169,8 +176,53 @@ class Case:
                 with open(jsonl_file, "r", encoding="utf-8") as f:
                     for line in f:
                         if line.strip():
-                            builder.add_event(Event.model_validate_json(line))
+                            collected_events.append(Event.model_validate_json(line))
 
+        # 1. Cross-Source Corroboration Engine
+        if corroborate and collected_events:
+            from chronotrace.analysis.corroborator import CorroborationEngine
+            c_engine = CorroborationEngine()
+            c_result = c_engine.analyze(collected_events)
+            # Save corroboration report
+            c_report_path = self.derived_dir / "corroboration.json"
+            with open(c_report_path, "w", encoding="utf-8") as f:
+                json.dump(c_result.to_dict(), f, indent=2)
+            if self.manifest:
+                self.manifest.add_derived_file(
+                    "derived/corroboration.json",
+                    c_report_path.stat().st_size,
+                    Hasher.sha256_file(c_report_path),
+                )
+            if self.ledger:
+                self.ledger.append_event(
+                    event_type="cross_source_corroborated",
+                    actor=self.examiner,
+                    payload=c_result.summary,
+                )
+
+        # 2. Threat & YARA Rule Scanning
+        if scan_threats and collected_events:
+            from chronotrace.analysis.rules import RuleEngine
+            r_engine = RuleEngine()
+            findings = r_engine.scan_events(collected_events)
+            # Save threat alerts
+            alerts_path = self.derived_dir / "threat_alerts.json"
+            with open(alerts_path, "w", encoding="utf-8") as f:
+                json.dump([f.to_dict() for f in findings], f, indent=2)
+            if self.manifest:
+                self.manifest.add_derived_file(
+                    "derived/threat_alerts.json",
+                    alerts_path.stat().st_size,
+                    Hasher.sha256_file(alerts_path),
+                )
+            if self.ledger:
+                self.ledger.append_event(
+                    event_type="threat_rules_scanned",
+                    actor=self.examiner,
+                    payload={"total_findings": len(findings)},
+                )
+
+        builder.add_events(collected_events)
         sorted_events = builder.build(deduplicate=deduplicate)
 
         # Update manifest with index files
@@ -193,6 +245,110 @@ class Case:
 
         return sorted_events
 
+    def corroborate(self, time_window_seconds: int = 120):
+        """Standalone cross-source corroboration and conflict analysis."""
+        import json
+        from chronotrace.core.models import Event
+        from chronotrace.analysis.corroborator import CorroborationEngine
+
+        events: List[Event] = []
+        timeline_jsonl = self.derived_dir / "timeline.jsonl"
+        if timeline_jsonl.exists():
+            with open(timeline_jsonl, "r", encoding="utf-8") as f:
+                for line in f:
+                    if line.strip():
+                        events.append(Event.model_validate_json(line))
+        else:
+            for jsonl_file in self.derived_dir.glob("*.jsonl"):
+                if jsonl_file.name == "timeline.jsonl":
+                    continue
+                with open(jsonl_file, "r", encoding="utf-8") as f:
+                    for line in f:
+                        if line.strip():
+                            events.append(Event.model_validate_json(line))
+
+        engine = CorroborationEngine(time_window_seconds=time_window_seconds)
+        result = engine.analyze(events)
+
+        c_report_path = self.derived_dir / "corroboration.json"
+        with open(c_report_path, "w", encoding="utf-8") as f:
+            json.dump(result.to_dict(), f, indent=2)
+
+        if self.manifest:
+            self.manifest.add_derived_file(
+                "derived/corroboration.json",
+                c_report_path.stat().st_size,
+                Hasher.sha256_file(c_report_path),
+            )
+            self.manifest.save()
+
+        if self.ledger:
+            self.ledger.append_event(
+                event_type="cross_source_corroborated",
+                actor=self.examiner,
+                payload=result.summary,
+            )
+
+        # Rebuild timeline store with enriched corroboration
+        from chronotrace.timeline.store import TimelineStore
+        store = TimelineStore(self.index_dir)
+        store.write_timeline(events)
+
+        return result
+
+    def scan_threats(self, custom_yara_path: Optional[str | Path] = None):
+        """Standalone threat pattern & YARA rule evaluation across case evidence & timeline."""
+        import json
+        from chronotrace.core.models import Event
+        from chronotrace.analysis.rules import RuleEngine, AlertFinding
+
+        engine = RuleEngine(custom_yara_path=custom_yara_path)
+        all_findings: List[AlertFinding] = []
+
+        # Scan timeline events
+        timeline_jsonl = self.derived_dir / "timeline.jsonl"
+        events: List[Event] = []
+        if timeline_jsonl.exists():
+            with open(timeline_jsonl, "r", encoding="utf-8") as f:
+                for line in f:
+                    if line.strip():
+                        events.append(Event.model_validate_json(line))
+            event_findings = engine.scan_events(events)
+            all_findings.extend(event_findings)
+
+        # Scan evidence files directly
+        for ev_entry in self.manifest.evidence_entries:
+            ev_file = self.root / ev_entry.path
+            if ev_file.is_file():
+                file_findings = engine.scan_file(ev_file)
+                all_findings.extend(file_findings)
+
+        alerts_path = self.derived_dir / "threat_alerts.json"
+        with open(alerts_path, "w", encoding="utf-8") as f:
+            json.dump([f.to_dict() for f in all_findings], f, indent=2)
+
+        if self.manifest:
+            self.manifest.add_derived_file(
+                "derived/threat_alerts.json",
+                alerts_path.stat().st_size,
+                Hasher.sha256_file(alerts_path),
+            )
+            self.manifest.save()
+
+        if self.ledger:
+            self.ledger.append_event(
+                event_type="threat_rules_scanned",
+                actor=self.examiner,
+                payload={"total_findings": len(all_findings)},
+            )
+
+        if events:
+            from chronotrace.timeline.store import TimelineStore
+            store = TimelineStore(self.index_dir)
+            store.write_timeline(events)
+
+        return all_findings
+
     def verify(self, rehash_evidence: bool = True, ledger_only: bool = False) -> Dict[str, Any]:
         """Perform comprehensive integrity verification."""
         from chronotrace.integrity.verifier import IntegrityVerifier
@@ -214,3 +370,4 @@ class Case:
         if redact:
             builder.redact(*redact)
         return builder.build()
+

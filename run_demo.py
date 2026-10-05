@@ -1,4 +1,10 @@
-"""Script to prepare sample digital evidence and execute the full ChronoTrace pipeline."""
+import sys
+from pathlib import Path
+
+# Ensure src is at the top of sys.path
+src_dir = Path(__file__).resolve().parent / "src"
+if str(src_dir) not in sys.path:
+    sys.path.insert(0, str(src_dir))
 
 import datetime
 import json
@@ -7,7 +13,6 @@ import shutil
 import sqlite3
 import struct
 import zipfile
-from pathlib import Path
 from chronotrace.core.case import Case
 from chronotrace.timeline.query import TimelineQuery
 

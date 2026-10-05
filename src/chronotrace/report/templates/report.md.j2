@@ -3,7 +3,7 @@
 **Lead Examiner:** {{ case.examiner }}  
 **Organization:** {{ case.organization }}  
 **Authorization Reference:** {{ case.metadata.authorization_ref }}  
-**Schema Version:** 2.0.0 | **Tool Version:** 1.3.0  
+**Schema Version:** 2.0.0 | **Tool Version:** 1.4.0  
 
 ---
 
@@ -30,19 +30,59 @@
 
 ---
 
-## 3. Reconstructed Chronological Activity Timeline (Excerpt)
+{% if threat_alerts %}
+## 3. Threat Alerts & YARA / IOC Findings
 
-| UTC Timestamp | Action | User | Object / Target | Source Artefact | Confidence | Rationale |
-|---|---|---|---|---|---|---|
+| Severity | Rule / Threat | MITRE | Target / File | Description |
+|---|---|---|---|---|
+{% for alert in threat_alerts %}
+| **{{ alert.severity }}** | `{{ alert.rule_name }}` | `{{ alert.mitre_technique }}` | `{{ alert.target }}` | {{ alert.description }} |
+{% endfor %}
+
+---
+{% endif %}
+
+{% if corroboration and (corroboration.clusters or corroboration.conflicts) %}
+## 4. Cross-Source Corroboration & Anti-Forensics Analysis
+
+- **Corroborated Activity Clusters:** {{ corroboration.clusters|length }}
+- **Corroborated Events Count:** {{ corroboration.corroborated_count }}
+- **Anti-Forensics / Conflicts Detected:** {{ corroboration.conflict_count }}
+
+{% if corroboration.conflicts %}
+### Anti-Forensic Anomalies & Timestomp Conflicts
+| Severity | Entity | Anomaly Type | Description |
+|---|---|---|---|
+{% for conf in corroboration.conflicts %}
+| **{{ conf.severity }}** | `{{ conf.entity }}` | `{{ conf.conflict_type }}` | {{ conf.description }} |
+{% endfor %}
+{% endif %}
+
+{% if corroboration.clusters %}
+### Multi-Artefact Corroborated Evidence Chains
+| Entity | Plugins | Delta | Description |
+|---|---|---|---|
+{% for c in corroboration.clusters[:15] %}
+| `{{ c.entity }}` | `{{ c.plugins|join(', ') }}` | {{ c.time_delta_seconds }}s | {{ c.description }} |
+{% endfor %}
+{% endif %}
+
+---
+{% endif %}
+
+## 5. Reconstructed Chronological Activity Timeline (Excerpt)
+
+| UTC Timestamp | Action | User | Object / Target | Source Artefact | Corroborated By | Conf. | Rationale |
+|---|---|---|---|---|---|---|---|
 {% for e in timeline_events[:100] %}
-| `{{ e.timestamp_utc }}` | `{{ e.action }}` | {{ e.user }} | `{{ e.object.path or 'N/A' }}` | {{ e.source.artifact }} | {{ e.confidence }} | {{ e.rationale }} |
+| `{{ e.timestamp_utc }}` | `{{ e.action }}` | {{ e.user }} | `{{ e.object.path or 'N/A' }}` | {{ e.source.artifact }} | `{{ e.corroborated_by|join(', ') or '-' }}` | {{ e.confidence }} | {{ e.rationale }}{% if e.warnings %} (⚠️ {{ e.warnings|join('; ') }}){% endif %} |
 {% endfor %}
 
 *(Total reconstructed timeline events: {{ timeline_events|length }})*
 
 ---
 
-## 4. Cryptographic Integrity & Attestation
+## 6. Cryptographic Integrity & Attestation
 
 - **Overall Integrity Check:** `{{ integrity.overall_status }}`
 - **Custody Ledger Replay:** `{{ integrity.ledger_status }}` ({{ integrity.checked_items.ledger_entries }} entries verified)
@@ -51,7 +91,7 @@
 
 ---
 
-## 5. Chain of Custody Audit Log
+## 7. Chain of Custody Audit Log
 
 | Seq | Timestamp (UTC) | Actor | Event Type | Prev Hash | Entry Hash |
 |---|---|---|---|---|---|
@@ -60,4 +100,5 @@
 {% endfor %}
 
 ---
-*Generated automatically by ChronoTrace v1.3.0.*
+*Generated automatically by ChronoTrace v1.4.0.*
+

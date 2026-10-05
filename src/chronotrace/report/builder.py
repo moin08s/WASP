@@ -60,7 +60,9 @@ class ReportBuilder:
         for r in raw_events_data:
             try:
                 raw_dict = json.loads(r.get("raw_json", "{}")) if r.get("raw_json") else {}
-                tags_list = r.get("tags", "").split(",") if r.get("tags") else []
+                tags_list = [t.strip() for t in r.get("tags", "").split(",") if t.strip()]
+                corrob_list = [c.strip() for c in r.get("corroborated_by", "").split(",") if c.strip()]
+                warn_list = [w.strip() for w in r.get("warnings", "").split(";") if w.strip()]
                 ev = Event(
                     event_id=r["event_id"],
                     timestamp_utc=r["timestamp_utc"],
@@ -83,6 +85,8 @@ class ReportBuilder:
                     confidence=r.get("confidence", 1.0),
                     rationale=r.get("rationale", ""),
                     tags=tags_list,
+                    corroborated_by=corrob_list,
+                    warnings=warn_list,
                     raw=raw_dict,
                 )
                 events.append(ev)
@@ -99,12 +103,33 @@ class ReportBuilder:
         manifest_data = self.case.manifest.data if self.case.manifest else {}
         custody_entries = self.case.ledger.get_entries() if self.case.ledger else []
 
+        # Load Corroboration & Threat Data if present
+        corroboration_data = {}
+        c_path = self.case.derived_dir / "corroboration.json"
+        if c_path.exists():
+            try:
+                with open(c_path, "r", encoding="utf-8") as f:
+                    corroboration_data = json.load(f)
+            except Exception:
+                pass
+
+        threat_alerts_data = []
+        t_path = self.case.derived_dir / "threat_alerts.json"
+        if t_path.exists():
+            try:
+                with open(t_path, "r", encoding="utf-8") as f:
+                    threat_alerts_data = json.load(f)
+            except Exception:
+                pass
+
         context = {
             "case": self.case,
             "manifest": manifest_data,
             "timeline_events": events,
             "integrity": integrity_status,
             "custody_entries": custody_entries,
+            "corroboration": corroboration_data,
+            "threat_alerts": threat_alerts_data,
         }
 
         # Setup Jinja2 Environment
@@ -144,6 +169,8 @@ class ReportBuilder:
                 "integrity_attestation": integrity_status,
                 "manifest": manifest_data,
                 "custody_ledger": custody_entries,
+                "corroboration": corroboration_data,
+                "threat_alerts": threat_alerts_data,
                 "events_count": len(events),
                 "events": [e.to_canonical_dict() for e in events],
             }

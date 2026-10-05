@@ -12,6 +12,7 @@ from tkinter import ttk, messagebox, filedialog
 
 from chronotrace.core.case import Case
 from chronotrace.acquire.devices import DeviceManager, StorageDevice
+from chronotrace.acquire.hotplug import HotplugWatcher
 from chronotrace.timeline.query import TimelineQuery
 from chronotrace.extract.registry import list_plugins
 
@@ -31,6 +32,23 @@ class ChronoTraceGUI:
         self._configure_styles()
         self._build_ui()
         self._refresh_devices_thread()
+
+        # Start real-time hotplug watcher for external USB devices
+        self.hotplug_watcher = HotplugWatcher(
+            poll_interval=1.5,
+            on_connected=self._on_hotplug_connected,
+            on_disconnected=self._on_hotplug_disconnected,
+        )
+        self.hotplug_watcher.start()
+        self.root.protocol("WM_DELETE_WINDOW", self._on_close)
+
+    def _on_close(self):
+        try:
+            if hasattr(self, "hotplug_watcher") and self.hotplug_watcher:
+                self.hotplug_watcher.stop()
+        except Exception:
+            pass
+        self.root.destroy()
 
     def _configure_styles(self):
         """Set up modern ttk styles."""
@@ -122,7 +140,7 @@ class ChronoTraceGUI:
         lbl_status = tk.Label(status_frame, textvariable=self.status_var, font=("Segoe UI", 9), fg="#3fb950", bg="#16181d")
         lbl_status.pack(side=tk.LEFT)
 
-        lbl_ver = tk.Label(status_frame, text="ChronoTrace v1.3.0 | Schema 2.0.0", font=("Segoe UI", 8), fg="#8b949e", bg="#16181d")
+        lbl_ver = tk.Label(status_frame, text="ChronoTrace v1.4.0 | Schema 2.0.0", font=("Segoe UI", 8), fg="#8b949e", bg="#16181d")
         lbl_ver.pack(side=tk.RIGHT)
 
     # ---------------- TAB 1: CASE DASHBOARD ----------------
@@ -157,6 +175,9 @@ class ChronoTraceGUI:
         header_bar.pack(fill=tk.X, pady=(0, 10))
 
         ttk.Label(header_bar, text="Connected Storage & External Devices", style="Header.TLabel").pack(side=tk.LEFT)
+        lbl_watch_status = tk.Label(header_bar, text="🟢 Real-Time Hotplug Watcher: ACTIVE", fg="#3fb950", bg="#181a20", font=("Segoe UI", 9, "bold"))
+        lbl_watch_status.pack(side=tk.LEFT, padx=15)
+
         btn_refresh = ttk.Button(header_bar, text="🔄 Refresh Devices", command=self._refresh_devices_thread)
         btn_refresh.pack(side=tk.RIGHT)
 
@@ -237,8 +258,14 @@ class ChronoTraceGUI:
 
         ttk.Label(header_bar, text="Reconstructed Activity Super-Timeline", style="Header.TLabel").pack(side=tk.LEFT)
 
+        btn_corrob = tk.Button(header_bar, text="🔗 Corroborate Sources", bg="#6f42c1", fg="#ffffff", font=("Segoe UI", 9, "bold"), command=self._corroborate_timeline_thread)
+        btn_corrob.pack(side=tk.RIGHT, padx=4)
+
+        btn_scan = tk.Button(header_bar, text="🛡️ Scan YARA Threats", bg="#d29922", fg="#ffffff", font=("Segoe UI", 9, "bold"), command=self._scan_threats_thread)
+        btn_scan.pack(side=tk.RIGHT, padx=4)
+
         btn_build_tl = tk.Button(header_bar, text="⚡ Reconstruct Timeline", bg="#238636", fg="#ffffff", font=("Segoe UI", 9, "bold"), command=self._build_timeline_thread)
-        btn_build_tl.pack(side=tk.RIGHT, padx=5)
+        btn_build_tl.pack(side=tk.RIGHT, padx=4)
 
         # Filters Bar
         filter_bar = tk.LabelFrame(self.tab_timeline, text=" Timeline Filters ", bg="#22252e", fg="#58a6ff", font=("Segoe UI", 9, "bold"), padx=8, pady=6)
@@ -263,22 +290,24 @@ class ChronoTraceGUI:
         btn_clear.pack(side=tk.LEFT, padx=2)
 
         # Timeline Treeview
-        tl_cols = ("timestamp", "action", "user", "object", "artifact", "confidence", "rationale")
+        tl_cols = ("timestamp", "action", "user", "object", "artifact", "corroborated", "confidence", "rationale")
         self.tree_timeline = ttk.Treeview(self.tab_timeline, columns=tl_cols, show="headings", height=14)
         self.tree_timeline.heading("timestamp", text="UTC Timestamp")
         self.tree_timeline.heading("action", text="Action")
         self.tree_timeline.heading("user", text="User")
         self.tree_timeline.heading("object", text="Object / Target")
-        self.tree_timeline.heading("artifact", text="Source Artefact")
+        self.tree_timeline.heading("artifact", text="Artefact")
+        self.tree_timeline.heading("corroborated", text="Corroborated By")
         self.tree_timeline.heading("confidence", text="Conf.")
-        self.tree_timeline.heading("rationale", text="Forensic Rationale")
+        self.tree_timeline.heading("rationale", text="Forensic Rationale / Warnings")
 
-        self.tree_timeline.column("timestamp", width=180)
-        self.tree_timeline.column("action", width=130)
-        self.tree_timeline.column("user", width=90)
-        self.tree_timeline.column("object", width=220)
-        self.tree_timeline.column("artifact", width=160)
-        self.tree_timeline.column("confidence", width=50)
+        self.tree_timeline.column("timestamp", width=160)
+        self.tree_timeline.column("action", width=110)
+        self.tree_timeline.column("user", width=80)
+        self.tree_timeline.column("object", width=190)
+        self.tree_timeline.column("artifact", width=110)
+        self.tree_timeline.column("corroborated", width=140)
+        self.tree_timeline.column("confidence", width=45)
         self.tree_timeline.column("rationale", width=250)
 
         self.tree_timeline.pack(fill=tk.BOTH, expand=True, pady=5)
@@ -631,10 +660,93 @@ class ChronoTraceGUI:
                     ev.get("user", ""),
                     ev.get("object_path", "") or "N/A",
                     ev.get("artifact", ""),
+                    ev.get("corroborated_by", "") or "-",
                     f"{ev.get('confidence', 1.0):.2f}",
-                    ev.get("rationale", ""),
+                    (ev.get("rationale", "") or "") + (f" [⚠️ {ev['warnings']}]" if ev.get("warnings") else ""),
                 ),
             )
+
+    def _corroborate_timeline_thread(self):
+        if not self.current_case:
+            messagebox.showwarning("Warning", "Please open or create a case first.")
+            return
+
+        def _task():
+            self._update_status("Running cross-source corroboration and anti-forensics analysis...")
+            try:
+                res = self.current_case.corroborate()
+                self.root.after(0, lambda: self._on_corroboration_complete(res))
+            except Exception as e:
+                self.root.after(0, lambda: messagebox.showerror("Corroboration Error", f"Failed: {e}"))
+
+        threading.Thread(target=_task, daemon=True).start()
+
+    def _on_corroboration_complete(self, res):
+        self._update_status(f"Corroboration complete: {res.corroborated_count} events linked, {res.conflict_count} conflicts.")
+        self._load_timeline_display()
+        self._refresh_case_display()
+        msg = (
+            f"Cross-Source Corroboration Complete!\n\n"
+            f"Corroborated Events: {res.corroborated_count}\n"
+            f"Multi-Source Chains: {len(res.clusters)}\n"
+            f"Anti-Forensic Conflicts: {res.conflict_count}\n"
+        )
+        if res.conflict_count > 0:
+            msg += "\n⚠️ Anti-forensic anomalies or timestomp conflicts were detected! Check the timeline warnings or report."
+        messagebox.showinfo("Corroboration Analysis", msg)
+
+    def _scan_threats_thread(self):
+        if not self.current_case:
+            messagebox.showwarning("Warning", "Please open or create a case first.")
+            return
+
+        def _task():
+            self._update_status("Scanning case evidence & timeline against YARA rules...")
+            try:
+                findings = self.current_case.scan_threats()
+                self.root.after(0, lambda: self._on_threat_scan_complete(findings))
+            except Exception as e:
+                self.root.after(0, lambda: messagebox.showerror("Threat Scan Error", f"Failed: {e}"))
+
+        threading.Thread(target=_task, daemon=True).start()
+
+    def _on_threat_scan_complete(self, findings: list):
+        self._update_status(f"Threat scan finished: {len(findings)} findings.")
+        self._load_timeline_display()
+        self._refresh_case_display()
+        if findings:
+            preview = "\n".join([f"- [{f.severity}] {f.rule_name} on {f.target[:35]}" for f in findings[:6]])
+            messagebox.showwarning("Threat Alerts Detected", f"Identified {len(findings)} threat signatures/IOCs:\n\n{preview}\n\nTagged as ALERT in timeline.")
+        else:
+            messagebox.showinfo("Threat Scan", "No threat signatures detected in evidence or timeline.")
+
+    def _on_hotplug_connected(self, dev: StorageDevice):
+        self.root.after(0, lambda: self._handle_hotplug_connected(dev))
+
+    def _handle_hotplug_connected(self, dev: StorageDevice):
+        self._update_status(f"⚡ NEW STORAGE DEVICE CONNECTED: {dev.model} ({dev.mount_point or dev.device_id})")
+        self._refresh_devices_thread()
+        if messagebox.askyesno(
+            "External Device Detected",
+            f"An external storage device was just connected:\n\n"
+            f"Model:    {dev.model}\n"
+            f"Mount:    {dev.mount_point or 'N/A'}\n"
+            f"Capacity: {dev.size_display}\n"
+            f"Type:     {dev.interface_type}\n\n"
+            f"Do you want to stage and acquire this device as digital evidence?",
+        ):
+            self.notebook.select(self.tab_devices)
+            self.lbl_selected_dev.config(text=f"{dev.model} ({dev.mount_point or dev.device_id})")
+            safe_name = f"device_{dev.device_id.replace(':', '').replace(r'\\', '').replace('.', '').replace('/', '_')}.tar"
+            self.entry_out_name.delete(0, tk.END)
+            self.entry_out_name.insert(0, safe_name)
+
+    def _on_hotplug_disconnected(self, dev: StorageDevice):
+        self.root.after(0, lambda: self._handle_hotplug_disconnected(dev))
+
+    def _handle_hotplug_disconnected(self, dev: StorageDevice):
+        self._update_status(f"⚠️ STORAGE DEVICE DISCONNECTED: {dev.model} ({dev.mount_point or dev.device_id})")
+        self._refresh_devices_thread()
 
     def _apply_timeline_filter(self):
         kw = self.entry_search.get().strip() or None

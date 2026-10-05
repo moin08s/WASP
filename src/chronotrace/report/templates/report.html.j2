@@ -200,8 +200,109 @@
     </table>
   </section>
 
+  {% if threat_alerts %}
   <section class="card">
-    <h2>3. Reconstructed Chronological Activity Timeline</h2>
+    <h2>3. Threat Alerts &amp; YARA / IOC Detections</h2>
+    <p>Automated rule scanning identified <strong>{{ threat_alerts|length }}</strong> potential security findings or threat signatures:</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Severity</th>
+          <th>Rule / Threat</th>
+          <th>MITRE ATT&amp;CK</th>
+          <th>Target / File</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for alert in threat_alerts %}
+        <tr>
+          <td><span class="badge {% if alert.severity == 'CRITICAL' %}badge-danger{% elif alert.severity == 'HIGH' %}badge-danger{% else %}badge-warn{% endif %}">{{ alert.severity }}</span></td>
+          <td><strong>{{ alert.rule_name }}</strong></td>
+          <td><code>{{ alert.mitre_technique }}</code></td>
+          <td><code>{{ alert.target }}</code></td>
+          <td>{{ alert.description }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </section>
+  {% endif %}
+
+  {% if corroboration and (corroboration.clusters or corroboration.conflicts) %}
+  <section class="card">
+    <h2>4. Cross-Source Corroboration &amp; Anti-Forensics Analysis</h2>
+    <div class="meta-grid">
+      <div class="meta-item">
+        <div class="meta-label">Corroborated Activity Clusters</div>
+        <div class="meta-value">{{ corroboration.clusters|length }}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Total Corroborated Events</div>
+        <div class="meta-value">{{ corroboration.corroborated_count }}</div>
+      </div>
+      <div class="meta-item">
+        <div class="meta-label">Temporal Conflicts / Anti-Forensics</div>
+        <div class="meta-value" style="color: {% if corroboration.conflict_count > 0 %}#f85149{% else %}#3fb950{% endif %};">{{ corroboration.conflict_count }}</div>
+      </div>
+    </div>
+
+    {% if corroboration.conflicts %}
+    <h3 style="color: #f85149; margin-top: 1.5rem;">Anti-Forensic Anomaly &amp; Timestomp Conflicts</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Severity</th>
+          <th>Entity</th>
+          <th>Anomaly Type</th>
+          <th>Forensic Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for conf in corroboration.conflicts %}
+        <tr>
+          <td><span class="badge badge-danger">{{ conf.severity }}</span></td>
+          <td><code>{{ conf.entity }}</code></td>
+          <td><code>{{ conf.conflict_type }}</code></td>
+          <td>{{ conf.description }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+
+    {% if corroboration.clusters %}
+    <h3 style="color: #79c0ff; margin-top: 1.5rem;">Multi-Artefact Corroborated Evidence Chains</h3>
+    <table>
+      <thead>
+        <tr>
+          <th>Subject / Entity</th>
+          <th>Corroborating Plugins</th>
+          <th>Time Window</th>
+          <th>Details</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for cluster in corroboration.clusters[:20] %}
+        <tr>
+          <td><code>{{ cluster.entity }}</code></td>
+          <td>
+            {% for p in cluster.plugins %}
+            <span class="badge badge-pass">{{ p }}</span>
+            {% endfor %}
+          </td>
+          <td><code>{{ cluster.time_delta_seconds }}s</code></td>
+          <td>{{ cluster.description }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    {% endif %}
+  </section>
+  {% endif %}
+
+  <section class="card">
+    <h2>5. Reconstructed Chronological Activity Timeline</h2>
     <p>Showing reconstructed super-timeline events sorted strictly by <code>(timestamp_utc, event_id)</code>:</p>
     <table>
       <thead>
@@ -210,21 +311,34 @@
           <th>Action</th>
           <th>User</th>
           <th>Object / Target</th>
-          <th>Source Artefact</th>
+          <th>Artefact</th>
+          <th>Corroborated By</th>
           <th>Conf.</th>
-          <th>Rationale</th>
+          <th>Rationale &amp; Warnings</th>
         </tr>
       </thead>
       <tbody>
         {% for e in timeline_events[:500] %}
         <tr>
           <td><code>{{ e.timestamp_utc }}</code></td>
-          <td><span class="badge {% if 'TIMESTOMP' in e.action or 'CLEARED' in e.action %}badge-danger{% elif 'PROCESS' in e.action %}badge-warn{% else %}badge-pass{% endif %}">{{ e.action }}</span></td>
+          <td><span class="badge {% if 'TIMESTOMP' in e.action or 'CLEARED' in e.action or 'ALERT' in e.tags %}badge-danger{% elif 'PROCESS' in e.action or 'CONFLICT' in e.tags %}badge-warn{% else %}badge-pass{% endif %}">{{ e.action }}</span></td>
           <td>{{ e.user }}</td>
           <td><code>{{ e.object.path or 'N/A' }}</code></td>
           <td>{{ e.source.artifact }}</td>
+          <td>
+            {% if e.corroborated_by %}
+            <span class="badge badge-pass">{{ e.corroborated_by|join(', ') }}</span>
+            {% else %}
+            <span style="color: #8b949e;">-</span>
+            {% endif %}
+          </td>
           <td>{{ e.confidence }}</td>
-          <td>{{ e.rationale }}</td>
+          <td>
+            {{ e.rationale }}
+            {% if e.warnings %}
+            <div style="color: #f85149; font-size: 0.8rem; margin-top: 0.2rem;">⚠️ {{ e.warnings|join('; ') }}</div>
+            {% endif %}
+          </td>
         </tr>
         {% endfor %}
       </tbody>
@@ -235,7 +349,7 @@
   </section>
 
   <section class="card">
-    <h2>4. Cryptographic Integrity &amp; Attestation Block</h2>
+    <h2>6. Cryptographic Integrity &amp; Attestation Block</h2>
     <div class="meta-grid">
       <div class="meta-item">
         <div class="meta-label">Overall Integrity Status</div>
@@ -253,7 +367,7 @@
   </section>
 
   <section class="card">
-    <h2>5. Chain of Custody Audit Log</h2>
+    <h2>7. Chain of Custody Audit Log</h2>
     <table>
       <thead>
         <tr>

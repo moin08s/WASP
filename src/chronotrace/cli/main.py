@@ -39,7 +39,7 @@ def main_callback(
     strict: bool = typer.Option(False, "--strict", help="Treat parse warnings as fatal"),
 ):
     if version:
-        console.print("[bold cyan]ChronoTrace[/bold cyan] version [bold green]1.3.0[/bold green] (Schema 2.0.0)")
+        console.print("[bold cyan]ChronoTrace[/bold cyan] version [bold green]1.4.0[/bold green] (Schema 2.0.0)")
         raise typer.Exit()
 
 
@@ -130,6 +130,27 @@ def device_list():
     console.print(table)
 
 
+@device_app.command("watch")
+def device_watch(
+    interval: float = typer.Option(1.5, "--interval", "-i", help="Polling interval in seconds"),
+    timeout: Optional[float] = typer.Option(None, "--timeout", "-t", help="Timeout in seconds (infinite if omitted)"),
+):
+    """Monitor external and USB storage devices in real time."""
+    from chronotrace.acquire.hotplug import HotplugWatcher
+    console.print(f"[bold cyan]Monitoring external storage hotplug events (interval: {interval}s)... Press Ctrl+C to stop.[/bold cyan]")
+    watcher = HotplugWatcher(poll_interval=interval)
+    try:
+        for action, dev in watcher.watch(timeout=timeout, interval=interval):
+            if action == "connected":
+                console.print(f"[bold green][+] DEVICE CONNECTED:[/bold green] {dev.model} ({dev.size_display})")
+                console.print(f"    Mount: [cyan]{dev.mount_point or 'N/A'}[/cyan] | Interface: [yellow]{dev.interface_type}[/yellow] | Serial: {dev.serial_number or 'N/A'}")
+            else:
+                console.print(f"[bold red][-] DEVICE DISCONNECTED:[/bold red] {dev.model} ({dev.device_id})")
+    except KeyboardInterrupt:
+        console.print("[dim]Hotplug monitor stopped.[/dim]")
+
+
+
 # --- ACQUIRE COMMAND ---
 
 @app.command("acquire")
@@ -212,6 +233,55 @@ def timeline(
     events = case.build_timeline(deduplicate=dedupe)
     console.print(f"[bold green][+][/bold green] Reconstructed super-timeline with [bold green]{len(events)}[/bold green] events.")
     console.print(f"  Storage: [cyan]{case.index_dir / 'events.parquet'}[/cyan] and [cyan]{case.index_dir / 'events.sqlite'}[/cyan]")
+
+
+# --- CORROBORATE COMMAND ---
+
+@app.command("corroborate")
+def corroborate_cmd(
+    case_dir: Path = typer.Option(..., "--case", help="Path to target case directory"),
+    window: int = typer.Option(120, "--window", "-w", help="Temporal window in seconds for cross-source correlation"),
+):
+    """Run cross-source corroboration and anti-forensics conflict analysis."""
+    case = Case.open(case_dir)
+    console.print(f"Running cross-source corroboration on case [cyan]{case.case_id}[/cyan] (window: {window}s)...")
+    result = case.corroborate(time_window_seconds=window)
+    console.print(f"[bold green][+][/bold green] Corroboration completed:")
+    console.print(f"  * Corroborated Events: [green]{result.corroborated_count}[/green]")
+    console.print(f"  * Multi-Source Clusters: [green]{len(result.clusters)}[/green]")
+    if result.conflict_count > 0:
+        console.print(f"  * [bold red]Anti-Forensics / Conflicts Detected:[/bold red] [red]{result.conflict_count}[/red]")
+        for c in result.conflicts[:5]:
+            console.print(f"    - [{c['severity']}] {c['conflict_type']}: {c['description']}")
+    else:
+        console.print(f"  * Anti-Forensics / Conflicts: [green]0 detected[/green]")
+
+
+# --- SCAN THREAT RULES COMMAND ---
+
+@app.command("scan")
+def scan_cmd(
+    case_dir: Path = typer.Option(..., "--case", help="Path to target case directory"),
+    rules: Optional[Path] = typer.Option(None, "--rules", help="Path to custom YARA rules file"),
+):
+    """Scan case evidence and reconstructed timeline against YARA & threat pattern rules."""
+    case = Case.open(case_dir)
+    console.print(f"Scanning case [cyan]{case.case_id}[/cyan] against YARA and threat pattern rules...")
+    findings = case.scan_threats(custom_yara_path=rules)
+    if findings:
+        console.print(f"[bold red][!] {len(findings)} Threat Findings Detected:[/bold red]")
+        table = Table(title="Detected Threat Alerts")
+        table.add_column("Severity", style="red")
+        table.add_column("Rule Name", style="cyan")
+        table.add_column("MITRE", style="yellow")
+        table.add_column("Target", style="white")
+        table.add_column("Description", style="dim")
+        for f in findings:
+            table.add_row(f.severity, f.rule_name, f.mitre_technique, f.target[:40], f.description)
+        console.print(table)
+    else:
+        console.print("[bold green][+] No threat signatures detected in evidence or timeline.[/bold green]")
+
 
 
 # --- VERIFY COMMAND ---

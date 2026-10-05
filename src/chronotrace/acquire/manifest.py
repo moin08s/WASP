@@ -86,7 +86,7 @@ class CaseManifest:
         rel_path: str,
         size_bytes: int,
         sha256: str,
-        plugin: str,
+        plugin: str = "core",
         plugin_version: str = "1.0.0",
     ) -> None:
         """Register a derived artefact file."""

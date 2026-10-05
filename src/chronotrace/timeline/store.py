@@ -59,6 +59,8 @@ class TimelineStore:
                 "confidence": float(e.confidence),
                 "rationale": e.rationale,
                 "tags": ",".join(e.tags),
+                "corroborated_by": ",".join(e.corroborated_by),
+                "warnings": "; ".join(e.warnings),
                 "raw_json": json.dumps(e.raw),
             })
 
@@ -69,8 +71,10 @@ class TimelineStore:
                 pa.field("timestamp_utc", pa.string()),
                 pa.field("action", pa.string()),
                 pa.field("object_path", pa.string()),
+                pa.field("corroborated_by", pa.string()),
+                pa.field("warnings", pa.string()),
             ]
-            table = pa.Table.from_arrays([pa.array([]), pa.array([]), pa.array([]), pa.array([])], schema=pa.schema(fields))
+            table = pa.Table.from_arrays([pa.array([]), pa.array([]), pa.array([]), pa.array([]), pa.array([]), pa.array([])], schema=pa.schema(fields))
         else:
             table = pa.Table.from_pylist(records)
 
@@ -102,6 +106,8 @@ class TimelineStore:
                 confidence REAL,
                 rationale TEXT,
                 tags TEXT,
+                corroborated_by TEXT,
+                warnings TEXT,
                 raw_json TEXT
             )
         """)
@@ -121,6 +127,8 @@ class TimelineStore:
                     user,
                     action,
                     tags,
+                    corroborated_by,
+                    warnings,
                     content='events',
                     content_rowid='rowid'
                 )
@@ -148,11 +156,13 @@ class TimelineStore:
                 e.confidence,
                 e.rationale,
                 ",".join(e.tags),
+                ",".join(e.corroborated_by),
+                "; ".join(e.warnings),
                 json.dumps(e.raw),
             ))
 
         cur.executemany("""
-            INSERT INTO events VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+            INSERT INTO events VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
         """, rows)
 
         if has_fts:

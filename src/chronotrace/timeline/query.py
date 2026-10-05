@@ -62,9 +62,9 @@ class TimelineQuery:
             conditions.append("action_class = ?")
             params.append(action_class)
         if search_term:
-            conditions.append("(object_path LIKE ? OR rationale LIKE ? OR tags LIKE ?)")
+            conditions.append("(object_path LIKE ? OR rationale LIKE ? OR tags LIKE ? OR corroborated_by LIKE ? OR warnings LIKE ?)")
             term = f"%{search_term}%"
-            params.extend([term, term, term])
+            params.extend([term, term, term, term, term])
 
         where_clause = f"WHERE {' AND '.join(conditions)}" if conditions else ""
         query = f"SELECT * FROM events {where_clause} ORDER BY timestamp_utc ASC LIMIT {limit}"
