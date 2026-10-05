@@ -174,25 +174,57 @@ class ChronoTraceGUI:
         lbl = ttk.Label(self.tab_case, text="Case Overview & Forensic Workspace", style="Header.TLabel")
         lbl.pack(anchor=tk.W, pady=(0, 10))
 
-        info_frame = tk.LabelFrame(self.tab_case, text=" Active Case Properties ", bg="#111726", fg="#00f2fe", font=("Segoe UI", 9, "bold"), padx=12, pady=10, highlightbackground="#1e2942", highlightthickness=1)
+        # High-Contrast KPI Stat Cards Row
+        kpi_frame = tk.Frame(self.tab_case, bg="#090c12")
+        kpi_frame.pack(fill=tk.X, pady=(0, 12))
+
+        # Card 1: Evidence Files
+        c1 = tk.Frame(kpi_frame, bg="#121722", highlightbackground="#26334a", highlightthickness=1, padx=14, pady=10)
+        c1.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(0, 5))
+        tk.Label(c1, text="EVIDENCE OBJECTS", font=("Segoe UI", 8, "bold"), fg="#38bdf8", bg="#121722").pack(anchor=tk.W)
+        self.kpi_ev_count = tk.Label(c1, text="0", font=("Segoe UI", 16, "bold"), fg="#ffffff", bg="#121722")
+        self.kpi_ev_count.pack(anchor=tk.W)
+
+        # Card 2: Timeline Events
+        c2 = tk.Frame(kpi_frame, bg="#121722", highlightbackground="#26334a", highlightthickness=1, padx=14, pady=10)
+        c2.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=5)
+        tk.Label(c2, text="TIMELINE EVENTS", font=("Segoe UI", 8, "bold"), fg="#34d399", bg="#121722").pack(anchor=tk.W)
+        self.kpi_event_count = tk.Label(c2, text="0", font=("Segoe UI", 16, "bold"), fg="#ffffff", bg="#121722")
+        self.kpi_event_count.pack(anchor=tk.W)
+
+        # Card 3: Cryptographic Integrity
+        c3 = tk.Frame(kpi_frame, bg="#121722", highlightbackground="#26334a", highlightthickness=1, padx=14, pady=10)
+        c3.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=5)
+        tk.Label(c3, text="CRYPTO INTEGRITY", font=("Segoe UI", 8, "bold"), fg="#c084fc", bg="#121722").pack(anchor=tk.W)
+        self.kpi_integrity = tk.Label(c3, text="NOT VERIFIED", font=("Segoe UI", 14, "bold"), fg="#94a3b8", bg="#121722")
+        self.kpi_integrity.pack(anchor=tk.W)
+
+        # Card 4: Write-Guard Status
+        c4 = tk.Frame(kpi_frame, bg="#121722", highlightbackground="#26334a", highlightthickness=1, padx=14, pady=10)
+        c4.pack(side=tk.LEFT, fill=tk.BOTH, expand=True, padx=(5, 0))
+        tk.Label(c4, text="FORENSIC WRITE-GUARD", font=("Segoe UI", 8, "bold"), fg="#f59e0b", bg="#121722").pack(anchor=tk.W)
+        self.kpi_writeguard = tk.Label(c4, text="ACTIVE (RO)", font=("Segoe UI", 14, "bold"), fg="#34d399", bg="#121722")
+        self.kpi_writeguard.pack(anchor=tk.W)
+
+        info_frame = tk.LabelFrame(self.tab_case, text=" Active Case Properties ", bg="#121722", fg="#38bdf8", font=("Segoe UI", 9, "bold"), padx=12, pady=10, highlightbackground="#26334a", highlightthickness=1)
         info_frame.pack(fill=tk.X, pady=5)
 
-        self.case_details_text = tk.Text(info_frame, height=9, bg="#070a12", fg="#f1f5f9", relief=tk.FLAT, font=("Consolas", 9), padx=8, pady=8)
+        self.case_details_text = tk.Text(info_frame, height=9, bg="#0d121c", fg="#f1f5f9", relief=tk.FLAT, font=("Consolas", 9), padx=8, pady=8)
         self.case_details_text.pack(fill=tk.X)
         self.case_details_text.insert(tk.END, "No case currently opened. Click '+ New Case' to create or 'Open Case' to load an existing workspace.\n")
         self.case_details_text.config(state=tk.DISABLED)
 
-        # Quick Actions
-        actions_frame = tk.LabelFrame(self.tab_case, text=" Quick Forensic Actions ", bg="#111726", fg="#00f2fe", font=("Segoe UI", 9, "bold"), padx=12, pady=12, highlightbackground="#1e2942", highlightthickness=1)
+        # Quick Actions Card
+        actions_frame = tk.LabelFrame(self.tab_case, text=" Quick Forensic Actions ", bg="#121722", fg="#38bdf8", font=("Segoe UI", 9, "bold"), padx=12, pady=12, highlightbackground="#26334a", highlightthickness=1)
         actions_frame.pack(fill=tk.X, pady=10)
 
-        btn_run_all = tk.Button(actions_frame, text="⚡ Run Full Automated Pipeline (Extract -> Timeline -> Verify -> Report)", bg="#059669", activebackground="#10b981", fg="#ffffff", activeforeground="#ffffff", font=("Segoe UI", 9, "bold"), relief=tk.FLAT, padx=10, pady=5, command=self._run_full_pipeline_thread)
+        btn_run_all = tk.Button(actions_frame, text="⚡ Run Full Automated Pipeline (Extract -> Timeline -> Verify -> Report)", bg="#059669", activebackground="#10b981", fg="#ffffff", activeforeground="#ffffff", font=("Segoe UI", 9, "bold"), relief=tk.FLAT, padx=12, pady=6, command=self._run_full_pipeline_thread)
         btn_run_all.pack(side=tk.LEFT, padx=6)
 
-        btn_add_file = ttk.Button(actions_frame, text="Acquire Evidence File...", command=self._acquire_file_dialog)
+        btn_add_file = ttk.Button(actions_frame, text="📁 Acquire Evidence File...", command=self._acquire_file_dialog)
         btn_add_file.pack(side=tk.LEFT, padx=6)
 
-        btn_doctor = ttk.Button(actions_frame, text="Run Diagnostics (Doctor)", command=self._run_doctor_dialog)
+        btn_doctor = ttk.Button(actions_frame, text="🩺 Run Diagnostics (Doctor)", command=self._run_doctor_dialog)
         btn_doctor.pack(side=tk.LEFT, padx=6)
 
     # ---------------- TAB 2: EXTERNAL DEVICES & ACQUISITION ----------------
@@ -506,6 +538,19 @@ class ChronoTraceGUI:
             f"Derived Artefacts:    {derived_count} plugin stream(s)\n"
             f"Write-Guard:          ACTIVE (All evidence access is strictly read-only)\n"
         )
+        self.kpi_ev_count.config(text=str(ev_count))
+        # Count timeline events if available
+        tl_path = self.current_case.derived_dir / "timeline.jsonl"
+        if tl_path.exists():
+            try:
+                with open(tl_path, "r", encoding="utf-8") as f:
+                    cnt = sum(1 for _ in f)
+                self.kpi_event_count.config(text=str(cnt))
+            except Exception:
+                self.kpi_event_count.config(text=str(derived_count))
+        else:
+            self.kpi_event_count.config(text=str(derived_count))
+
         self.case_details_text.insert(tk.END, text)
         self.case_details_text.config(state=tk.DISABLED)
 
@@ -813,6 +858,9 @@ class ChronoTraceGUI:
         else:
             self.lbl_verify_status.config(text="Status: FAIL (Mismatch Detected)", fg="#f43f5e")
             messagebox.showerror("Integrity Failure", f"Verification failed:\n" + "\n".join(res.get("errors", [])))
+
+        if hasattr(self, "kpi_integrity"):
+            self.kpi_integrity.config(text=status, fg="#10b981" if status == "PASS" else "#f43f5e")
 
         self._refresh_case_display()
 

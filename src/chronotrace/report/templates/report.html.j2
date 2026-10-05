@@ -6,29 +6,33 @@
   <title>WASP Forensic Investigation Report - {{ case.case_id }}</title>
   <style>
     :root {
-      --bg-base: #080b11;
-      --glass-surface: rgba(18, 24, 38, 0.65);
-      --glass-surface-hover: rgba(28, 36, 56, 0.75);
-      --glass-card: rgba(15, 21, 33, 0.7);
-      --glass-border: rgba(255, 255, 255, 0.08);
-      --glass-border-glow: rgba(0, 242, 254, 0.25);
-      --glass-inner-highlight: inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
+      /* Dark Mode High-Contrast Palette */
+      --bg-canvas: #090c12;
+      --card-bg: #121722;
+      --card-header-bg: #171f2e;
+      --card-border: #26334a;
+      --card-border-active: #3b82f6;
+      --card-inner-bg: #0d121c;
       
-      --neon-cyan: #00f2fe;
-      --neon-blue: #4facfe;
-      --neon-emerald: #00f5a0;
-      --neon-amber: #f6d365;
-      --neon-crimson: #ff3864;
-      --neon-purple: #9d4edd;
-      
+      --text-pure: #ffffff;
       --text-main: #f1f5f9;
       --text-muted: #94a3b8;
       --text-dim: #64748b;
       
-      --code-bg: rgba(7, 11, 19, 0.85);
-      --radius-sm: 8px;
-      --radius-md: 14px;
-      --radius-lg: 20px;
+      --accent-cyan: #00f2fe;
+      --accent-blue: #38bdf8;
+      --accent-emerald: #10b981;
+      --accent-amber: #f59e0b;
+      --accent-crimson: #ef4444;
+      --accent-purple: #a855f7;
+      
+      --code-bg: #090e18;
+      --code-border: #222f46;
+      --code-color: #38bdf8;
+      
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 14px;
     }
 
     * { box-sizing: border-box; }
@@ -37,57 +41,86 @@
       font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       line-height: 1.6;
       color: var(--text-main);
-      background-color: var(--bg-base);
-      background-image: 
-        radial-gradient(circle at 15% 15%, rgba(0, 242, 254, 0.08) 0%, transparent 45%),
-        radial-gradient(circle at 85% 25%, rgba(157, 78, 221, 0.08) 0%, transparent 50%),
-        radial-gradient(circle at 50% 85%, rgba(0, 245, 160, 0.05) 0%, transparent 50%);
-      background-attachment: fixed;
+      background-color: var(--bg-canvas);
       margin: 0;
-      padding: 2.5rem 1.5rem;
+      padding: 2rem 1.5rem;
       min-height: 100vh;
       -webkit-font-smoothing: antialiased;
     }
 
     .container {
-      max-width: 1320px;
+      max-width: 1340px;
       margin: 0 auto;
     }
 
-    /* Liquid Glass Card */
-    .glass-panel {
-      background: var(--glass-surface);
-      backdrop-filter: blur(24px) saturate(190%);
-      -webkit-backdrop-filter: blur(24px) saturate(190%);
-      border: 1px solid var(--glass-border);
-      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), var(--glass-inner-highlight);
+    /* High-Contrast Card Component */
+    .ui-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
       border-radius: var(--radius-lg);
-      padding: 2rem;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.45);
       margin-bottom: 2rem;
-      position: relative;
       overflow: hidden;
-      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
-    .glass-panel:hover {
-      border-color: rgba(255, 255, 255, 0.14);
-      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 242, 254, 0.05), var(--glass-inner-highlight);
+    .ui-card:hover {
+      border-color: var(--card-border-active);
+      box-shadow: 0 8px 26px rgba(0, 0, 0, 0.55), 0 0 12px rgba(56, 189, 248, 0.1);
     }
 
-    /* Header Banner */
-    header.glass-panel {
-      padding: 2.5rem 2rem;
-      border: 1px solid rgba(0, 242, 254, 0.2);
-      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 242, 254, 0.08), var(--glass-inner-highlight);
+    .ui-card-header {
+      background: var(--card-header-bg);
+      border-bottom: 1px solid var(--card-border);
+      padding: 1.2rem 1.75rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
     }
 
-    .header-top {
+    .ui-card-header h2 {
+      margin: 0;
+      font-size: 1.25rem;
+      font-weight: 800;
+      color: var(--text-pure);
+      letter-spacing: -0.3px;
+      display: flex;
+      align-items: center;
+      gap: 0.65rem;
+    }
+
+    .ui-card-header h2::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 1.15rem;
+      background: var(--accent-blue);
+      border-radius: 2px;
+    }
+
+    .ui-card-body {
+      padding: 1.75rem;
+    }
+
+    /* Main Brand Header Card */
+    .brand-card {
+      background: linear-gradient(180deg, #161e2e 0%, #111724 100%);
+      border: 1px solid #2d3d59;
+      border-radius: var(--radius-lg);
+      box-shadow: 0 8px 28px rgba(0, 0, 0, 0.6), 0 0 20px rgba(0, 242, 254, 0.08);
+      padding: 2.25rem 2rem;
+      margin-bottom: 2rem;
+    }
+
+    .brand-top {
       display: flex;
       justify-content: space-between;
       align-items: center;
       flex-wrap: wrap;
       gap: 1.5rem;
-      border-bottom: 1px solid var(--glass-border);
+      border-bottom: 1px solid var(--card-border);
       padding-bottom: 1.5rem;
       margin-bottom: 1.8rem;
     }
@@ -95,107 +128,96 @@
     .brand-title {
       font-size: 2.2rem;
       font-weight: 800;
-      letter-spacing: -0.5px;
+      letter-spacing: -0.6px;
       margin: 0;
-      background: linear-gradient(135deg, #ffffff 30%, var(--neon-cyan) 80%, var(--neon-blue) 100%);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
+      color: var(--text-pure);
       display: flex;
       align-items: center;
       gap: 0.75rem;
     }
 
+    .brand-title span.accent {
+      color: var(--accent-cyan);
+    }
+
     .brand-subtitle {
       color: var(--text-muted);
       font-size: 0.95rem;
-      margin-top: 0.4rem;
+      margin-top: 0.35rem;
     }
 
-    .live-indicator {
+    .live-badge {
       display: inline-flex;
       align-items: center;
       gap: 0.5rem;
-      background: rgba(0, 245, 160, 0.12);
-      color: var(--neon-emerald);
-      border: 1px solid rgba(0, 245, 160, 0.3);
-      padding: 0.4rem 1rem;
+      background: #064e3b;
+      color: #34d399;
+      border: 1px solid #059669;
+      padding: 0.45rem 1.1rem;
       border-radius: 9999px;
       font-size: 0.85rem;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.5px;
-      box-shadow: 0 0 15px rgba(0, 245, 160, 0.2);
+      box-shadow: 0 0 14px rgba(16, 185, 129, 0.25);
     }
 
     .pulse-dot {
       width: 8px;
       height: 8px;
       border-radius: 50%;
-      background: var(--neon-emerald);
-      box-shadow: 0 0 10px var(--neon-emerald);
+      background: #34d399;
+      box-shadow: 0 0 8px #34d399;
       animation: pulse 2s infinite;
     }
 
     @keyframes pulse {
-      0% { transform: scale(0.95); opacity: 0.7; }
+      0% { transform: scale(0.9); opacity: 0.7; }
       50% { transform: scale(1.3); opacity: 1; }
-      100% { transform: scale(0.95); opacity: 0.7; }
+      100% { transform: scale(0.9); opacity: 0.7; }
     }
 
-    /* Headings */
-    h2 {
-      font-size: 1.4rem;
-      font-weight: 700;
-      color: #ffffff;
-      margin-top: 0;
-      margin-bottom: 1.25rem;
-      display: flex;
-      align-items: center;
-      gap: 0.6rem;
-    }
-
-    h2::before {
-      content: "";
-      display: inline-block;
-      width: 4px;
-      height: 1.2rem;
-      background: linear-gradient(180deg, var(--neon-cyan), var(--neon-blue));
-      border-radius: 2px;
-    }
-
-    /* Metrics Grid */
-    .meta-grid {
+    /* High-Contrast KPI / Stat Cards */
+    .kpi-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-      gap: 1.2rem;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.25rem;
     }
 
-    .meta-card {
-      background: var(--glass-card);
-      border: 1px solid var(--glass-border);
-      padding: 1.2rem;
+    .kpi-card {
+      background: var(--card-inner-bg);
+      border: 1px solid var(--card-border);
+      border-left: 4px solid var(--accent-blue);
       border-radius: var(--radius-md);
+      padding: 1.2rem 1.4rem;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.35);
       transition: transform 0.2s ease, border-color 0.2s ease;
-      position: relative;
     }
 
-    .meta-card:hover {
+    .kpi-card:hover {
       transform: translateY(-2px);
-      border-color: rgba(0, 242, 254, 0.25);
+      border-color: #3b82f6;
     }
 
-    .meta-label {
+    .kpi-card.emerald { border-left-color: var(--accent-emerald); }
+    .kpi-card.crimson { border-left-color: var(--accent-crimson); }
+    .kpi-card.amber   { border-left-color: var(--accent-amber); }
+    .kpi-card.purple  { border-left-color: var(--accent-purple); }
+    .kpi-card.cyan    { border-left-color: var(--accent-cyan); }
+
+    .kpi-label {
       font-size: 0.75rem;
-      font-weight: 700;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.75px;
-      color: var(--text-dim);
+      color: var(--text-muted);
       margin-bottom: 0.35rem;
     }
 
-    .meta-value {
-      font-size: 1.25rem;
-      font-weight: 700;
-      color: #ffffff;
+    .kpi-value {
+      font-size: 1.55rem;
+      font-weight: 800;
+      color: var(--text-pure);
+      letter-spacing: -0.5px;
       word-break: break-all;
     }
 
@@ -205,47 +227,44 @@
       align-items: center;
       gap: 0.35rem;
       padding: 0.25rem 0.65rem;
-      border-radius: 6px;
+      border-radius: 5px;
       font-size: 0.8rem;
-      font-weight: 700;
+      font-weight: 800;
       letter-spacing: 0.3px;
       text-transform: uppercase;
     }
 
     .badge-pass {
-      background: rgba(0, 245, 160, 0.12);
-      color: var(--neon-emerald);
-      border: 1px solid rgba(0, 245, 160, 0.35);
-      box-shadow: 0 0 10px rgba(0, 245, 160, 0.1);
+      background: #064e3b;
+      color: #34d399;
+      border: 1px solid #059669;
     }
 
     .badge-warn {
-      background: rgba(246, 211, 101, 0.12);
-      color: var(--neon-amber);
-      border: 1px solid rgba(246, 211, 101, 0.35);
-      box-shadow: 0 0 10px rgba(246, 211, 101, 0.1);
+      background: #78350f;
+      color: #fbbf24;
+      border: 1px solid #d97706;
     }
 
     .badge-danger {
-      background: rgba(255, 56, 100, 0.15);
-      color: var(--neon-crimson);
-      border: 1px solid rgba(255, 56, 100, 0.4);
-      box-shadow: 0 0 12px rgba(255, 56, 100, 0.2);
+      background: #7f1d1d;
+      color: #f87171;
+      border: 1px solid #dc2626;
+      box-shadow: 0 0 10px rgba(239, 68, 68, 0.2);
     }
 
     .badge-tsa {
-      background: rgba(0, 242, 254, 0.12);
-      color: var(--neon-cyan);
-      border: 1px solid rgba(0, 242, 254, 0.35);
-      box-shadow: 0 0 12px rgba(0, 242, 254, 0.15);
+      background: #083344;
+      color: #38bdf8;
+      border: 1px solid #0284c7;
     }
 
-    /* Tables */
+    /* High-Contrast Tables */
     .table-container {
       overflow-x: auto;
       border-radius: var(--radius-md);
-      border: 1px solid var(--glass-border);
-      background: rgba(10, 15, 24, 0.6);
+      border: 1px solid var(--card-border);
+      background: var(--card-inner-bg);
       margin-top: 1rem;
     }
 
@@ -257,116 +276,122 @@
     }
 
     th {
-      background: rgba(18, 25, 42, 0.85);
-      color: var(--text-muted);
-      font-weight: 700;
+      background: #171f2e;
+      color: var(--text-white);
+      font-weight: 800;
       text-transform: uppercase;
       font-size: 0.75rem;
-      letter-spacing: 0.5px;
-      padding: 0.9rem 1rem;
-      border-bottom: 1px solid var(--glass-border);
+      letter-spacing: 0.6px;
+      padding: 0.95rem 1.1rem;
+      border-bottom: 2px solid var(--card-border);
       white-space: nowrap;
     }
 
     td {
-      padding: 0.85rem 1rem;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      padding: 0.85rem 1.1rem;
+      border-bottom: 1px solid #1a2333;
       color: var(--text-main);
       vertical-align: middle;
     }
 
+    tr:nth-child(even) td {
+      background: #111722;
+    }
+
     tr:hover td {
-      background: rgba(255, 255, 255, 0.025);
+      background: #192336;
     }
 
     code {
-      font-family: ui-monospace, SFMono-Regular, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
+      font-family: ui-monospace, SFMono-Regular, "Cascadia Code", Menlo, Consolas, monospace;
       font-size: 0.82rem;
       background: var(--code-bg);
-      color: var(--neon-cyan);
+      color: var(--code-color);
       padding: 0.2rem 0.45rem;
       border-radius: 4px;
-      border: 1px solid rgba(255, 255, 255, 0.06);
+      border: 1px solid var(--code-border);
     }
 
-    /* Interactive Timeline Controls */
+    /* Interactive Timeline Controls inside Card */
     .timeline-toolbar {
       display: flex;
       flex-wrap: wrap;
       gap: 0.8rem;
       align-items: center;
       margin-bottom: 1.2rem;
-      padding: 0.8rem 1rem;
-      background: rgba(12, 17, 27, 0.7);
-      border: 1px solid var(--glass-border);
+      padding: 0.9rem 1.2rem;
+      background: #151d2c;
+      border: 1px solid var(--card-border);
       border-radius: var(--radius-md);
     }
 
     .search-input {
-      background: rgba(19, 26, 40, 0.9);
-      border: 1px solid var(--glass-border);
+      background: #0d121c;
+      border: 1px solid var(--card-border);
       border-radius: var(--radius-sm);
       color: #ffffff;
-      padding: 0.5rem 0.9rem;
+      padding: 0.55rem 1rem;
       font-size: 0.85rem;
       outline: none;
-      min-width: 240px;
+      min-width: 260px;
       flex: 1;
       transition: border-color 0.2s ease, box-shadow 0.2s ease;
     }
 
     .search-input:focus {
-      border-color: var(--neon-cyan);
-      box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);
+      border-color: var(--accent-blue);
+      box-shadow: 0 0 10px rgba(56, 189, 248, 0.3);
     }
 
     .filter-btn {
-      background: rgba(255, 255, 255, 0.04);
-      border: 1px solid var(--glass-border);
+      background: #1c2638;
+      border: 1px solid var(--card-border);
       color: var(--text-muted);
-      padding: 0.45rem 0.85rem;
+      padding: 0.5rem 0.95rem;
       border-radius: var(--radius-sm);
       font-size: 0.82rem;
-      font-weight: 600;
+      font-weight: 700;
       cursor: pointer;
       transition: all 0.2s ease;
     }
 
     .filter-btn:hover {
-      background: rgba(255, 255, 255, 0.08);
+      background: #25334c;
       color: #ffffff;
+      border-color: #3b82f6;
     }
 
     .filter-btn.active {
-      background: rgba(0, 242, 254, 0.15);
-      border-color: var(--neon-cyan);
-      color: var(--neon-cyan);
-      box-shadow: 0 0 12px rgba(0, 242, 254, 0.25);
+      background: #0284c7;
+      border-color: #38bdf8;
+      color: #ffffff;
+      box-shadow: 0 0 12px rgba(2, 132, 199, 0.4);
     }
 
-    /* Visual Histogram Track */
+    /* High-Contrast Activity Density Track */
     .chart-container {
-      background: rgba(10, 14, 23, 0.8);
-      border: 1px solid var(--glass-border);
+      background: #0e131d;
+      border: 1px solid var(--card-border);
       border-radius: var(--radius-md);
-      padding: 1.2rem;
+      padding: 1.2rem 1.5rem;
       margin-bottom: 1.2rem;
     }
 
     .chart-title {
-      font-size: 0.85rem;
-      font-weight: 700;
+      font-size: 0.82rem;
+      font-weight: 800;
       color: var(--text-muted);
       margin-bottom: 0.8rem;
       display: flex;
       justify-content: space-between;
+      letter-spacing: 0.5px;
     }
 
     .bars-track {
       display: flex;
       align-items: flex-end;
       height: 90px;
-      gap: 3px;
+      gap: 4px;
       padding-top: 10px;
       overflow-x: auto;
     }
@@ -374,7 +399,7 @@
     .bar-col {
       flex: 1;
       min-width: 14px;
-      background: linear-gradient(180deg, var(--neon-cyan) 0%, rgba(79, 172, 254, 0.2) 100%);
+      background: linear-gradient(180deg, var(--accent-blue) 0%, #1e3a5f 100%);
       border-radius: 3px 3px 0 0;
       position: relative;
       cursor: pointer;
@@ -382,79 +407,81 @@
     }
 
     .bar-col:hover {
-      filter: brightness(1.4);
-      transform: scaleY(1.05);
+      filter: brightness(1.3);
+      transform: scaleY(1.06);
     }
 
     .bar-col.has-alert {
-      background: linear-gradient(180deg, var(--neon-crimson) 0%, rgba(255, 56, 100, 0.3) 100%);
+      background: linear-gradient(180deg, var(--accent-crimson) 0%, #7f1d1d 100%);
     }
 
-    /* MITRE ATT&CK Matrix Card */
+    /* MITRE Matrix Cards */
     .mitre-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-      gap: 1rem;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 1.1rem;
       margin-top: 1rem;
     }
 
     .mitre-column {
-      background: rgba(12, 17, 27, 0.7);
-      border: 1px solid var(--glass-border);
+      background: #0f1420;
+      border: 1px solid var(--card-border);
       border-radius: var(--radius-md);
-      padding: 1rem;
+      padding: 1.1rem;
     }
 
     .mitre-tactic-name {
       font-size: 0.8rem;
       font-weight: 800;
-      color: var(--neon-purple);
+      color: var(--accent-purple);
       text-transform: uppercase;
-      letter-spacing: 0.5px;
-      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-      padding-bottom: 0.5rem;
-      margin-bottom: 0.75rem;
+      letter-spacing: 0.6px;
+      border-bottom: 1px solid var(--card-border);
+      padding-bottom: 0.6rem;
+      margin-bottom: 0.85rem;
     }
 
     .mitre-technique-pill {
-      background: rgba(255, 56, 100, 0.12);
-      border: 1px solid rgba(255, 56, 100, 0.35);
+      background: #251828;
+      border: 1px solid #581c87;
       border-radius: 6px;
-      padding: 0.5rem 0.7rem;
-      margin-bottom: 0.5rem;
+      padding: 0.55rem 0.75rem;
+      margin-bottom: 0.55rem;
       font-size: 0.82rem;
     }
 
     .mitre-id {
-      color: var(--neon-crimson);
-      font-weight: 700;
+      color: #c084fc;
+      font-weight: 800;
     }
 
     /* Copy Button */
     .btn-copy {
-      background: transparent;
-      border: 1px solid rgba(255, 255, 255, 0.1);
-      color: var(--text-dim);
-      padding: 0.2rem 0.4rem;
+      background: #172132;
+      border: 1px solid var(--card-border);
+      color: var(--text-muted);
+      padding: 0.25rem 0.5rem;
       border-radius: 4px;
       cursor: pointer;
       font-size: 0.75rem;
-      margin-left: 0.4rem;
+      font-weight: 700;
+      margin-left: 0.5rem;
       transition: all 0.2s ease;
     }
 
     .btn-copy:hover {
-      color: var(--neon-cyan);
-      border-color: var(--neon-cyan);
+      color: #ffffff;
+      border-color: var(--accent-blue);
+      background: #0284c7;
     }
   </style>
 </head>
 <body>
 <div class="container">
 
-  <!-- Header Section with Liquid Glass & Glow -->
-  <header class="glass-panel">
-    <div class="header-top">
+  <!-- Top Hero / Brand Card -->
+  <div class="brand-card">
+    <div class="brand-top">
       <div>
         <h1 class="brand-title">
           <span>⚡ WASP Investigation Report</span>
@@ -462,445 +489,474 @@
         <div class="brand-subtitle">Wide-scope Artifact &amp; Super-timeline Platform — Automated Forensic Reconstructor</div>
       </div>
       <div>
-        <span class="live-indicator">
+        <span class="live-badge">
           <span class="pulse-dot"></span>
           RFC 3161 &amp; MERKLE ATTESTED
         </span>
       </div>
     </div>
 
-    <div class="meta-grid">
-      <div class="meta-card">
-        <div class="meta-label">Case Identifier</div>
-        <div class="meta-value">{{ case.case_id }}</div>
+    <!-- High-Contrast KPI Metrics Grid -->
+    <div class="kpi-grid">
+      <div class="kpi-card cyan">
+        <div class="kpi-label">Case Identifier</div>
+        <div class="kpi-value">{{ case.case_id }}</div>
       </div>
-      <div class="meta-card">
-        <div class="meta-label">Lead Examiner</div>
-        <div class="meta-value">{{ case.examiner }}</div>
+      <div class="kpi-card blue">
+        <div class="kpi-label">Lead Examiner</div>
+        <div class="kpi-value">{{ case.examiner }}</div>
       </div>
-      <div class="meta-card">
-        <div class="meta-label">Organization</div>
-        <div class="meta-value">{{ case.organization }}</div>
+      <div class="kpi-card purple">
+        <div class="kpi-label">Organization</div>
+        <div class="kpi-value">{{ case.organization }}</div>
       </div>
-      <div class="meta-card">
-        <div class="meta-label">Authorization Ref</div>
-        <div class="meta-value">{{ case.metadata.authorization_ref }}</div>
+      <div class="kpi-card amber">
+        <div class="kpi-label">Authorization Ref</div>
+        <div class="kpi-value">{{ case.metadata.authorization_ref }}</div>
       </div>
-      <div class="meta-card">
-        <div class="meta-label">Evidence Objects</div>
-        <div class="meta-value">{{ manifest.evidence|length }} Files</div>
+      <div class="kpi-card emerald">
+        <div class="kpi-label">Evidence Objects</div>
+        <div class="kpi-value">{{ manifest.evidence|length }} Files</div>
       </div>
-      <div class="meta-card">
-        <div class="meta-label">Reconstructed Events</div>
-        <div class="meta-value">{{ timeline_events|length }} Events</div>
+      <div class="kpi-card cyan">
+        <div class="kpi-label">Reconstructed Events</div>
+        <div class="kpi-value">{{ timeline_events|length }} Events</div>
       </div>
     </div>
-  </header>
+  </div>
 
-  <!-- 1. Executive Summary -->
-  <section class="glass-panel">
-    <h2>1. Executive Summary &amp; Forensic Objectives</h2>
-    <p style="color: var(--text-muted); margin-bottom: 1.2rem;">
-      Digital evidence investigation completed under strictly reproducible forensic standards with full chain of custody and multi-epoch timestamp decoding.
-    </p>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Core Objective</th>
-            <th>Status</th>
-            <th>Technical Findings</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td>1</td>
-            <td><strong>File Metadata Extraction</strong></td>
-            <td><span class="badge badge-pass">COMPLETED</span></td>
-            <td>Extracted MACB attributes, OOXML revision timestamps, PDF metadata, and archive manifests.</td>
-          </tr>
-          <tr>
-            <td>2</td>
-            <td><strong>System Artefact Extraction</strong></td>
-            <td><span class="badge badge-pass">COMPLETED</span></td>
-            <td>Decoded Windows Event Logs (EVTX 4688/1102), Unix auth.log, browser SQLite history, and bash logs.</td>
-          </tr>
-          <tr>
-            <td>3</td>
-            <td><strong>Timestamp Normalization</strong></td>
-            <td><span class="badge badge-pass">COMPLETED</span></td>
-            <td>Normalized FILETIME, Unix epoch, and WebKit microsecond timestamps to canonical UTC.</td>
-          </tr>
-          <tr>
-            <td>4</td>
-            <td><strong>Super-Timeline Synthesis</strong></td>
-            <td><span class="badge badge-pass">COMPLETED</span></td>
-            <td>Reconstructed <strong>{{ timeline_events|length }}</strong> chronological events into indexed Parquet and SQLite stores.</td>
-          </tr>
-          <tr>
-            <td>5</td>
-            <td><strong>SHA-256 Integrity &amp; RFC 3161 TSA</strong></td>
-            <td><span class="badge badge-pass">VERIFIED</span></td>
-            <td>Cryptographic SHA-256 digests generated with Merkle root attestation and RFC 3161 timestamp tokens.</td>
-          </tr>
-          <tr>
-            <td>6</td>
-            <td><strong>Structured Investigation Reports</strong></td>
-            <td><span class="badge badge-pass">COMPLETED</span></td>
-            <td>Produced interactive liquid-glass reports, CSV audit exports, and JSON evidence archives.</td>
-          </tr>
-        </tbody>
-      </table>
+  <!-- Card 1: Executive Summary -->
+  <div class="ui-card">
+    <div class="ui-card-header">
+      <h2>1. Executive Summary &amp; Forensic Objectives Matrix</h2>
     </div>
-  </section>
-
-  <!-- 2. Evidence Inventory & RFC 3161 Timestamps -->
-  <section class="glass-panel">
-    <h2>2. Digital Evidence Inventory &amp; RFC 3161 Trusted Timestamps</h2>
-    <p style="color: var(--text-muted);">
-      Each physical or logical piece of evidence is bound to a mandatory SHA-256 cryptographic digest and verified against court-admissible timestamp tokens:
-    </p>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Evidence ID</th>
-            <th>Relative Path</th>
-            <th>Format</th>
-            <th>Bytes</th>
-            <th>SHA-256 Digest</th>
-            <th>RFC 3161 Timestamping Authority</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for ev in manifest.evidence %}
-          <tr>
-            <td><code>{{ ev.evidence_id }}</code></td>
-            <td><strong>{{ ev.path }}</strong></td>
-            <td><span class="badge badge-pass">{{ ev.container|upper }}</span></td>
-            <td>{{ ev.size_bytes }} B</td>
-            <td>
-              <code>{{ ev.hashes.sha256[:16] }}...{{ ev.hashes.sha256[-8:] }}</code>
-              <button class="btn-copy" onclick="navigator.clipboard.writeText('{{ ev.hashes.sha256 }}'); this.innerText='COPIED'; setTimeout(()=>this.innerText='COPY', 1500)">COPY</button>
-            </td>
-            <td>
-              {% if ev.timestamp_token %}
-              <span class="badge badge-tsa" title="{{ ev.timestamp_token.tsa_authority }}">
-                ⏱️ {{ ev.timestamp_token.status }} ({{ ev.timestamp_token.serial_number }})
-              </span>
-              {% else %}
-              <span class="badge badge-pass">MATCHED</span>
-              {% endif %}
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+    <div class="ui-card-body">
+      <p style="color: var(--text-muted); margin-top: 0; margin-bottom: 1.25rem;">
+        Digital evidence investigation completed under strictly reproducible forensic standards with full chain of custody and multi-epoch timestamp decoding.
+      </p>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Core Objective</th>
+              <th>Status</th>
+              <th>Technical Findings</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>1</td>
+              <td><strong>File Metadata Extraction</strong></td>
+              <td><span class="badge badge-pass">COMPLETED</span></td>
+              <td>Extracted MACB attributes, OOXML revision timestamps, PDF metadata, and archive manifests.</td>
+            </tr>
+            <tr>
+              <td>2</td>
+              <td><strong>System Artefact Extraction</strong></td>
+              <td><span class="badge badge-pass">COMPLETED</span></td>
+              <td>Decoded Windows Event Logs (EVTX 4688/1102), Unix auth.log, browser SQLite history, and bash logs.</td>
+            </tr>
+            <tr>
+              <td>3</td>
+              <td><strong>Timestamp Normalization</strong></td>
+              <td><span class="badge badge-pass">COMPLETED</span></td>
+              <td>Normalized FILETIME, Unix epoch, and WebKit microsecond timestamps to canonical UTC.</td>
+            </tr>
+            <tr>
+              <td>4</td>
+              <td><strong>Super-Timeline Synthesis</strong></td>
+              <td><span class="badge badge-pass">COMPLETED</span></td>
+              <td>Reconstructed <strong>{{ timeline_events|length }}</strong> chronological events into indexed Parquet and SQLite stores.</td>
+            </tr>
+            <tr>
+              <td>5</td>
+              <td><strong>SHA-256 Integrity &amp; RFC 3161 TSA</strong></td>
+              <td><span class="badge badge-pass">VERIFIED</span></td>
+              <td>Cryptographic SHA-256 digests generated with Merkle root attestation and RFC 3161 timestamp tokens.</td>
+            </tr>
+            <tr>
+              <td>6</td>
+              <td><strong>Structured Investigation Reports</strong></td>
+              <td><span class="badge badge-pass">COMPLETED</span></td>
+              <td>Produced high-contrast dark reports, CSV audit exports, and JSON evidence archives.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
     </div>
-  </section>
+  </div>
 
-  <!-- 3. Threat Alerts & MITRE ATT&CK Matrix -->
+  <!-- Card 2: Evidence Inventory & RFC 3161 Timestamps -->
+  <div class="ui-card">
+    <div class="ui-card-header">
+      <h2>2. Digital Evidence Inventory &amp; RFC 3161 Trusted Timestamps</h2>
+    </div>
+    <div class="ui-card-body">
+      <p style="color: var(--text-muted); margin-top: 0;">
+        Each physical or logical piece of evidence is bound to a mandatory SHA-256 cryptographic digest and verified against court-admissible timestamp tokens:
+      </p>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Evidence ID</th>
+              <th>Relative Path</th>
+              <th>Format</th>
+              <th>Bytes</th>
+              <th>SHA-256 Cryptographic Digest</th>
+              <th>RFC 3161 Timestamping Authority</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for ev in manifest.evidence %}
+            <tr>
+              <td><code>{{ ev.evidence_id }}</code></td>
+              <td><strong>{{ ev.path }}</strong></td>
+              <td><span class="badge badge-pass">{{ ev.container|upper }}</span></td>
+              <td>{{ ev.size_bytes }} B</td>
+              <td>
+                <code>{{ ev.hashes.sha256[:16] }}...{{ ev.hashes.sha256[-8:] }}</code>
+                <button class="btn-copy" onclick="navigator.clipboard.writeText('{{ ev.hashes.sha256 }}'); this.innerText='COPIED'; setTimeout(()=>this.innerText='COPY', 1500)">COPY</button>
+              </td>
+              <td>
+                {% if ev.timestamp_token %}
+                <span class="badge badge-tsa" title="{{ ev.timestamp_token.tsa_authority }}">
+                  ⏱️ {{ ev.timestamp_token.status }} ({{ ev.timestamp_token.serial_number }})
+                </span>
+                {% else %}
+                <span class="badge badge-pass">MATCHED</span>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card 3: Threat Intelligence & MITRE Matrix -->
   {% if threat_alerts %}
-  <section class="glass-panel">
-    <h2>3. Threat Intelligence &amp; MITRE ATT&amp;CK Matrix</h2>
-    <p style="color: var(--text-muted);">
-      Automated YARA and DFIR heuristic engines flagged <strong>{{ threat_alerts|length }}</strong> critical indicator patterns:
-    </p>
-
-    <!-- MITRE Visual Columns -->
-    <div class="mitre-grid">
-      <div class="mitre-column">
-        <div class="mitre-tactic-name">Execution (TA0002)</div>
-        {% for alert in threat_alerts if '1059' in alert.mitre_technique or 'LOLBin' in alert.rule_name %}
-        <div class="mitre-technique-pill">
-          <div class="mitre-id">{{ alert.mitre_technique }}</div>
-          <div>{{ alert.rule_name }}</div>
-        </div>
-        {% else %}
-        <div style="color: var(--text-dim); font-size: 0.8rem;">No alerts</div>
-        {% endfor %}
-      </div>
-
-      <div class="mitre-column">
-        <div class="mitre-tactic-name">Credential Access (TA0006)</div>
-        {% for alert in threat_alerts if '1003' in alert.mitre_technique or 'Mimikatz' in alert.rule_name %}
-        <div class="mitre-technique-pill">
-          <div class="mitre-id">{{ alert.mitre_technique }}</div>
-          <div>{{ alert.rule_name }}</div>
-        </div>
-        {% else %}
-        <div style="color: var(--text-dim); font-size: 0.8rem;">No alerts</div>
-        {% endfor %}
-      </div>
-
-      <div class="mitre-column">
-        <div class="mitre-tactic-name">Defense Evasion (TA0005)</div>
-        {% for alert in threat_alerts if '1070' in alert.mitre_technique or 'Log_Clearing' in alert.rule_name %}
-        <div class="mitre-technique-pill">
-          <div class="mitre-id">{{ alert.mitre_technique }}</div>
-          <div>{{ alert.rule_name }}</div>
-        </div>
-        {% else %}
-        <div style="color: var(--text-dim); font-size: 0.8rem;">No alerts</div>
-        {% endfor %}
-      </div>
-
-      <div class="mitre-column">
-        <div class="mitre-tactic-name">Impact / Ransom (TA0040)</div>
-        {% for alert in threat_alerts if '1490' in alert.mitre_technique or 'ShadowCopy' in alert.rule_name or '1486' in alert.mitre_technique %}
-        <div class="mitre-technique-pill">
-          <div class="mitre-id">{{ alert.mitre_technique }}</div>
-          <div>{{ alert.rule_name }}</div>
-        </div>
-        {% else %}
-        <div style="color: var(--text-dim); font-size: 0.8rem;">No alerts</div>
-        {% endfor %}
-      </div>
+  <div class="ui-card">
+    <div class="ui-card-header">
+      <h2>3. Threat Intelligence &amp; MITRE ATT&amp;CK Matrix</h2>
     </div>
+    <div class="ui-card-body">
+      <p style="color: var(--text-muted); margin-top: 0;">
+        Automated YARA and DFIR heuristic engines flagged <strong>{{ threat_alerts|length }}</strong> critical indicator patterns:
+      </p>
 
-    <!-- Threat Alert Table -->
-    <div class="table-container" style="margin-top: 1.5rem;">
-      <table>
-        <thead>
-          <tr>
-            <th>Severity</th>
-            <th>Rule Pattern</th>
-            <th>MITRE Technique</th>
-            <th>Artifact Target</th>
-            <th>Forensic Details</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for alert in threat_alerts %}
-          <tr>
-            <td>
-              <span class="badge {% if alert.severity == 'CRITICAL' or alert.severity == 'HIGH' %}badge-danger{% else %}badge-warn{% endif %}">
-                {{ alert.severity }}
-              </span>
-            </td>
-            <td><strong>{{ alert.rule_name }}</strong></td>
-            <td><code>{{ alert.mitre_technique }}</code></td>
-            <td><code>{{ alert.target }}</code></td>
-            <td>{{ alert.description }}</td>
-          </tr>
+      <!-- MITRE Visual Columns -->
+      <div class="mitre-grid">
+        <div class="mitre-column">
+          <div class="mitre-tactic-name">Execution (TA0002)</div>
+          {% for alert in threat_alerts if '1059' in alert.mitre_technique or 'LOLBin' in alert.rule_name %}
+          <div class="mitre-technique-pill">
+            <div class="mitre-id">{{ alert.mitre_technique }}</div>
+            <div style="color: #ffffff; font-weight: 700;">{{ alert.rule_name }}</div>
+          </div>
+          {% else %}
+          <div style="color: var(--text-dim); font-size: 0.8rem;">No alerts</div>
           {% endfor %}
-        </tbody>
-      </table>
+        </div>
+
+        <div class="mitre-column">
+          <div class="mitre-tactic-name">Credential Access (TA0006)</div>
+          {% for alert in threat_alerts if '1003' in alert.mitre_technique or 'Mimikatz' in alert.rule_name %}
+          <div class="mitre-technique-pill">
+            <div class="mitre-id">{{ alert.mitre_technique }}</div>
+            <div style="color: #ffffff; font-weight: 700;">{{ alert.rule_name }}</div>
+          </div>
+          {% else %}
+          <div style="color: var(--text-dim); font-size: 0.8rem;">No alerts</div>
+          {% endfor %}
+        </div>
+
+        <div class="mitre-column">
+          <div class="mitre-tactic-name">Defense Evasion (TA0005)</div>
+          {% for alert in threat_alerts if '1070' in alert.mitre_technique or 'Log_Clearing' in alert.rule_name %}
+          <div class="mitre-technique-pill">
+            <div class="mitre-id">{{ alert.mitre_technique }}</div>
+            <div style="color: #ffffff; font-weight: 700;">{{ alert.rule_name }}</div>
+          </div>
+          {% else %}
+          <div style="color: var(--text-dim); font-size: 0.8rem;">No alerts</div>
+          {% endfor %}
+        </div>
+
+        <div class="mitre-column">
+          <div class="mitre-tactic-name">Impact / Ransom (TA0040)</div>
+          {% for alert in threat_alerts if '1490' in alert.mitre_technique or 'ShadowCopy' in alert.rule_name or '1486' in alert.mitre_technique %}
+          <div class="mitre-technique-pill">
+            <div class="mitre-id">{{ alert.mitre_technique }}</div>
+            <div style="color: #ffffff; font-weight: 700;">{{ alert.rule_name }}</div>
+          </div>
+          {% else %}
+          <div style="color: var(--text-dim); font-size: 0.8rem;">No alerts</div>
+          {% endfor %}
+        </div>
+      </div>
+
+      <!-- Threat Alert Table -->
+      <div class="table-container" style="margin-top: 1.5rem;">
+        <table>
+          <thead>
+            <tr>
+              <th>Severity</th>
+              <th>Rule Pattern</th>
+              <th>MITRE Technique</th>
+              <th>Artifact Target</th>
+              <th>Forensic Details</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for alert in threat_alerts %}
+            <tr>
+              <td>
+                <span class="badge {% if alert.severity == 'CRITICAL' or alert.severity == 'HIGH' %}badge-danger{% else %}badge-warn{% endif %}">
+                  {{ alert.severity }}
+                </span>
+              </td>
+              <td><strong style="color: #ffffff;">{{ alert.rule_name }}</strong></td>
+              <td><code>{{ alert.mitre_technique }}</code></td>
+              <td><code>{{ alert.target }}</code></td>
+              <td>{{ alert.description }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
     </div>
-  </section>
+  </div>
   {% endif %}
 
-  <!-- 4. Cross-Source Corroboration -->
+  <!-- Card 4: Cross-Source Corroboration -->
   {% if corroboration and (corroboration.clusters or corroboration.conflicts) %}
-  <section class="glass-panel">
-    <h2>4. Cross-Source Corroboration &amp; Anti-Forensics Analysis</h2>
-    <div class="meta-grid">
-      <div class="meta-card">
-        <div class="meta-label">Corroborated Activity Clusters</div>
-        <div class="meta-value">{{ corroboration.clusters|length }}</div>
+  <div class="ui-card">
+    <div class="ui-card-header">
+      <h2>4. Cross-Source Corroboration &amp; Anti-Forensics Analysis</h2>
+    </div>
+    <div class="ui-card-body">
+      <!-- Corroboration KPI Cards -->
+      <div class="kpi-grid">
+        <div class="kpi-card cyan">
+          <div class="kpi-label">Corroborated Activity Clusters</div>
+          <div class="kpi-value">{{ corroboration.clusters|length }}</div>
+        </div>
+        <div class="kpi-card emerald">
+          <div class="kpi-label">Total Corroborated Events</div>
+          <div class="kpi-value">{{ corroboration.corroborated_count }}</div>
+        </div>
+        <div class="kpi-card {% if corroboration.conflict_count > 0 %}crimson{% else %}emerald{% endif %}">
+          <div class="kpi-label">Temporal Conflicts / Timestomping</div>
+          <div class="kpi-value" style="color: {% if corroboration.conflict_count > 0 %}var(--accent-crimson){% else %}var(--accent-emerald){% endif %};">
+            {{ corroboration.conflict_count }}
+          </div>
+        </div>
       </div>
-      <div class="meta-card">
-        <div class="meta-label">Total Corroborated Events</div>
-        <div class="meta-value">{{ corroboration.corroborated_count }}</div>
+
+      {% if corroboration.conflicts %}
+      <h3 style="color: var(--accent-crimson); margin-top: 1.8rem; margin-bottom: 0.6rem; font-weight: 800;">🚨 Anti-Forensic Anomaly &amp; Timestomp Conflicts</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Severity</th>
+              <th>Entity</th>
+              <th>Anomaly Type</th>
+              <th>Forensic Description</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for conf in corroboration.conflicts %}
+            <tr>
+              <td><span class="badge badge-danger">{{ conf.severity }}</span></td>
+              <td><code>{{ conf.entity }}</code></td>
+              <td><code>{{ conf.conflict_type }}</code></td>
+              <td>{{ conf.description }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
-      <div class="meta-card">
-        <div class="meta-label">Temporal Conflicts / Timestomping</div>
-        <div class="meta-value" style="color: {% if corroboration.conflict_count > 0 %}var(--neon-crimson){% else %}var(--neon-emerald){% endif %};">
-          {{ corroboration.conflict_count }}
+      {% endif %}
+
+      {% if corroboration.clusters %}
+      <h3 style="color: var(--accent-blue); margin-top: 1.8rem; margin-bottom: 0.6rem; font-weight: 800;">🔗 Multi-Artefact Corroborated Evidence Chains</h3>
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Subject / Target Entity</th>
+              <th>Corroborating Plugins</th>
+              <th>Delta Window</th>
+              <th>Correlation Analysis</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for cluster in corroboration.clusters[:20] %}
+            <tr>
+              <td><code>{{ cluster.entity }}</code></td>
+              <td>
+                {% for p in cluster.plugins %}
+                <span class="badge badge-pass">{{ p }}</span>
+                {% endfor %}
+              </td>
+              <td><code>{{ cluster.time_delta_seconds }}s</code></td>
+              <td>{{ cluster.description }}</td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Card 5: Reconstructed Timeline with Interactive Visualizer -->
+  <div class="ui-card">
+    <div class="ui-card-header">
+      <h2>5. Reconstructed Activity Super-Timeline</h2>
+      <span style="color: var(--text-muted); font-size: 0.85rem; font-weight: 700;">
+        Chronologically Ordered &bull; UTC Normalized
+      </span>
+    </div>
+    <div class="ui-card-body">
+      <!-- Visual Activity Density Track -->
+      <div class="chart-container">
+        <div class="chart-title">
+          <span>ACTIVITY DENSITY &amp; BURST HEATMAP</span>
+          <span id="active-event-count">{{ timeline_events|length }} Events Loaded</span>
+        </div>
+        <div class="bars-track" id="bars-track">
+          <!-- Generated by JavaScript below -->
+        </div>
+      </div>
+
+      <!-- Live Filter Toolbar -->
+      <div class="timeline-toolbar">
+        <input type="text" id="timeline-search" class="search-input" placeholder="🔍 Live search timestamps, processes, file paths, users, rationale..." oninput="filterTimeline()">
+        <button class="filter-btn active" onclick="setFilter('ALL', this)">All</button>
+        <button class="filter-btn" onclick="setFilter('ALERT', this)">🚨 Alerts</button>
+        <button class="filter-btn" onclick="setFilter('CORROBORATED', this)">🔗 Corroborated</button>
+        <button class="filter-btn" onclick="setFilter('CONFLICT', this)">⚠️ Conflicts</button>
+        <button class="filter-btn" onclick="setFilter('FILE', this)">📁 Files</button>
+        <button class="filter-btn" onclick="setFilter('PROCESS', this)">⚙️ Processes</button>
+      </div>
+
+      <!-- Timeline Table -->
+      <div class="table-container">
+        <table id="timeline-table">
+          <thead>
+            <tr>
+              <th>UTC Timestamp</th>
+              <th>Action</th>
+              <th>User</th>
+              <th>Object / Target</th>
+              <th>Plugin</th>
+              <th>Corroborated By</th>
+              <th>Conf.</th>
+              <th>Rationale &amp; Warnings</th>
+            </tr>
+          </thead>
+          <tbody id="timeline-tbody">
+            {% for e in timeline_events[:600] %}
+            <tr data-action="{{ e.action }}" data-tags="{{ e.tags|join(' ') }}" data-path="{{ e.object.path or '' }}" data-user="{{ e.user }}" data-plugin="{{ e.source.artifact }}">
+              <td><code>{{ e.timestamp_utc }}</code></td>
+              <td>
+                <span class="badge {% if 'TIMESTOMP' in e.action or 'CLEARED' in e.action or 'ALERT' in e.tags %}badge-danger{% elif 'PROCESS' in e.action or 'CONFLICT' in e.tags %}badge-warn{% else %}badge-pass{% endif %}">
+                  {{ e.action }}
+                </span>
+              </td>
+              <td><strong style="color: #ffffff;">{{ e.user }}</strong></td>
+              <td><code>{{ e.object.path or 'N/A' }}</code></td>
+              <td><span class="badge badge-pass">{{ e.source.artifact }}</span></td>
+              <td>
+                {% if e.corroborated_by %}
+                <span class="badge badge-tsa">{{ e.corroborated_by|join(', ') }}</span>
+                {% else %}
+                <span style="color: var(--text-dim);">-</span>
+                {% endif %}
+              </td>
+              <td>{{ e.confidence }}</td>
+              <td>
+                {{ e.rationale }}
+                {% if e.warnings %}
+                <div style="color: var(--accent-crimson); font-size: 0.8rem; margin-top: 0.25rem; font-weight: 700;">
+                  ⚠️ {{ e.warnings|join('; ') }}
+                </div>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+      {% if timeline_events|length > 600 %}
+      <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 0.8rem;">
+        <em>(HTML table displays first 600 events. Full collection of {{ timeline_events|length }} records is preserved in Parquet, SQLite, and CSV exports).</em>
+      </p>
+      {% endif %}
+    </div>
+  </div>
+
+  <!-- Card 6: Cryptographic Integrity -->
+  <div class="ui-card">
+    <div class="ui-card-header">
+      <h2>6. Cryptographic Integrity &amp; Attestation Block</h2>
+    </div>
+    <div class="ui-card-body">
+      <div class="kpi-grid">
+        <div class="kpi-card emerald">
+          <div class="kpi-label">Overall Integrity Status</div>
+          <div class="kpi-value" style="color: var(--accent-emerald);">{{ integrity.overall_status }}</div>
+        </div>
+        <div class="kpi-card cyan">
+          <div class="kpi-label">Merkle Root Digest</div>
+          <div class="kpi-value"><code style="font-size: 1rem;">{{ manifest.merkle_root }}</code></div>
+        </div>
+        <div class="kpi-card purple">
+          <div class="kpi-label">Ledger Entries Replayed</div>
+          <div class="kpi-value">{{ integrity.checked_items.ledger_entries }}</div>
         </div>
       </div>
     </div>
+  </div>
 
-    {% if corroboration.conflicts %}
-    <h3 style="color: var(--neon-crimson); margin-top: 1.8rem;">🚨 Anti-Forensic Anomaly &amp; Timestomp Conflicts</h3>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Severity</th>
-            <th>Entity</th>
-            <th>Anomaly Type</th>
-            <th>Forensic Description</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for conf in corroboration.conflicts %}
-          <tr>
-            <td><span class="badge badge-danger">{{ conf.severity }}</span></td>
-            <td><code>{{ conf.entity }}</code></td>
-            <td><code>{{ conf.conflict_type }}</code></td>
-            <td>{{ conf.description }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
+  <!-- Card 7: Chain of Custody Audit Log -->
+  <div class="ui-card">
+    <div class="ui-card-header">
+      <h2>7. Chain of Custody Immutable Ledger</h2>
     </div>
-    {% endif %}
-
-    {% if corroboration.clusters %}
-    <h3 style="color: var(--neon-cyan); margin-top: 1.8rem;">🔗 Multi-Artefact Corroborated Evidence Chains</h3>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Subject / Target Entity</th>
-            <th>Corroborating Plugins</th>
-            <th>Delta Window</th>
-            <th>Correlation Analysis</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for cluster in corroboration.clusters[:20] %}
-          <tr>
-            <td><code>{{ cluster.entity }}</code></td>
-            <td>
-              {% for p in cluster.plugins %}
-              <span class="badge badge-pass">{{ p }}</span>
-              {% endfor %}
-            </td>
-            <td><code>{{ cluster.time_delta_seconds }}s</code></td>
-            <td>{{ cluster.description }}</td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-    {% endif %}
-  </section>
-  {% endif %}
-
-  <!-- 5. Reconstructed Super-Timeline with Interactive Visualizer -->
-  <section class="glass-panel">
-    <h2>5. Interactive Super-Timeline Explorer</h2>
-    <p style="color: var(--text-muted); margin-bottom: 1rem;">
-      Explore reconstructed forensic events chronologically. Scrub, search, or filter by source and alert tags in real-time.
-    </p>
-
-    <!-- Visual Activity Density Track -->
-    <div class="chart-container">
-      <div class="chart-title">
-        <span>ACTIVITY DENSITY &amp; BURST HEATMAP</span>
-        <span id="active-event-count">{{ timeline_events|length }} Events Loaded</span>
-      </div>
-      <div class="bars-track" id="bars-track">
-        <!-- Generated by JavaScript below -->
+    <div class="ui-card-body">
+      <div class="table-container">
+        <table>
+          <thead>
+            <tr>
+              <th>Seq</th>
+              <th>Timestamp (UTC)</th>
+              <th>Investigating Actor</th>
+              <th>Event Operation</th>
+              <th>Entry SHA-256 Hash</th>
+            </tr>
+          </thead>
+          <tbody>
+            {% for entry in custody_entries %}
+            <tr>
+              <td><code>#{{ entry.seq }}</code></td>
+              <td><code>{{ entry.timestamp_utc }}</code></td>
+              <td><strong style="color: #ffffff;">{{ entry.actor }}</strong></td>
+              <td><span class="badge badge-pass">{{ entry.event_type }}</span></td>
+              <td><code>{{ entry.entry_hash[:16] }}...{{ entry.entry_hash[-8:] }}</code></td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
       </div>
     </div>
-
-    <!-- Live Filter Toolbar -->
-    <div class="timeline-toolbar">
-      <input type="text" id="timeline-search" class="search-input" placeholder="🔍 Live search timestamps, processes, file paths, users, rationale..." oninput="filterTimeline()">
-      <button class="filter-btn active" onclick="setFilter('ALL', this)">All</button>
-      <button class="filter-btn" onclick="setFilter('ALERT', this)">🚨 Alerts</button>
-      <button class="filter-btn" onclick="setFilter('CORROBORATED', this)">🔗 Corroborated</button>
-      <button class="filter-btn" onclick="setFilter('CONFLICT', this)">⚠️ Conflicts</button>
-      <button class="filter-btn" onclick="setFilter('FILE', this)">📁 Files</button>
-      <button class="filter-btn" onclick="setFilter('PROCESS', this)">⚙️ Processes</button>
-    </div>
-
-    <!-- Timeline Table -->
-    <div class="table-container">
-      <table id="timeline-table">
-        <thead>
-          <tr>
-            <th>UTC Timestamp</th>
-            <th>Action</th>
-            <th>User</th>
-            <th>Object / Target</th>
-            <th>Plugin</th>
-            <th>Corroborated By</th>
-            <th>Conf.</th>
-            <th>Rationale &amp; Warnings</th>
-          </tr>
-        </thead>
-        <tbody id="timeline-tbody">
-          {% for e in timeline_events[:600] %}
-          <tr data-action="{{ e.action }}" data-tags="{{ e.tags|join(' ') }}" data-path="{{ e.object.path or '' }}" data-user="{{ e.user }}" data-plugin="{{ e.source.artifact }}">
-            <td><code>{{ e.timestamp_utc }}</code></td>
-            <td>
-              <span class="badge {% if 'TIMESTOMP' in e.action or 'CLEARED' in e.action or 'ALERT' in e.tags %}badge-danger{% elif 'PROCESS' in e.action or 'CONFLICT' in e.tags %}badge-warn{% else %}badge-pass{% endif %}">
-                {{ e.action }}
-              </span>
-            </td>
-            <td>{{ e.user }}</td>
-            <td><code>{{ e.object.path or 'N/A' }}</code></td>
-            <td><span class="badge badge-pass">{{ e.source.artifact }}</span></td>
-            <td>
-              {% if e.corroborated_by %}
-              <span class="badge badge-tsa">{{ e.corroborated_by|join(', ') }}</span>
-              {% else %}
-              <span style="color: var(--text-dim);">-</span>
-              {% endif %}
-            </td>
-            <td>{{ e.confidence }}</td>
-            <td>
-              {{ e.rationale }}
-              {% if e.warnings %}
-              <div style="color: var(--neon-crimson); font-size: 0.8rem; margin-top: 0.25rem;">
-                ⚠️ {{ e.warnings|join('; ') }}
-              </div>
-              {% endif %}
-            </td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-    {% if timeline_events|length > 600 %}
-    <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 0.8rem;">
-      <em>(Initial HTML table renders first 600 events. Full collection of {{ timeline_events|length }} records is preserved in Parquet, SQLite, and CSV exports).</em>
-    </p>
-    {% endif %}
-  </section>
-
-  <!-- 6. Cryptographic Integrity & Attestation -->
-  <section class="glass-panel">
-    <h2>6. Cryptographic Integrity &amp; Attestation</h2>
-    <div class="meta-grid">
-      <div class="meta-card">
-        <div class="meta-label">Overall Integrity Status</div>
-        <div class="meta-value" style="color: var(--neon-emerald);">{{ integrity.overall_status }}</div>
-      </div>
-      <div class="meta-card">
-        <div class="meta-label">Merkle Root Digest</div>
-        <div class="meta-value"><code>{{ manifest.merkle_root }}</code></div>
-      </div>
-      <div class="meta-card">
-        <div class="meta-label">Ledger Entries Replayed</div>
-        <div class="meta-value">{{ integrity.checked_items.ledger_entries }}</div>
-      </div>
-    </div>
-  </section>
-
-  <!-- 7. Chain of Custody Audit Log -->
-  <section class="glass-panel">
-    <h2>7. Chain of Custody Immutable Ledger</h2>
-    <div class="table-container">
-      <table>
-        <thead>
-          <tr>
-            <th>Seq</th>
-            <th>Timestamp (UTC)</th>
-            <th>Actor</th>
-            <th>Event Operation</th>
-            <th>Entry SHA-256 Hash</th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for entry in custody_entries %}
-          <tr>
-            <td><code>#{{ entry.seq }}</code></td>
-            <td><code>{{ entry.timestamp_utc }}</code></td>
-            <td>{{ entry.actor }}</td>
-            <td><span class="badge badge-pass">{{ entry.event_type }}</span></td>
-            <td><code>{{ entry.entry_hash[:16] }}...{{ entry.entry_hash[-8:] }}</code></td>
-          </tr>
-          {% endfor %}
-        </tbody>
-      </table>
-    </div>
-  </section>
+  </div>
 
 </div>
 
