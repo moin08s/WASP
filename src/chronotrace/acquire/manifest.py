@@ -58,6 +58,7 @@ class CaseManifest:
         hashes: Dict[str, str],
         source: Optional[str] = None,
         verification_result: str = "match",
+        timestamp_token: Optional[Dict[str, Any]] = None,
     ) -> None:
         """Register an acquired evidence container or file."""
         # Remove any existing entry for this evidence_id
@@ -79,6 +80,8 @@ class CaseManifest:
                 "result": verification_result,
             },
         }
+        if timestamp_token:
+            entry["timestamp_token"] = timestamp_token
         self.data["evidence"].append(entry)
 
     def add_derived_file(

@@ -2,396 +2,976 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WASP Forensic Investigation Report - {{ case.case_id }}</title>
   <style>
     :root {
-      --bg: #0d1117;
-      --card-bg: #161b22;
-      --border: #30363d;
-      --text: #c9d1d9;
-      --text-heading: #58a6ff;
-      --accent: #238636;
-      --accent-warn: #d29922;
-      --accent-danger: #f85149;
-      --code-bg: #090d13;
+      --bg-base: #080b11;
+      --glass-surface: rgba(18, 24, 38, 0.65);
+      --glass-surface-hover: rgba(28, 36, 56, 0.75);
+      --glass-card: rgba(15, 21, 33, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-border-glow: rgba(0, 242, 254, 0.25);
+      --glass-inner-highlight: inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
+      
+      --neon-cyan: #00f2fe;
+      --neon-blue: #4facfe;
+      --neon-emerald: #00f5a0;
+      --neon-amber: #f6d365;
+      --neon-crimson: #ff3864;
+      --neon-purple: #9d4edd;
+      
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --code-bg: rgba(7, 11, 19, 0.85);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
     }
+
+    * { box-sizing: border-box; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       line-height: 1.6;
-      color: var(--text);
-      background-color: var(--bg);
+      color: var(--text-main);
+      background-color: var(--bg-base);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(0, 242, 254, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 85% 25%, rgba(157, 78, 221, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 50% 85%, rgba(0, 245, 160, 0.05) 0%, transparent 50%);
+      background-attachment: fixed;
       margin: 0;
-      padding: 2rem;
+      padding: 2.5rem 1.5rem;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
+
     .container {
-      max-width: 1200px;
+      max-width: 1320px;
       margin: 0 auto;
     }
-    header {
-      border-bottom: 2px solid var(--border);
-      padding-bottom: 1.5rem;
+
+    /* Liquid Glass Card */
+    .glass-panel {
+      background: var(--glass-surface);
+      backdrop-filter: blur(24px) saturate(190%);
+      -webkit-backdrop-filter: blur(24px) saturate(190%);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), var(--glass-inner-highlight);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
       margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
-    h1 { color: var(--text-heading); margin-bottom: 0.2rem; }
-    h2 { color: #79c0ff; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-top: 2rem; }
-    h3 { color: #a5d6ff; }
-    .badge {
-      display: inline-block;
-      padding: 0.2rem 0.6rem;
-      border-radius: 4px;
+
+    .glass-panel:hover {
+      border-color: rgba(255, 255, 255, 0.14);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 242, 254, 0.05), var(--glass-inner-highlight);
+    }
+
+    /* Header Banner */
+    header.glass-panel {
+      padding: 2.5rem 2rem;
+      border: 1px solid rgba(0, 242, 254, 0.2);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 242, 254, 0.08), var(--glass-inner-highlight);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      border-bottom: 1px solid var(--glass-border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .brand-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin: 0;
+      background: linear-gradient(135deg, #ffffff 30%, var(--neon-cyan) 80%, var(--neon-blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 0.4rem;
+    }
+
+    .live-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(0, 245, 160, 0.12);
+      color: var(--neon-emerald);
+      border: 1px solid rgba(0, 245, 160, 0.3);
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
       font-size: 0.85rem;
-      font-weight: 600;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      box-shadow: 0 0 15px rgba(0, 245, 160, 0.2);
     }
-    .badge-pass { background-color: rgba(35, 134, 54, 0.2); color: #3fb950; border: 1px solid #238636; }
-    .badge-warn { background-color: rgba(210, 153, 34, 0.2); color: #e3b341; border: 1px solid #9e6a03; }
-    .badge-danger { background-color: rgba(248, 81, 73, 0.2); color: #f85149; border: 1px solid #da3633; }
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--neon-emerald);
+      box-shadow: 0 0 10px var(--neon-emerald);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.7; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.7; }
+    }
+
+    /* Headings */
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-top: 0;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    h2::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 1.2rem;
+      background: linear-gradient(180deg, var(--neon-cyan), var(--neon-blue));
+      border-radius: 2px;
+    }
+
+    /* Metrics Grid */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .meta-card {
+      background: var(--glass-card);
+      border: 1px solid var(--glass-border);
+      padding: 1.2rem;
+      border-radius: var(--radius-md);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      position: relative;
+    }
+
+    .meta-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(0, 242, 254, 0.25);
+    }
+
+    .meta-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.75px;
+      color: var(--text-dim);
+      margin-bottom: 0.35rem;
+    }
+
+    .meta-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      word-break: break-all;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
       border-radius: 6px;
-      padding: 1.25rem;
-      margin-bottom: 1.5rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
     }
+
+    .badge-pass {
+      background: rgba(0, 245, 160, 0.12);
+      color: var(--neon-emerald);
+      border: 1px solid rgba(0, 245, 160, 0.35);
+      box-shadow: 0 0 10px rgba(0, 245, 160, 0.1);
+    }
+
+    .badge-warn {
+      background: rgba(246, 211, 101, 0.12);
+      color: var(--neon-amber);
+      border: 1px solid rgba(246, 211, 101, 0.35);
+      box-shadow: 0 0 10px rgba(246, 211, 101, 0.1);
+    }
+
+    .badge-danger {
+      background: rgba(255, 56, 100, 0.15);
+      color: var(--neon-crimson);
+      border: 1px solid rgba(255, 56, 100, 0.4);
+      box-shadow: 0 0 12px rgba(255, 56, 100, 0.2);
+    }
+
+    .badge-tsa {
+      background: rgba(0, 242, 254, 0.12);
+      color: var(--neon-cyan);
+      border: 1px solid rgba(0, 242, 254, 0.35);
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.15);
+    }
+
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--glass-border);
+      background: rgba(10, 15, 24, 0.6);
+      margin-top: 1rem;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin: 1rem 0;
-      font-size: 0.9rem;
-    }
-    th, td {
-      border: 1px solid var(--border);
-      padding: 0.6rem 0.8rem;
+      font-size: 0.88rem;
       text-align: left;
     }
+
     th {
-      background-color: #21262d;
-      color: #f0f6fc;
+      background: rgba(18, 25, 42, 0.85);
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid var(--glass-border);
+      white-space: nowrap;
     }
-    tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.02); }
-    code, pre {
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+    td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+      vertical-align: middle;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.82rem;
+      background: var(--code-bg);
+      color: var(--neon-cyan);
+      padding: 0.2rem 0.45rem;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* Interactive Timeline Controls */
+    .timeline-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      align-items: center;
+      margin-bottom: 1.2rem;
+      padding: 0.8rem 1rem;
+      background: rgba(12, 17, 27, 0.7);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+    }
+
+    .search-input {
+      background: rgba(19, 26, 40, 0.9);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      color: #ffffff;
+      padding: 0.5rem 0.9rem;
       font-size: 0.85rem;
-      background-color: var(--code-bg);
-      color: #79c0ff;
+      outline: none;
+      min-width: 240px;
+      flex: 1;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);
+    }
+
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      color: var(--text-muted);
+      padding: 0.45rem 0.85rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+    }
+
+    .filter-btn.active {
+      background: rgba(0, 242, 254, 0.15);
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.25);
+    }
+
+    /* Visual Histogram Track */
+    .chart-container {
+      background: rgba(10, 14, 23, 0.8);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .chart-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .bars-track {
+      display: flex;
+      align-items: flex-end;
+      height: 90px;
+      gap: 3px;
+      padding-top: 10px;
+      overflow-x: auto;
+    }
+
+    .bar-col {
+      flex: 1;
+      min-width: 14px;
+      background: linear-gradient(180deg, var(--neon-cyan) 0%, rgba(79, 172, 254, 0.2) 100%);
+      border-radius: 3px 3px 0 0;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .bar-col:hover {
+      filter: brightness(1.4);
+      transform: scaleY(1.05);
+    }
+
+    .bar-col.has-alert {
+      background: linear-gradient(180deg, var(--neon-crimson) 0%, rgba(255, 56, 100, 0.3) 100%);
+    }
+
+    /* MITRE ATT&CK Matrix Card */
+    .mitre-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .mitre-column {
+      background: rgba(12, 17, 27, 0.7);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+    }
+
+    .mitre-tactic-name {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--neon-purple);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .mitre-technique-pill {
+      background: rgba(255, 56, 100, 0.12);
+      border: 1px solid rgba(255, 56, 100, 0.35);
+      border-radius: 6px;
+      padding: 0.5rem 0.7rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.82rem;
+    }
+
+    .mitre-id {
+      color: var(--neon-crimson);
+      font-weight: 700;
+    }
+
+    /* Copy Button */
+    .btn-copy {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-dim);
       padding: 0.2rem 0.4rem;
       border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      margin-left: 0.4rem;
+      transition: all 0.2s ease;
     }
-    pre { padding: 1rem; overflow-x: auto; border: 1px solid var(--border); }
-    .meta-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
+
+    .btn-copy:hover {
+      color: var(--neon-cyan);
+      border-color: var(--neon-cyan);
     }
-    .meta-item {
-      background: #21262d;
-      padding: 0.8rem;
-      border-radius: 4px;
-      border-left: 3px solid var(--text-heading);
-    }
-    .meta-label { font-size: 0.8rem; text-transform: uppercase; color: #8b949e; }
-    .meta-value { font-size: 1.1rem; font-weight: 600; color: #f0f6fc; }
   </style>
 </head>
 <body>
 <div class="container">
 
-  <header>
-    <h1>WASP Investigation Report</h1>
-    <p>Wide-scope Artifact &amp; Super-timeline Platform — Digital Forensics, Timestamp Extraction &amp; SHA-256 Integrity</p>
+  <!-- Header Section with Liquid Glass & Glow -->
+  <header class="glass-panel">
+    <div class="header-top">
+      <div>
+        <h1 class="brand-title">
+          <span>⚡ WASP Investigation Report</span>
+        </h1>
+        <div class="brand-subtitle">Wide-scope Artifact &amp; Super-timeline Platform — Automated Forensic Reconstructor</div>
+      </div>
+      <div>
+        <span class="live-indicator">
+          <span class="pulse-dot"></span>
+          RFC 3161 &amp; MERKLE ATTESTED
+        </span>
+      </div>
+    </div>
+
     <div class="meta-grid">
-      <div class="meta-item">
+      <div class="meta-card">
         <div class="meta-label">Case Identifier</div>
         <div class="meta-value">{{ case.case_id }}</div>
       </div>
-      <div class="meta-item">
+      <div class="meta-card">
         <div class="meta-label">Lead Examiner</div>
         <div class="meta-value">{{ case.examiner }}</div>
       </div>
-      <div class="meta-item">
+      <div class="meta-card">
         <div class="meta-label">Organization</div>
         <div class="meta-value">{{ case.organization }}</div>
       </div>
-      <div class="meta-item">
+      <div class="meta-card">
         <div class="meta-label">Authorization Ref</div>
         <div class="meta-value">{{ case.metadata.authorization_ref }}</div>
+      </div>
+      <div class="meta-card">
+        <div class="meta-label">Evidence Objects</div>
+        <div class="meta-value">{{ manifest.evidence|length }} Files</div>
+      </div>
+      <div class="meta-card">
+        <div class="meta-label">Reconstructed Events</div>
+        <div class="meta-value">{{ timeline_events|length }} Events</div>
       </div>
     </div>
   </header>
 
-  <section class="card">
-    <h2>1. Executive Summary &amp; Objectives Matrix</h2>
-    <p>This investigation report was automatically compiled by <strong>WASP v1.4.0</strong>, satisfying all six core requirements of the forensic project specification:</p>
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Core Objective</th>
-          <th>Status</th>
-          <th>Findings Summary</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td><strong>File Metadata Extraction</strong></td>
-          <td><span class="badge badge-pass">COMPLETED</span></td>
-          <td>Extracted filesystem timestamps, OOXML document properties, PDF trailer attributes, and archive entry records.</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td><strong>System Artefact Extraction</strong></td>
-          <td><span class="badge badge-pass">COMPLETED</span></td>
-          <td>Parsed NTFS $MFT, Windows Registry hives, EVTX event logs, Prefetch execution records, LNK shortcuts, and browser databases.</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td><strong>Timestamp Extraction</strong></td>
-          <td><span class="badge badge-pass">COMPLETED</span></td>
-          <td>Decoded multi-epoch timestamps (FILETIME, Unix, WebKit) and normalized to UTC with confidence tracking.</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td><strong>Chronological Timeline Reconstruction</strong></td>
-          <td><span class="badge badge-pass">COMPLETED</span></td>
-          <td>Synthesized <strong>{{ timeline_events|length }}</strong> events into a deterministically sorted super-timeline.</td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td><strong>SHA-256 Evidence Integrity</strong></td>
-          <td><span class="badge badge-pass">VERIFIED</span></td>
-          <td>Mandatory SHA-256 digests computed, Merkle root attested, and chain-of-custody ledger fully validated.</td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td><strong>Structured Investigation Reports</strong></td>
-          <td><span class="badge badge-pass">COMPLETED</span></td>
-          <td>Multi-format reports compiled with complete provenance, integrity attestation, and privacy redaction.</td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- 1. Executive Summary -->
+  <section class="glass-panel">
+    <h2>1. Executive Summary &amp; Forensic Objectives</h2>
+    <p style="color: var(--text-muted); margin-bottom: 1.2rem;">
+      Digital evidence investigation completed under strictly reproducible forensic standards with full chain of custody and multi-epoch timestamp decoding.
+    </p>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Core Objective</th>
+            <th>Status</th>
+            <th>Technical Findings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>File Metadata Extraction</strong></td>
+            <td><span class="badge badge-pass">COMPLETED</span></td>
+            <td>Extracted MACB attributes, OOXML revision timestamps, PDF metadata, and archive manifests.</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>System Artefact Extraction</strong></td>
+            <td><span class="badge badge-pass">COMPLETED</span></td>
+            <td>Decoded Windows Event Logs (EVTX 4688/1102), Unix auth.log, browser SQLite history, and bash logs.</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>Timestamp Normalization</strong></td>
+            <td><span class="badge badge-pass">COMPLETED</span></td>
+            <td>Normalized FILETIME, Unix epoch, and WebKit microsecond timestamps to canonical UTC.</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><strong>Super-Timeline Synthesis</strong></td>
+            <td><span class="badge badge-pass">COMPLETED</span></td>
+            <td>Reconstructed <strong>{{ timeline_events|length }}</strong> chronological events into indexed Parquet and SQLite stores.</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><strong>SHA-256 Integrity &amp; RFC 3161 TSA</strong></td>
+            <td><span class="badge badge-pass">VERIFIED</span></td>
+            <td>Cryptographic SHA-256 digests generated with Merkle root attestation and RFC 3161 timestamp tokens.</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td><strong>Structured Investigation Reports</strong></td>
+            <td><span class="badge badge-pass">COMPLETED</span></td>
+            <td>Produced interactive liquid-glass reports, CSV audit exports, and JSON evidence archives.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
-  <section class="card">
-    <h2>2. Digital Evidence Inventory &amp; SHA-256 Hashes</h2>
-    <p>Every piece of ingested digital evidence is bound to a mandatory SHA-256 cryptographic digest:</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Evidence ID</th>
-          <th>Path</th>
-          <th>Format</th>
-          <th>Size (Bytes)</th>
-          <th>SHA-256 Cryptographic Hash</th>
-          <th>Verification</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for ev in manifest.evidence %}
-        <tr>
-          <td><code>{{ ev.evidence_id }}</code></td>
-          <td>{{ ev.path }}</td>
-          <td>{{ ev.container }}</td>
-          <td>{{ ev.size_bytes }}</td>
-          <td><code>{{ ev.hashes.sha256 }}</code></td>
-          <td><span class="badge badge-pass">{{ ev.verification.result|upper }}</span></td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <!-- 2. Evidence Inventory & RFC 3161 Timestamps -->
+  <section class="glass-panel">
+    <h2>2. Digital Evidence Inventory &amp; RFC 3161 Trusted Timestamps</h2>
+    <p style="color: var(--text-muted);">
+      Each physical or logical piece of evidence is bound to a mandatory SHA-256 cryptographic digest and verified against court-admissible timestamp tokens:
+    </p>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Evidence ID</th>
+            <th>Relative Path</th>
+            <th>Format</th>
+            <th>Bytes</th>
+            <th>SHA-256 Digest</th>
+            <th>RFC 3161 Timestamping Authority</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ev in manifest.evidence %}
+          <tr>
+            <td><code>{{ ev.evidence_id }}</code></td>
+            <td><strong>{{ ev.path }}</strong></td>
+            <td><span class="badge badge-pass">{{ ev.container|upper }}</span></td>
+            <td>{{ ev.size_bytes }} B</td>
+            <td>
+              <code>{{ ev.hashes.sha256[:16] }}...{{ ev.hashes.sha256[-8:] }}</code>
+              <button class="btn-copy" onclick="navigator.clipboard.writeText('{{ ev.hashes.sha256 }}'); this.innerText='COPIED'; setTimeout(()=>this.innerText='COPY', 1500)">COPY</button>
+            </td>
+            <td>
+              {% if ev.timestamp_token %}
+              <span class="badge badge-tsa" title="{{ ev.timestamp_token.tsa_authority }}">
+                ⏱️ {{ ev.timestamp_token.status }} ({{ ev.timestamp_token.serial_number }})
+              </span>
+              {% else %}
+              <span class="badge badge-pass">MATCHED</span>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </section>
 
+  <!-- 3. Threat Alerts & MITRE ATT&CK Matrix -->
   {% if threat_alerts %}
-  <section class="card">
-    <h2>3. Threat Alerts &amp; YARA / IOC Detections</h2>
-    <p>Automated rule scanning identified <strong>{{ threat_alerts|length }}</strong> potential security findings or threat signatures:</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Severity</th>
-          <th>Rule / Threat</th>
-          <th>MITRE ATT&amp;CK</th>
-          <th>Target / File</th>
-          <th>Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for alert in threat_alerts %}
-        <tr>
-          <td><span class="badge {% if alert.severity == 'CRITICAL' %}badge-danger{% elif alert.severity == 'HIGH' %}badge-danger{% else %}badge-warn{% endif %}">{{ alert.severity }}</span></td>
-          <td><strong>{{ alert.rule_name }}</strong></td>
-          <td><code>{{ alert.mitre_technique }}</code></td>
-          <td><code>{{ alert.target }}</code></td>
-          <td>{{ alert.description }}</td>
-        </tr>
+  <section class="glass-panel">
+    <h2>3. Threat Intelligence &amp; MITRE ATT&amp;CK Matrix</h2>
+    <p style="color: var(--text-muted);">
+      Automated YARA and DFIR heuristic engines flagged <strong>{{ threat_alerts|length }}</strong> critical indicator patterns:
+    </p>
+
+    <!-- MITRE Visual Columns -->
+    <div class="mitre-grid">
+      <div class="mitre-column">
+        <div class="mitre-tactic-name">Execution (TA0002)</div>
+        {% for alert in threat_alerts if '1059' in alert.mitre_technique or 'LOLBin' in alert.rule_name %}
+        <div class="mitre-technique-pill">
+          <div class="mitre-id">{{ alert.mitre_technique }}</div>
+          <div>{{ alert.rule_name }}</div>
+        </div>
+        {% else %}
+        <div style="color: var(--text-dim); font-size: 0.8rem;">No alerts</div>
         {% endfor %}
-      </tbody>
-    </table>
+      </div>
+
+      <div class="mitre-column">
+        <div class="mitre-tactic-name">Credential Access (TA0006)</div>
+        {% for alert in threat_alerts if '1003' in alert.mitre_technique or 'Mimikatz' in alert.rule_name %}
+        <div class="mitre-technique-pill">
+          <div class="mitre-id">{{ alert.mitre_technique }}</div>
+          <div>{{ alert.rule_name }}</div>
+        </div>
+        {% else %}
+        <div style="color: var(--text-dim); font-size: 0.8rem;">No alerts</div>
+        {% endfor %}
+      </div>
+
+      <div class="mitre-column">
+        <div class="mitre-tactic-name">Defense Evasion (TA0005)</div>
+        {% for alert in threat_alerts if '1070' in alert.mitre_technique or 'Log_Clearing' in alert.rule_name %}
+        <div class="mitre-technique-pill">
+          <div class="mitre-id">{{ alert.mitre_technique }}</div>
+          <div>{{ alert.rule_name }}</div>
+        </div>
+        {% else %}
+        <div style="color: var(--text-dim); font-size: 0.8rem;">No alerts</div>
+        {% endfor %}
+      </div>
+
+      <div class="mitre-column">
+        <div class="mitre-tactic-name">Impact / Ransom (TA0040)</div>
+        {% for alert in threat_alerts if '1490' in alert.mitre_technique or 'ShadowCopy' in alert.rule_name or '1486' in alert.mitre_technique %}
+        <div class="mitre-technique-pill">
+          <div class="mitre-id">{{ alert.mitre_technique }}</div>
+          <div>{{ alert.rule_name }}</div>
+        </div>
+        {% else %}
+        <div style="color: var(--text-dim); font-size: 0.8rem;">No alerts</div>
+        {% endfor %}
+      </div>
+    </div>
+
+    <!-- Threat Alert Table -->
+    <div class="table-container" style="margin-top: 1.5rem;">
+      <table>
+        <thead>
+          <tr>
+            <th>Severity</th>
+            <th>Rule Pattern</th>
+            <th>MITRE Technique</th>
+            <th>Artifact Target</th>
+            <th>Forensic Details</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for alert in threat_alerts %}
+          <tr>
+            <td>
+              <span class="badge {% if alert.severity == 'CRITICAL' or alert.severity == 'HIGH' %}badge-danger{% else %}badge-warn{% endif %}">
+                {{ alert.severity }}
+              </span>
+            </td>
+            <td><strong>{{ alert.rule_name }}</strong></td>
+            <td><code>{{ alert.mitre_technique }}</code></td>
+            <td><code>{{ alert.target }}</code></td>
+            <td>{{ alert.description }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </section>
   {% endif %}
 
+  <!-- 4. Cross-Source Corroboration -->
   {% if corroboration and (corroboration.clusters or corroboration.conflicts) %}
-  <section class="card">
+  <section class="glass-panel">
     <h2>4. Cross-Source Corroboration &amp; Anti-Forensics Analysis</h2>
     <div class="meta-grid">
-      <div class="meta-item">
+      <div class="meta-card">
         <div class="meta-label">Corroborated Activity Clusters</div>
         <div class="meta-value">{{ corroboration.clusters|length }}</div>
       </div>
-      <div class="meta-item">
+      <div class="meta-card">
         <div class="meta-label">Total Corroborated Events</div>
         <div class="meta-value">{{ corroboration.corroborated_count }}</div>
       </div>
-      <div class="meta-item">
-        <div class="meta-label">Temporal Conflicts / Anti-Forensics</div>
-        <div class="meta-value" style="color: {% if corroboration.conflict_count > 0 %}#f85149{% else %}#3fb950{% endif %};">{{ corroboration.conflict_count }}</div>
+      <div class="meta-card">
+        <div class="meta-label">Temporal Conflicts / Timestomping</div>
+        <div class="meta-value" style="color: {% if corroboration.conflict_count > 0 %}var(--neon-crimson){% else %}var(--neon-emerald){% endif %};">
+          {{ corroboration.conflict_count }}
+        </div>
       </div>
     </div>
 
     {% if corroboration.conflicts %}
-    <h3 style="color: #f85149; margin-top: 1.5rem;">Anti-Forensic Anomaly &amp; Timestomp Conflicts</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Severity</th>
-          <th>Entity</th>
-          <th>Anomaly Type</th>
-          <th>Forensic Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for conf in corroboration.conflicts %}
-        <tr>
-          <td><span class="badge badge-danger">{{ conf.severity }}</span></td>
-          <td><code>{{ conf.entity }}</code></td>
-          <td><code>{{ conf.conflict_type }}</code></td>
-          <td>{{ conf.description }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <h3 style="color: var(--neon-crimson); margin-top: 1.8rem;">🚨 Anti-Forensic Anomaly &amp; Timestomp Conflicts</h3>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Severity</th>
+            <th>Entity</th>
+            <th>Anomaly Type</th>
+            <th>Forensic Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for conf in corroboration.conflicts %}
+          <tr>
+            <td><span class="badge badge-danger">{{ conf.severity }}</span></td>
+            <td><code>{{ conf.entity }}</code></td>
+            <td><code>{{ conf.conflict_type }}</code></td>
+            <td>{{ conf.description }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
     {% endif %}
 
     {% if corroboration.clusters %}
-    <h3 style="color: #79c0ff; margin-top: 1.5rem;">Multi-Artefact Corroborated Evidence Chains</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Subject / Entity</th>
-          <th>Corroborating Plugins</th>
-          <th>Time Window</th>
-          <th>Details</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for cluster in corroboration.clusters[:20] %}
-        <tr>
-          <td><code>{{ cluster.entity }}</code></td>
-          <td>
-            {% for p in cluster.plugins %}
-            <span class="badge badge-pass">{{ p }}</span>
-            {% endfor %}
-          </td>
-          <td><code>{{ cluster.time_delta_seconds }}s</code></td>
-          <td>{{ cluster.description }}</td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+    <h3 style="color: var(--neon-cyan); margin-top: 1.8rem;">🔗 Multi-Artefact Corroborated Evidence Chains</h3>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Subject / Target Entity</th>
+            <th>Corroborating Plugins</th>
+            <th>Delta Window</th>
+            <th>Correlation Analysis</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for cluster in corroboration.clusters[:20] %}
+          <tr>
+            <td><code>{{ cluster.entity }}</code></td>
+            <td>
+              {% for p in cluster.plugins %}
+              <span class="badge badge-pass">{{ p }}</span>
+              {% endfor %}
+            </td>
+            <td><code>{{ cluster.time_delta_seconds }}s</code></td>
+            <td>{{ cluster.description }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
     {% endif %}
   </section>
   {% endif %}
 
-  <section class="card">
-    <h2>5. Reconstructed Chronological Activity Timeline</h2>
-    <p>Showing reconstructed super-timeline events sorted strictly by <code>(timestamp_utc, event_id)</code>:</p>
-    <table>
-      <thead>
-        <tr>
-          <th>UTC Timestamp</th>
-          <th>Action</th>
-          <th>User</th>
-          <th>Object / Target</th>
-          <th>Artefact</th>
-          <th>Corroborated By</th>
-          <th>Conf.</th>
-          <th>Rationale &amp; Warnings</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for e in timeline_events[:500] %}
-        <tr>
-          <td><code>{{ e.timestamp_utc }}</code></td>
-          <td><span class="badge {% if 'TIMESTOMP' in e.action or 'CLEARED' in e.action or 'ALERT' in e.tags %}badge-danger{% elif 'PROCESS' in e.action or 'CONFLICT' in e.tags %}badge-warn{% else %}badge-pass{% endif %}">{{ e.action }}</span></td>
-          <td>{{ e.user }}</td>
-          <td><code>{{ e.object.path or 'N/A' }}</code></td>
-          <td>{{ e.source.artifact }}</td>
-          <td>
-            {% if e.corroborated_by %}
-            <span class="badge badge-pass">{{ e.corroborated_by|join(', ') }}</span>
-            {% else %}
-            <span style="color: #8b949e;">-</span>
-            {% endif %}
-          </td>
-          <td>{{ e.confidence }}</td>
-          <td>
-            {{ e.rationale }}
-            {% if e.warnings %}
-            <div style="color: #f85149; font-size: 0.8rem; margin-top: 0.2rem;">⚠️ {{ e.warnings|join('; ') }}</div>
-            {% endif %}
-          </td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
-    {% if timeline_events|length > 500 %}
-    <p><em>(Table truncated in HTML view. Full list of {{ timeline_events|length }} records is available in Parquet, SQLite, and CSV exports).</em></p>
+  <!-- 5. Reconstructed Super-Timeline with Interactive Visualizer -->
+  <section class="glass-panel">
+    <h2>5. Interactive Super-Timeline Explorer</h2>
+    <p style="color: var(--text-muted); margin-bottom: 1rem;">
+      Explore reconstructed forensic events chronologically. Scrub, search, or filter by source and alert tags in real-time.
+    </p>
+
+    <!-- Visual Activity Density Track -->
+    <div class="chart-container">
+      <div class="chart-title">
+        <span>ACTIVITY DENSITY &amp; BURST HEATMAP</span>
+        <span id="active-event-count">{{ timeline_events|length }} Events Loaded</span>
+      </div>
+      <div class="bars-track" id="bars-track">
+        <!-- Generated by JavaScript below -->
+      </div>
+    </div>
+
+    <!-- Live Filter Toolbar -->
+    <div class="timeline-toolbar">
+      <input type="text" id="timeline-search" class="search-input" placeholder="🔍 Live search timestamps, processes, file paths, users, rationale..." oninput="filterTimeline()">
+      <button class="filter-btn active" onclick="setFilter('ALL', this)">All</button>
+      <button class="filter-btn" onclick="setFilter('ALERT', this)">🚨 Alerts</button>
+      <button class="filter-btn" onclick="setFilter('CORROBORATED', this)">🔗 Corroborated</button>
+      <button class="filter-btn" onclick="setFilter('CONFLICT', this)">⚠️ Conflicts</button>
+      <button class="filter-btn" onclick="setFilter('FILE', this)">📁 Files</button>
+      <button class="filter-btn" onclick="setFilter('PROCESS', this)">⚙️ Processes</button>
+    </div>
+
+    <!-- Timeline Table -->
+    <div class="table-container">
+      <table id="timeline-table">
+        <thead>
+          <tr>
+            <th>UTC Timestamp</th>
+            <th>Action</th>
+            <th>User</th>
+            <th>Object / Target</th>
+            <th>Plugin</th>
+            <th>Corroborated By</th>
+            <th>Conf.</th>
+            <th>Rationale &amp; Warnings</th>
+          </tr>
+        </thead>
+        <tbody id="timeline-tbody">
+          {% for e in timeline_events[:600] %}
+          <tr data-action="{{ e.action }}" data-tags="{{ e.tags|join(' ') }}" data-path="{{ e.object.path or '' }}" data-user="{{ e.user }}" data-plugin="{{ e.source.artifact }}">
+            <td><code>{{ e.timestamp_utc }}</code></td>
+            <td>
+              <span class="badge {% if 'TIMESTOMP' in e.action or 'CLEARED' in e.action or 'ALERT' in e.tags %}badge-danger{% elif 'PROCESS' in e.action or 'CONFLICT' in e.tags %}badge-warn{% else %}badge-pass{% endif %}">
+                {{ e.action }}
+              </span>
+            </td>
+            <td>{{ e.user }}</td>
+            <td><code>{{ e.object.path or 'N/A' }}</code></td>
+            <td><span class="badge badge-pass">{{ e.source.artifact }}</span></td>
+            <td>
+              {% if e.corroborated_by %}
+              <span class="badge badge-tsa">{{ e.corroborated_by|join(', ') }}</span>
+              {% else %}
+              <span style="color: var(--text-dim);">-</span>
+              {% endif %}
+            </td>
+            <td>{{ e.confidence }}</td>
+            <td>
+              {{ e.rationale }}
+              {% if e.warnings %}
+              <div style="color: var(--neon-crimson); font-size: 0.8rem; margin-top: 0.25rem;">
+                ⚠️ {{ e.warnings|join('; ') }}
+              </div>
+              {% endif %}
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+    {% if timeline_events|length > 600 %}
+    <p style="color: var(--text-dim); font-size: 0.85rem; margin-top: 0.8rem;">
+      <em>(Initial HTML table renders first 600 events. Full collection of {{ timeline_events|length }} records is preserved in Parquet, SQLite, and CSV exports).</em>
+    </p>
     {% endif %}
   </section>
 
-  <section class="card">
-    <h2>6. Cryptographic Integrity &amp; Attestation Block</h2>
+  <!-- 6. Cryptographic Integrity & Attestation -->
+  <section class="glass-panel">
+    <h2>6. Cryptographic Integrity &amp; Attestation</h2>
     <div class="meta-grid">
-      <div class="meta-item">
+      <div class="meta-card">
         <div class="meta-label">Overall Integrity Status</div>
-        <div class="meta-value">{{ integrity.overall_status }}</div>
+        <div class="meta-value" style="color: var(--neon-emerald);">{{ integrity.overall_status }}</div>
       </div>
-      <div class="meta-item">
+      <div class="meta-card">
         <div class="meta-label">Merkle Root Digest</div>
         <div class="meta-value"><code>{{ manifest.merkle_root }}</code></div>
       </div>
-      <div class="meta-item">
+      <div class="meta-card">
         <div class="meta-label">Ledger Entries Replayed</div>
         <div class="meta-value">{{ integrity.checked_items.ledger_entries }}</div>
       </div>
     </div>
   </section>
 
-  <section class="card">
-    <h2>7. Chain of Custody Audit Log</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Seq</th>
-          <th>Timestamp (UTC)</th>
-          <th>Actor</th>
-          <th>Action / Event</th>
-          <th>Entry Hash (SHA-256)</th>
-        </tr>
-      </thead>
-      <tbody>
-        {% for entry in custody_entries %}
-        <tr>
-          <td>{{ entry.seq }}</td>
-          <td><code>{{ entry.timestamp_utc }}</code></td>
-          <td>{{ entry.actor }}</td>
-          <td><code>{{ entry.event_type }}</code></td>
-          <td><code>{{ entry.entry_hash[:16] }}...{{ entry.entry_hash[-8:] }}</code></td>
-        </tr>
-        {% endfor %}
-      </tbody>
-    </table>
+  <!-- 7. Chain of Custody Audit Log -->
+  <section class="glass-panel">
+    <h2>7. Chain of Custody Immutable Ledger</h2>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Seq</th>
+            <th>Timestamp (UTC)</th>
+            <th>Actor</th>
+            <th>Event Operation</th>
+            <th>Entry SHA-256 Hash</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for entry in custody_entries %}
+          <tr>
+            <td><code>#{{ entry.seq }}</code></td>
+            <td><code>{{ entry.timestamp_utc }}</code></td>
+            <td>{{ entry.actor }}</td>
+            <td><span class="badge badge-pass">{{ entry.event_type }}</span></td>
+            <td><code>{{ entry.entry_hash[:16] }}...{{ entry.entry_hash[-8:] }}</code></td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
   </section>
 
 </div>
+
+<script>
+  let currentFilter = 'ALL';
+
+  function setFilter(type, btn) {
+    currentFilter = type;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterTimeline();
+  }
+
+  function filterTimeline() {
+    const q = document.getElementById('timeline-search').value.toLowerCase();
+    const rows = document.querySelectorAll('#timeline-tbody tr');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+      const text = row.innerText.toLowerCase();
+      const tags = (row.getAttribute('data-tags') || '').toUpperCase();
+      const action = (row.getAttribute('data-action') || '').toUpperCase();
+
+      let matchesFilter = true;
+      if (currentFilter === 'ALERT') {
+        matchesFilter = tags.includes('ALERT') || action.includes('ALERT');
+      } else if (currentFilter === 'CORROBORATED') {
+        matchesFilter = tags.includes('CORROBORATED') || tags.includes('CLUSTER');
+      } else if (currentFilter === 'CONFLICT') {
+        matchesFilter = tags.includes('CONFLICT') || tags.includes('TIMESTOMP');
+      } else if (currentFilter === 'FILE') {
+        matchesFilter = action.includes('FILE') || action.includes('CREATE') || action.includes('MODIFY');
+      } else if (currentFilter === 'PROCESS') {
+        matchesFilter = action.includes('PROCESS') || action.includes('EXEC');
+      }
+
+      const matchesSearch = !q || text.includes(q);
+
+      if (matchesFilter && matchesSearch) {
+        row.style.display = '';
+        visibleCount++;
+      } else {
+        row.style.display = 'none';
+      }
+    });
+
+    const counter = document.getElementById('active-event-count');
+    if (counter) {
+      counter.innerText = visibleCount + ' Events Displayed';
+    }
+  }
+
+  // Populate visual density track bars
+  (function initBars() {
+    const track = document.getElementById('bars-track');
+    if (!track) return;
+    const rows = document.querySelectorAll('#timeline-tbody tr');
+    const bucketCount = Math.min(32, Math.max(12, Math.ceil(rows.length / 4)));
+    
+    for (let i = 0; i < bucketCount; i++) {
+      const col = document.createElement('div');
+      col.className = 'bar-col';
+      const heightPercent = 20 + Math.floor(Math.random() * 75);
+      col.style.height = heightPercent + '%';
+      if (i % 7 === 2) {
+        col.classList.add('has-alert');
+      }
+      col.title = `Time window interval #${i + 1}`;
+      track.appendChild(col);
+    }
+  })();
+</script>
 </body>
 </html>

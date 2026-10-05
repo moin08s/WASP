@@ -23,17 +23,19 @@ python wasp.py --help
 # 3. Run the Full Automated Live Forensic Demonstration
 python run_demo.py
 
-# 4. Run the Automated Test Suite (19 tests)
+# 4. Run the Automated Test Suite (22 tests)
 python -m pytest -v
 ```
 
-## ✨ Core Features
-1. **Desktop Graphical User Interface (GUI)**: Modern 6-tab dark-mode forensic workbench (`tkinter/ttk`) with real-time progress updates and background threading.
-2. **External Storage & USB Evidence Acquisition**: Auto-detects physical drives and mounted volumes with streaming SHA-256 computation and readback verification.
-3. **Real-Time USB Hotplug Watcher**: Background thread alerts examiners when USB media or storage devices are connected.
-4. **8 Forensic Artifact Plugins**: NTFS MFT, Windows Event Logs (EVTX), Prefetch, Registry hives, Chromium/Firefox SQLite, LNK shortcuts, Linux logs, and generic file metadata.
-5. **Deterministic Super-Timeline Reconstruction**: Dual-store persistence in Apache Parquet (`zstd` compressed) and SQLite with FTS5 full-text indexing.
-6. **Cross-Source Corroboration Engine**: Links events across multiple sources and flags anti-forensic timestomp anomalies.
-7. **YARA & Threat Pattern Rule Engine**: Scans raw evidence and timeline events against curated DFIR rules (Mimikatz, Ransomware, LOLBins, Log wiping).
-8. **Cryptographic Integrity & Chain of Custody**: Enforces read-only write-guards, append-only hash-chained ledger (`ledger.jsonl`), and Merkle tree root verification.
-9. **Structured Multi-Format Reporting**: Exports HTML, Markdown, JSON, and CSV reports with deterministic privacy redaction.
+## ✨ Core Features & Differentiators
+1. **Liquid Glass UI & Frosted Obsidian Theme**: Modern glassmorphism design in both the Desktop GUI (`launch_gui.py`) and single-file Interactive HTML Reports.
+2. **RFC 3161 Cryptographic Trusted Timestamping (TSA)**: Evidence SHA-256 hashes are bound to verifiable RFC 3161 timestamp tokens (`.tsr`) from public TSAs (e.g., FreeTSA) or local air-gapped cryptographic attestations for court admissibility.
+3. **Interactive D3/SVG Timeline Visualizer**: Single-file HTML report includes real-time search, tag filtering (Alerts, Corroborated, Conflicts, Files, Processes), activity density burst heatmap, and raw event inspectors.
+4. **MITRE ATT&CK Matrix Threat Mapping**: Automatically translates YARA rule findings and IOCs into visual MITRE ATT&CK tactical matrices (Execution, Credential Access, Defense Evasion, Impact).
+5. **External Storage & USB Hotplug Watcher**: Background thread detects connected external USB devices with write-safeguard prompts.
+6. **Cross-Source Corroboration Engine**: Correlates independent forensic artifacts (MFT, EVTX, browser history, prefetch) within sliding windows and detects anti-forensic timestomping.
+7. **8 Forensic Artifact Plugins**: NTFS MFT, Windows Event Logs (EVTX), Prefetch, Registry hives, Chromium/Firefox SQLite, LNK shortcuts, Linux logs, and generic file metadata.
+8. **Deterministic Super-Timeline Reconstruction**: Dual-store persistence in Apache Parquet (`zstd` compressed) and SQLite with FTS5 full-text indexing.
+9. **YARA & Threat Pattern Rule Engine**: Scans raw evidence and timeline events against curated DFIR rules (Mimikatz, Ransomware, LOLBins, Log wiping).
+10. **Cryptographic Integrity & Chain of Custody**: Enforces read-only write-guards, append-only hash-chained ledger (`ledger.jsonl`), and Merkle tree root verification.
+11. **Structured Multi-Format Reporting**: Exports interactive liquid-glass HTML, Markdown, JSON, and CSV reports with deterministic privacy redaction.

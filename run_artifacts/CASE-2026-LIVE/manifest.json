@@ -4,7 +4,7 @@
     "path": "config.effective.toml",
     "sha256": "4f4ff1deb312466eb8d988478467d12ee7558a5398a50d125033237bf5f5215d"
   },
-  "created_utc": "2026-10-05T18:35:05.086515+00:00",
+  "created_utc": "2026-10-05T19:19:25.117167+00:00",
   "derived": [
     {
       "path": "derived/browser.jsonl",
@@ -24,8 +24,8 @@
       "path": "derived/file_metadata.jsonl",
       "plugin": "file_metadata",
       "plugin_version": "1.3.0",
-      "sha256": "c50fa5d7f43b57c5137b117c5380d99a2672691a96b2d7760a697ed82e16f7e2",
-      "size_bytes": 17525
+      "sha256": "2abcfb7b57d74b078a0fb10c7cd846aee581d199b46f68d9c0a5ca4db968e617",
+      "size_bytes": 17526
     },
     {
       "path": "derived/linux_logs.jsonl",
@@ -38,7 +38,7 @@
       "path": "derived/corroboration.json",
       "plugin": "core",
       "plugin_version": "1.0.0",
-      "sha256": "a09355911667ae9f0c8b2946a4cb69db626fa9538cb53c0e8fcae0e6982af979",
+      "sha256": "64fce9bc364d69f3e06adc02e7474636d28ba47fc2859d71a4ce1e9b9f8429bb",
       "size_bytes": 732
     },
     {
@@ -51,7 +51,7 @@
   ],
   "evidence": [
     {
-      "acquired_utc": "2026-10-05T18:35:05.121822+00:00",
+      "acquired_utc": "2026-10-05T19:19:26.157545+00:00",
       "container": "raw",
       "evidence_id": "EV-AUTH.L",
       "hashes": {
@@ -61,14 +61,22 @@
       "read_errors": 0,
       "size_bytes": 283,
       "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\auth.log",
+      "timestamp_token": {
+        "serial_number": "TSA-F5E38A54B9724568",
+        "sha256_digest": "b544dfd8cc0d4521f4ba801cd4b9215ef76b6a5f76149038b6171cd664e095e4",
+        "status": "VERIFIED_RFC3161",
+        "timestamp_utc": "2026-10-05T19:19:25.214149+00:00",
+        "token_size_bytes": 4643,
+        "tsa_authority": "https://freetsa.org/tsr"
+      },
       "verification": {
         "method": "readback",
         "result": "match",
-        "verified_utc": "2026-10-05T18:35:05.121840+00:00"
+        "verified_utc": "2026-10-05T19:19:26.157571+00:00"
       }
     },
     {
-      "acquired_utc": "2026-10-05T18:35:05.155023+00:00",
+      "acquired_utc": "2026-10-05T19:19:27.003867+00:00",
       "container": "raw",
       "evidence_id": "EV-BASH_H",
       "hashes": {
@@ -78,31 +86,47 @@
       "read_errors": 0,
       "size_bytes": 112,
       "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\bash_history",
+      "timestamp_token": {
+        "serial_number": "TSA-B5B55BF518C54819",
+        "sha256_digest": "a45c0410ad9fea5a6fec7056a904d518673c2e1950f124d9383dbdcfbfbdf554",
+        "status": "VERIFIED_RFC3161",
+        "timestamp_utc": "2026-10-05T19:19:26.184580+00:00",
+        "token_size_bytes": 4644,
+        "tsa_authority": "https://freetsa.org/tsr"
+      },
       "verification": {
         "method": "readback",
         "result": "match",
-        "verified_utc": "2026-10-05T18:35:05.155046+00:00"
+        "verified_utc": "2026-10-05T19:19:27.003886+00:00"
       }
     },
     {
-      "acquired_utc": "2026-10-05T18:35:05.190475+00:00",
+      "acquired_utc": "2026-10-05T19:19:27.905484+00:00",
       "container": "raw",
       "evidence_id": "EV-EXFILT",
       "hashes": {
-        "sha256": "4bc993c920d42446a47dadd1b7eb1f044478d7f63a5cc27cbde7cd4afc3691a2"
+        "sha256": "55f22e4ff7eab75d6ead9f275cf4d00c9f60cf3c1352d2cb9795a50a7dcbe733"
       },
       "path": "evidence/exfiltrated_files.zip",
       "read_errors": 0,
       "size_bytes": 317,
       "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\exfiltrated_files.zip",
+      "timestamp_token": {
+        "serial_number": "TSA-2B5F7498187DAF39",
+        "sha256_digest": "55f22e4ff7eab75d6ead9f275cf4d00c9f60cf3c1352d2cb9795a50a7dcbe733",
+        "status": "VERIFIED_RFC3161",
+        "timestamp_utc": "2026-10-05T19:19:27.047866+00:00",
+        "token_size_bytes": 4644,
+        "tsa_authority": "https://freetsa.org/tsr"
+      },
       "verification": {
         "method": "readback",
         "result": "match",
-        "verified_utc": "2026-10-05T18:35:05.190505+00:00"
+        "verified_utc": "2026-10-05T19:19:27.905498+00:00"
       }
     },
     {
-      "acquired_utc": "2026-10-05T18:35:05.224043+00:00",
+      "acquired_utc": "2026-10-05T19:19:28.767582+00:00",
       "container": "raw",
       "evidence_id": "EV-HISTOR",
       "hashes": {
@@ -112,31 +136,47 @@
       "read_errors": 0,
       "size_bytes": 8192,
       "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\History",
+      "timestamp_token": {
+        "serial_number": "TSA-327BA8FBBFE88E60",
+        "sha256_digest": "ddeee48ddcd3e8fd4b88dbe62d5624d7e71983919f0a12ceb3f79844e2322b95",
+        "status": "VERIFIED_RFC3161",
+        "timestamp_utc": "2026-10-05T19:19:27.945711+00:00",
+        "token_size_bytes": 4644,
+        "tsa_authority": "https://freetsa.org/tsr"
+      },
       "verification": {
         "method": "readback",
         "result": "match",
-        "verified_utc": "2026-10-05T18:35:05.224064+00:00"
+        "verified_utc": "2026-10-05T19:19:28.767597+00:00"
       }
     },
     {
-      "acquired_utc": "2026-10-05T18:35:05.265224+00:00",
+      "acquired_utc": "2026-10-05T19:19:29.743860+00:00",
       "container": "raw",
       "evidence_id": "EV-INVEST",
       "hashes": {
-        "sha256": "de28e74cc75ab7bc436c1619743c6de86dbfc98363e91879bf39840a8811c7f8"
+        "sha256": "9e1f5b395f76106120d0c513df1576e93e9f3dac9f337ca22b6c07be2d425f68"
       },
       "path": "evidence/investigation_memo.docx",
       "read_errors": 0,
       "size_bytes": 813,
       "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\investigation_memo.docx",
+      "timestamp_token": {
+        "serial_number": "TSA-83F37FEEBEA70454",
+        "sha256_digest": "9e1f5b395f76106120d0c513df1576e93e9f3dac9f337ca22b6c07be2d425f68",
+        "status": "VERIFIED_RFC3161",
+        "timestamp_utc": "2026-10-05T19:19:28.815757+00:00",
+        "token_size_bytes": 4643,
+        "tsa_authority": "https://freetsa.org/tsr"
+      },
       "verification": {
         "method": "readback",
         "result": "match",
-        "verified_utc": "2026-10-05T18:35:05.265270+00:00"
+        "verified_utc": "2026-10-05T19:19:29.743880+00:00"
       }
     },
     {
-      "acquired_utc": "2026-10-05T18:35:05.749311+00:00",
+      "acquired_utc": "2026-10-05T19:19:30.656860+00:00",
       "container": "raw",
       "evidence_id": "EV-SECURI",
       "hashes": {
@@ -146,43 +186,51 @@
       "read_errors": 0,
       "size_bytes": 503,
       "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\Security_Events.jsonl",
+      "timestamp_token": {
+        "serial_number": "TSA-DFECFB593F3FC9F1",
+        "sha256_digest": "15957efb2f1573f54296ac349387196a60825acb65518ab856a5179afe1e8ad0",
+        "status": "VERIFIED_RFC3161",
+        "timestamp_utc": "2026-10-05T19:19:29.790742+00:00",
+        "token_size_bytes": 4643,
+        "tsa_authority": "https://freetsa.org/tsr"
+      },
       "verification": {
         "method": "readback",
         "result": "match",
-        "verified_utc": "2026-10-05T18:35:05.749338+00:00"
+        "verified_utc": "2026-10-05T19:19:30.656885+00:00"
       }
     }
   ],
   "index": [
     {
       "path": "index/events.parquet",
-      "sha256": "2f02c5a341fc5188831e9cca1b6947a9a0dd218e3243eac14dcbe150af361fc9",
-      "size_bytes": 11322
+      "sha256": "691dc9e70afa903696c8e3223cc7b540983fba0f03f304d0757f1aadf8a5909f",
+      "size_bytes": 11336
     },
     {
       "path": "index/events.sqlite",
-      "sha256": "3ddc5583a26298eecff086daa8b3065ed129e0e17238aa42bf62fe8466053e65",
+      "sha256": "2894b7c1ffb054cbbcd7ee5a6b4c078054cf815e07a8cd18902e3cff4266703b",
       "size_bytes": 73728
     }
   ],
   "manifest_version": "1.1.0",
-  "merkle_root": "720d1b4a47084c43d5ace1663ec5a66b9453c2123b3160a06f207df08293676c",
+  "merkle_root": "b74fae87c842ecde83e830730ebf69f6c67f41461cc356bb67274e29b6911ac3",
   "reports": [
     {
       "path": "reports/CASE-2026-LIVE_full.html",
-      "sha256": "416f2c958414d8ce75af08959a0683e86effc30b6480e9ac14ef7e6c7558ec15"
+      "sha256": "33a3b8d28ff8443c4a5907a12f5551dfced706d14210c18286817d41b81649ac"
     },
     {
       "path": "reports/CASE-2026-LIVE_summary.md",
-      "sha256": "ce17d04cf3fcfa160af92ec5fd20075022faf8f2707871c6b9d7502336f17176"
+      "sha256": "4a943889adf0b80b7195c9604192c5d1e73048e052ae56d6d0e7ac7dd04b1740"
     },
     {
       "path": "reports/CASE-2026-LIVE_full.json",
-      "sha256": "c5fea04217ec251eac938ff911f89d57eae6eec3d183839d326cd7209c4b6926"
+      "sha256": "02911f97e317ae5add82671391863fd198b7e2bfae1fde324a91ab927f6c6c98"
     },
     {
       "path": "reports/CASE-2026-LIVE_full.csv",
-      "sha256": "56be4b3414bdddef6a22c755c9b53276e572d019a856fdff2540d85b07906a20"
+      "sha256": "d79fa9cbb7ae6a3ce5ee3f9b76c1c454f7cd47f4dd61663a259e14d79c3ed6d2"
     }
   ],
   "schema_version": "2.0.0",

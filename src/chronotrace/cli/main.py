@@ -345,6 +345,36 @@ def doctor():
     console.print(f"[bold green][ok][/bold green]   {len(plugins)} artefact plugins loaded, 0 failed")
 
 
+# --- TIMESTAMP COMMAND ---
+
+@app.command("timestamp")
+def timestamp_file(
+    file_path: Path = typer.Argument(..., help="Path to evidence file to timestamp with RFC 3161 TSA"),
+    tsa_url: Optional[str] = typer.Option(None, "--tsa-url", help="Custom RFC 3161 TSA HTTP endpoint"),
+):
+    """Generate or verify an RFC 3161 cryptographic timestamp token for an evidence file."""
+    from chronotrace.acquire.hasher import Hasher
+    from chronotrace.acquire.tsa import request_tsa_timestamp
+
+    if not file_path.exists():
+        console.print(f"[bold red]File not found:[/bold red] {file_path}")
+        raise typer.Exit(code=1)
+
+    hasher = Hasher()
+    hashes, size_bytes = hasher.hash_file(file_path)
+    sha256 = hashes["sha256"]
+
+    console.print(f"[bold cyan]RFC 3161 Timestamping:[/bold cyan] {file_path.name}")
+    console.print(f"SHA-256: [bold green]{sha256}[/bold green] ({size_bytes} bytes)")
+
+    token = request_tsa_timestamp(sha256, tsa_url=tsa_url)
+    console.print(f"[bold green][+][/bold green] Status: [bold]{token.status}[/bold]")
+    console.print(f"  Authority: {token.tsa_authority}")
+    console.print(f"  Serial:    {token.serial_number}")
+    console.print(f"  Timestamp: {token.timestamp_utc}")
+    console.print(f"  Token:     {len(token.token_bytes)} bytes")
+
+
 # --- PLUGIN COMMANDS ---
 
 @plugin_app.command("list")

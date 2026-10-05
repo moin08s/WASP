@@ -110,6 +110,7 @@ python wasp.py --help
 | **Reconstruct Timeline** | `python wasp.py timeline --case ./cases/case001` |
 | **Cross-Source Corroboration** | `python wasp.py corroborate --case ./cases/case001 --window 120` |
 | **YARA Threat Scan** | `python wasp.py scan --case ./cases/case001 [--rules custom.yar]` |
+| **RFC 3161 TSA Timestamp** | `python wasp.py timestamp ./evidence/sample.raw [--tsa-url https://freetsa.org/tsr]` |
 | **Verify Integrity** | `python wasp.py verify --case ./cases/case001` |
 | **Generate Reports** | `python wasp.py report --case ./cases/case001 --format html,md,json,csv --redact usernames,ips` |
 
@@ -117,7 +118,7 @@ python wasp.py --help
 
 ## 🧪 5. Running Automated Tests
 
-WASP includes a comprehensive test suite covering all data models, write-guard protection, streaming hashers, hash chains, Merkle trees, device acquisition, hotplug detection, cross-source corroboration, and YARA threat scanning:
+WASP includes a comprehensive test suite (22 tests) covering all data models, write-guard protection, streaming hashers, hash chains, Merkle trees, device acquisition, hotplug detection, cross-source corroboration, YARA threat scanning, and RFC 3161 trusted timestamping:
 
 ```powershell
 python -m pytest -v
@@ -125,6 +126,9 @@ python -m pytest -v
 
 ### Running Specific Test Modules:
 ```powershell
+# RFC 3161 Trusted Timestamping (TSA) Verification
+python -m pytest tests/test_tsa.py -v
+
 # Cross-Source Corroboration & Timestomp Conflict Detection
 python -m pytest tests/test_corroborator.py -v
 

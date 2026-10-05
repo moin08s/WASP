@@ -51,56 +51,82 @@ class ChronoTraceGUI:
         self.root.destroy()
 
     def _configure_styles(self):
-        """Set up modern ttk styles."""
+        """Set up liquid glass and frosted obsidian ttk styles."""
         self.style = ttk.Style()
         try:
             self.style.theme_use("clam")
         except Exception:
             pass
 
-        # Color palette
-        bg_dark = "#181a20"
-        card_bg = "#22252e"
-        accent_blue = "#388bfd"
-        text_light = "#f0f6fc"
-        text_muted = "#8b949e"
+        # Liquid Glass Palette
+        bg_dark = "#090d16"
+        card_bg = "#111726"
+        card_border = "#1e2942"
+        accent_cyan = "#00f2fe"
+        accent_blue = "#3b82f6"
+        text_light = "#f1f5f9"
+        text_muted = "#94a3b8"
 
         self.root.configure(bg=bg_dark)
         self.style.configure(".", background=bg_dark, foreground=text_light, font=("Segoe UI", 9))
         self.style.configure("TLabel", background=bg_dark, foreground=text_light)
-        self.style.configure("Header.TLabel", font=("Segoe UI", 12, "bold"), foreground=accent_blue)
-        self.style.configure("SubHeader.TLabel", font=("Segoe UI", 10, "bold"), foreground="#79c0ff")
-        self.style.configure("Badge.TLabel", font=("Segoe UI", 9, "bold"), foreground="#3fb950")
+        self.style.configure("Header.TLabel", font=("Segoe UI", 12, "bold"), foreground=accent_cyan)
+        self.style.configure("SubHeader.TLabel", font=("Segoe UI", 10, "bold"), foreground="#67e8f9")
+        self.style.configure("Badge.TLabel", font=("Segoe UI", 9, "bold"), foreground="#10b981")
 
-        self.style.configure("TNotebook", background=bg_dark, tabmargins=[2, 5, 2, 0])
-        self.style.configure("TNotebook.Tab", background="#2a2e39", foreground=text_light, padding=[12, 6], font=("Segoe UI", 9, "bold"))
-        self.style.map("TNotebook.Tab", background=[("selected", accent_blue)], foreground=[("selected", "#ffffff")])
+        self.style.configure("TNotebook", background=bg_dark, tabmargins=[4, 6, 4, 0])
+        self.style.configure(
+            "TNotebook.Tab",
+            background="#141c2e",
+            foreground=text_muted,
+            padding=[14, 7],
+            font=("Segoe UI", 9, "bold"),
+            bordercolor=card_border,
+        )
+        self.style.map(
+            "TNotebook.Tab",
+            background=[("selected", "#1e2942"), ("active", "#182238")],
+            foreground=[("selected", accent_cyan), ("active", "#ffffff")],
+        )
 
-        self.style.configure("TButton", font=("Segoe UI", 9, "bold"), padding=5, background="#2a2e39", foreground=text_light)
-        self.style.map("TButton", background=[("active", accent_blue)])
+        self.style.configure("TButton", font=("Segoe UI", 9, "bold"), padding=6, background="#182238", foreground=text_light, bordercolor=card_border)
+        self.style.map("TButton", background=[("active", "#2563eb")], foreground=[("active", "#ffffff")])
 
-        self.style.configure("Accent.TButton", background="#238636", foreground="#ffffff", font=("Segoe UI", 9, "bold"))
-        self.style.map("Accent.TButton", background=[("active", "#2ea043")])
+        self.style.configure("Accent.TButton", background="#059669", foreground="#ffffff", font=("Segoe UI", 9, "bold"), padding=6)
+        self.style.map("Accent.TButton", background=[("active", "#10b981")])
 
-        self.style.configure("Treeview", background=card_bg, foreground=text_light, fieldbackground=card_bg, rowheight=24)
-        self.style.configure("Treeview.Heading", background="#2c313d", foreground=text_light, font=("Segoe UI", 9, "bold"))
-        self.style.map("Treeview", background=[("selected", "#1f6feb")], foreground=[("selected", "#ffffff")])
+        self.style.configure(
+            "Treeview",
+            background=card_bg,
+            foreground=text_light,
+            fieldbackground=card_bg,
+            rowheight=26,
+            font=("Segoe UI", 9),
+        )
+        self.style.configure(
+            "Treeview.Heading",
+            background="#162035",
+            foreground=accent_cyan,
+            font=("Segoe UI", 9, "bold"),
+            padding=6,
+        )
+        self.style.map("Treeview", background=[("selected", "#2563eb")], foreground=[("selected", "#ffffff")])
 
     def _build_ui(self):
-        # 1. Top Header Banner
-        header_frame = tk.Frame(self.root, bg="#16181d", height=60, padx=16, pady=10)
+        # 1. Top Header Banner with Frosted Glass Header
+        header_frame = tk.Frame(self.root, bg="#0d1322", height=64, padx=18, pady=12, highlightbackground="#1e2942", highlightthickness=1)
         header_frame.pack(fill=tk.X, side=tk.TOP)
 
-        title_lbl = tk.Label(header_frame, text="WASP", font=("Segoe UI", 16, "bold"), fg="#58a6ff", bg="#16181d")
+        title_lbl = tk.Label(header_frame, text="⚡ WASP", font=("Segoe UI", 16, "bold"), fg="#00f2fe", bg="#0d1322")
         title_lbl.pack(side=tk.LEFT)
 
-        subtitle_lbl = tk.Label(header_frame, text=" | Wide-scope Artifact & Super-timeline Platform", font=("Segoe UI", 10), fg="#8b949e", bg="#16181d")
-        subtitle_lbl.pack(side=tk.LEFT, padx=5)
+        subtitle_lbl = tk.Label(header_frame, text=" | Wide-scope Artifact & Super-timeline Platform", font=("Segoe UI", 10), fg="#94a3b8", bg="#0d1322")
+        subtitle_lbl.pack(side=tk.LEFT, padx=6)
 
-        self.case_status_lbl = tk.Label(header_frame, text="[No Active Case]", font=("Segoe UI", 10, "bold"), fg="#f85149", bg="#16181d")
-        self.case_status_lbl.pack(side=tk.RIGHT, padx=10)
+        self.case_status_lbl = tk.Label(header_frame, text="● [No Active Case]", font=("Segoe UI", 10, "bold"), fg="#f43f5e", bg="#0d1322")
+        self.case_status_lbl.pack(side=tk.RIGHT, padx=12)
 
-        btn_open = ttk.Button(header_frame, text="Open Case...", command=self._open_case_dialog)
+        btn_open = ttk.Button(header_frame, text="📂 Open Case...", command=self._open_case_dialog)
         btn_open.pack(side=tk.RIGHT, padx=4)
 
         btn_new = ttk.Button(header_frame, text="+ New Case...", command=self._new_case_dialog)
@@ -133,14 +159,14 @@ class ChronoTraceGUI:
         self._build_tab_reports()
 
         # 3. Bottom Status Bar
-        status_frame = tk.Frame(self.root, bg="#16181d", height=28, padx=10, pady=4)
+        status_frame = tk.Frame(self.root, bg="#0d1322", height=30, padx=12, pady=5, highlightbackground="#1e2942", highlightthickness=1)
         status_frame.pack(fill=tk.X, side=tk.BOTTOM)
 
-        self.status_var = tk.StringVar(value="Ready. Write-Guard: ACTIVE (Read-Only Forensic Protection)")
-        lbl_status = tk.Label(status_frame, textvariable=self.status_var, font=("Segoe UI", 9), fg="#3fb950", bg="#16181d")
+        self.status_var = tk.StringVar(value="Ready. Write-Guard: ACTIVE (Read-Only Forensic Protection) | RFC 3161 TSA Enabled")
+        lbl_status = tk.Label(status_frame, textvariable=self.status_var, font=("Segoe UI", 9), fg="#10b981", bg="#0d1322")
         lbl_status.pack(side=tk.LEFT)
 
-        lbl_ver = tk.Label(status_frame, text="WASP v1.4.0 | Schema 2.0.0", font=("Segoe UI", 8), fg="#8b949e", bg="#16181d")
+        lbl_ver = tk.Label(status_frame, text="WASP v1.4.0 | Liquid Glass Edition", font=("Segoe UI", 8), fg="#94a3b8", bg="#0d1322")
         lbl_ver.pack(side=tk.RIGHT)
 
     # ---------------- TAB 1: CASE DASHBOARD ----------------
@@ -148,19 +174,19 @@ class ChronoTraceGUI:
         lbl = ttk.Label(self.tab_case, text="Case Overview & Forensic Workspace", style="Header.TLabel")
         lbl.pack(anchor=tk.W, pady=(0, 10))
 
-        info_frame = tk.LabelFrame(self.tab_case, text=" Active Case Properties ", bg="#22252e", fg="#58a6ff", font=("Segoe UI", 9, "bold"), padx=12, pady=10)
+        info_frame = tk.LabelFrame(self.tab_case, text=" Active Case Properties ", bg="#111726", fg="#00f2fe", font=("Segoe UI", 9, "bold"), padx=12, pady=10, highlightbackground="#1e2942", highlightthickness=1)
         info_frame.pack(fill=tk.X, pady=5)
 
-        self.case_details_text = tk.Text(info_frame, height=9, bg="#181a20", fg="#f0f6fc", relief=tk.FLAT, font=("Consolas", 9))
+        self.case_details_text = tk.Text(info_frame, height=9, bg="#070a12", fg="#f1f5f9", relief=tk.FLAT, font=("Consolas", 9), padx=8, pady=8)
         self.case_details_text.pack(fill=tk.X)
         self.case_details_text.insert(tk.END, "No case currently opened. Click '+ New Case' to create or 'Open Case' to load an existing workspace.\n")
         self.case_details_text.config(state=tk.DISABLED)
 
         # Quick Actions
-        actions_frame = tk.LabelFrame(self.tab_case, text=" Quick Forensic Actions ", bg="#22252e", fg="#58a6ff", font=("Segoe UI", 9, "bold"), padx=12, pady=12)
+        actions_frame = tk.LabelFrame(self.tab_case, text=" Quick Forensic Actions ", bg="#111726", fg="#00f2fe", font=("Segoe UI", 9, "bold"), padx=12, pady=12, highlightbackground="#1e2942", highlightthickness=1)
         actions_frame.pack(fill=tk.X, pady=10)
 
-        btn_run_all = tk.Button(actions_frame, text="⚡ Run Full Automated Pipeline (Extract -> Timeline -> Verify -> Report)", bg="#238636", fg="#ffffff", font=("Segoe UI", 9, "bold"), command=self._run_full_pipeline_thread)
+        btn_run_all = tk.Button(actions_frame, text="⚡ Run Full Automated Pipeline (Extract -> Timeline -> Verify -> Report)", bg="#059669", activebackground="#10b981", fg="#ffffff", activeforeground="#ffffff", font=("Segoe UI", 9, "bold"), relief=tk.FLAT, padx=10, pady=5, command=self._run_full_pipeline_thread)
         btn_run_all.pack(side=tk.LEFT, padx=6)
 
         btn_add_file = ttk.Button(actions_frame, text="Acquire Evidence File...", command=self._acquire_file_dialog)
@@ -204,13 +230,13 @@ class ChronoTraceGUI:
         self.tree_devices.bind("<<TreeviewSelect>>", self._on_device_select)
 
         # Acquisition Form Frame
-        acq_frame = tk.LabelFrame(self.tab_devices, text=" Forensic Evidence Acquisition ", bg="#22252e", fg="#58a6ff", font=("Segoe UI", 9, "bold"), padx=12, pady=10)
+        acq_frame = tk.LabelFrame(self.tab_devices, text=" Forensic Evidence Acquisition ", bg="#111726", fg="#00f2fe", font=("Segoe UI", 9, "bold"), padx=12, pady=10, highlightbackground="#1e2942", highlightthickness=1)
         acq_frame.pack(fill=tk.X, pady=10)
 
         row1 = ttk.Frame(acq_frame)
         row1.pack(fill=tk.X, pady=3)
         ttk.Label(row1, text="Selected Device:", width=16).pack(side=tk.LEFT)
-        self.lbl_selected_dev = ttk.Label(row1, text="[Please select a device above]", font=("Segoe UI", 9, "bold"), foreground="#79c0ff")
+        self.lbl_selected_dev = ttk.Label(row1, text="[Please select a device above]", font=("Segoe UI", 9, "bold"), foreground="#38bdf8")
         self.lbl_selected_dev.pack(side=tk.LEFT)
 
         row2 = ttk.Frame(acq_frame)
@@ -225,7 +251,7 @@ class ChronoTraceGUI:
         self.entry_acq_notes.insert(0, "Seized external USB storage device")
         self.entry_acq_notes.pack(side=tk.LEFT)
 
-        btn_acquire = tk.Button(acq_frame, text="🔒 Acquire Evidence with SHA-256 Hash", bg="#238636", fg="#ffffff", font=("Segoe UI", 9, "bold"), command=self._acquire_selected_device_thread)
+        btn_acquire = tk.Button(acq_frame, text="🔒 Acquire Evidence with SHA-256 Hash", bg="#059669", activebackground="#10b981", fg="#ffffff", activeforeground="#ffffff", relief=tk.FLAT, font=("Segoe UI", 9, "bold"), padx=10, pady=5, command=self._acquire_selected_device_thread)
         btn_acquire.pack(anchor=tk.E, pady=8)
 
     # ---------------- TAB 3: ARTEFACTS & INGEST ----------------
@@ -241,14 +267,14 @@ class ChronoTraceGUI:
         self.combo_profile.set("all")
         self.combo_profile.pack(side=tk.LEFT, padx=5)
 
-        btn_extract = tk.Button(controls_frame, text="▶ Run Ingestion & Extraction", bg="#1f6feb", fg="#ffffff", font=("Segoe UI", 9, "bold"), command=self._run_extraction_thread)
+        btn_extract = tk.Button(controls_frame, text="▶ Run Ingestion & Extraction", bg="#2563eb", activebackground="#3b82f6", fg="#ffffff", activeforeground="#ffffff", relief=tk.FLAT, font=("Segoe UI", 9, "bold"), padx=10, pady=4, command=self._run_extraction_thread)
         btn_extract.pack(side=tk.LEFT, padx=15)
 
         # Extraction Log Box
-        log_frame = tk.LabelFrame(self.tab_extract, text=" Ingestion Log & Detected Records ", bg="#22252e", fg="#58a6ff", font=("Segoe UI", 9, "bold"), padx=10, pady=10)
+        log_frame = tk.LabelFrame(self.tab_extract, text=" Ingestion Log & Detected Records ", bg="#111726", fg="#00f2fe", font=("Segoe UI", 9, "bold"), padx=10, pady=10, highlightbackground="#1e2942", highlightthickness=1)
         log_frame.pack(fill=tk.BOTH, expand=True, pady=10)
 
-        self.txt_extract_log = tk.Text(log_frame, bg="#181a20", fg="#c9d1d9", relief=tk.FLAT, font=("Consolas", 9))
+        self.txt_extract_log = tk.Text(log_frame, bg="#070a12", fg="#f1f5f9", relief=tk.FLAT, font=("Consolas", 9), padx=8, pady=8)
         self.txt_extract_log.pack(fill=tk.BOTH, expand=True)
 
     # ---------------- TAB 4: ACTIVITY TIMELINE ----------------
@@ -258,17 +284,17 @@ class ChronoTraceGUI:
 
         ttk.Label(header_bar, text="Reconstructed Activity Super-Timeline", style="Header.TLabel").pack(side=tk.LEFT)
 
-        btn_corrob = tk.Button(header_bar, text="🔗 Corroborate Sources", bg="#6f42c1", fg="#ffffff", font=("Segoe UI", 9, "bold"), command=self._corroborate_timeline_thread)
+        btn_corrob = tk.Button(header_bar, text="🔗 Corroborate Sources", bg="#7c3aed", activebackground="#8b5cf6", fg="#ffffff", activeforeground="#ffffff", relief=tk.FLAT, font=("Segoe UI", 9, "bold"), padx=8, pady=4, command=self._corroborate_timeline_thread)
         btn_corrob.pack(side=tk.RIGHT, padx=4)
 
-        btn_scan = tk.Button(header_bar, text="🛡️ Scan YARA Threats", bg="#d29922", fg="#ffffff", font=("Segoe UI", 9, "bold"), command=self._scan_threats_thread)
+        btn_scan = tk.Button(header_bar, text="🛡️ Scan YARA Threats", bg="#d97706", activebackground="#f59e0b", fg="#ffffff", activeforeground="#ffffff", relief=tk.FLAT, font=("Segoe UI", 9, "bold"), padx=8, pady=4, command=self._scan_threats_thread)
         btn_scan.pack(side=tk.RIGHT, padx=4)
 
-        btn_build_tl = tk.Button(header_bar, text="⚡ Reconstruct Timeline", bg="#238636", fg="#ffffff", font=("Segoe UI", 9, "bold"), command=self._build_timeline_thread)
+        btn_build_tl = tk.Button(header_bar, text="⚡ Reconstruct Timeline", bg="#059669", activebackground="#10b981", fg="#ffffff", activeforeground="#ffffff", relief=tk.FLAT, font=("Segoe UI", 9, "bold"), padx=8, pady=4, command=self._build_timeline_thread)
         btn_build_tl.pack(side=tk.RIGHT, padx=4)
 
         # Filters Bar
-        filter_bar = tk.LabelFrame(self.tab_timeline, text=" Timeline Filters ", bg="#22252e", fg="#58a6ff", font=("Segoe UI", 9, "bold"), padx=8, pady=6)
+        filter_bar = tk.LabelFrame(self.tab_timeline, text=" Timeline Filters ", bg="#111726", fg="#00f2fe", font=("Segoe UI", 9, "bold"), padx=8, pady=6, highlightbackground="#1e2942", highlightthickness=1)
         filter_bar.pack(fill=tk.X, pady=5)
 
         ttk.Label(filter_bar, text="Search:").pack(side=tk.LEFT, padx=3)
@@ -320,14 +346,14 @@ class ChronoTraceGUI:
         verify_bar = ttk.Frame(self.tab_integrity)
         verify_bar.pack(fill=tk.X, pady=5)
 
-        btn_verify = tk.Button(verify_bar, text="🛡️ Verify Integrity (Re-hash & Replay Ledger)", bg="#1f6feb", fg="#ffffff", font=("Segoe UI", 9, "bold"), command=self._verify_integrity_thread)
+        btn_verify = tk.Button(verify_bar, text="🛡️ Verify Integrity (Re-hash & Replay Ledger)", bg="#2563eb", activebackground="#3b82f6", fg="#ffffff", activeforeground="#ffffff", relief=tk.FLAT, font=("Segoe UI", 9, "bold"), padx=10, pady=5, command=self._verify_integrity_thread)
         btn_verify.pack(side=tk.LEFT)
 
-        self.lbl_verify_status = tk.Label(verify_bar, text="Status: Not Verified", font=("Segoe UI", 10, "bold"), bg="#181a20", fg="#8b949e")
+        self.lbl_verify_status = tk.Label(verify_bar, text="Status: Not Verified", font=("Segoe UI", 10, "bold"), bg="#090d16", fg="#94a3b8")
         self.lbl_verify_status.pack(side=tk.LEFT, padx=15)
 
         # Ledger Treeview
-        ledger_frame = tk.LabelFrame(self.tab_integrity, text=" Chain of Custody Ledger (ledger.jsonl) ", bg="#22252e", fg="#58a6ff", font=("Segoe UI", 9, "bold"), padx=10, pady=10)
+        ledger_frame = tk.LabelFrame(self.tab_integrity, text=" Chain of Custody Ledger (ledger.jsonl) ", bg="#111726", fg="#00f2fe", font=("Segoe UI", 9, "bold"), padx=10, pady=10, highlightbackground="#1e2942", highlightthickness=1)
         ledger_frame.pack(fill=tk.BOTH, expand=True, pady=10)
 
         cols = ("seq", "timestamp", "actor", "event_type", "hash")
@@ -351,7 +377,7 @@ class ChronoTraceGUI:
         lbl = ttk.Label(self.tab_reports, text="Structured Investigation Reporting & Disclosure", style="Header.TLabel")
         lbl.pack(anchor=tk.W, pady=(0, 10))
 
-        opts_frame = tk.LabelFrame(self.tab_reports, text=" Report Configuration ", bg="#22252e", fg="#58a6ff", font=("Segoe UI", 9, "bold"), padx=14, pady=12)
+        opts_frame = tk.LabelFrame(self.tab_reports, text=" Report Configuration ", bg="#111726", fg="#00f2fe", font=("Segoe UI", 9, "bold"), padx=14, pady=12, highlightbackground="#1e2942", highlightthickness=1)
         opts_frame.pack(fill=tk.X, pady=10)
 
         ttk.Label(opts_frame, text="Formats:", font=("Segoe UI", 9, "bold")).pack(anchor=tk.W, pady=2)
@@ -362,10 +388,10 @@ class ChronoTraceGUI:
         self.var_fmt_csv = tk.BooleanVar(value=True)
         self.var_fmt_md = tk.BooleanVar(value=True)
 
-        tk.Checkbutton(fmt_row, text="HTML (Interactive)", variable=self.var_fmt_html, bg="#22252e", fg="#f0f6fc", selectcolor="#181a20").pack(side=tk.LEFT, padx=8)
-        tk.Checkbutton(fmt_row, text="Markdown (.md)", variable=self.var_fmt_md, bg="#22252e", fg="#f0f6fc", selectcolor="#181a20").pack(side=tk.LEFT, padx=8)
-        tk.Checkbutton(fmt_row, text="JSON (Structured Export)", variable=self.var_fmt_json, bg="#22252e", fg="#f0f6fc", selectcolor="#181a20").pack(side=tk.LEFT, padx=8)
-        tk.Checkbutton(fmt_row, text="CSV (Spreadsheet)", variable=self.var_fmt_csv, bg="#22252e", fg="#f0f6fc", selectcolor="#181a20").pack(side=tk.LEFT, padx=8)
+        tk.Checkbutton(fmt_row, text="HTML (Interactive Liquid Glass)", variable=self.var_fmt_html, bg="#111726", fg="#f1f5f9", selectcolor="#070a12", activebackground="#111726", activeforeground="#00f2fe").pack(side=tk.LEFT, padx=8)
+        tk.Checkbutton(fmt_row, text="Markdown (.md)", variable=self.var_fmt_md, bg="#111726", fg="#f1f5f9", selectcolor="#070a12", activebackground="#111726", activeforeground="#00f2fe").pack(side=tk.LEFT, padx=8)
+        tk.Checkbutton(fmt_row, text="JSON (Structured Export)", variable=self.var_fmt_json, bg="#111726", fg="#f1f5f9", selectcolor="#070a12", activebackground="#111726", activeforeground="#00f2fe").pack(side=tk.LEFT, padx=8)
+        tk.Checkbutton(fmt_row, text="CSV (Spreadsheet)", variable=self.var_fmt_csv, bg="#111726", fg="#f1f5f9", selectcolor="#070a12", activebackground="#111726", activeforeground="#00f2fe").pack(side=tk.LEFT, padx=8)
 
         ttk.Label(opts_frame, text="Privacy Redaction Profiles:", font=("Segoe UI", 9, "bold")).pack(anchor=tk.W, pady=(10, 2))
         redact_row = ttk.Frame(opts_frame)
@@ -374,24 +400,24 @@ class ChronoTraceGUI:
         self.var_redact_paths = tk.BooleanVar(value=False)
         self.var_redact_ips = tk.BooleanVar(value=True)
 
-        tk.Checkbutton(redact_row, text="Redact Usernames", variable=self.var_redact_users, bg="#22252e", fg="#f0f6fc", selectcolor="#181a20").pack(side=tk.LEFT, padx=8)
-        tk.Checkbutton(redact_row, text="Redact Folder Paths", variable=self.var_redact_paths, bg="#22252e", fg="#f0f6fc", selectcolor="#181a20").pack(side=tk.LEFT, padx=8)
-        tk.Checkbutton(redact_row, text="Redact IP Addresses", variable=self.var_redact_ips, bg="#22252e", fg="#f0f6fc", selectcolor="#181a20").pack(side=tk.LEFT, padx=8)
+        tk.Checkbutton(redact_row, text="Redact Usernames", variable=self.var_redact_users, bg="#111726", fg="#f1f5f9", selectcolor="#070a12", activebackground="#111726", activeforeground="#00f2fe").pack(side=tk.LEFT, padx=8)
+        tk.Checkbutton(redact_row, text="Redact Folder Paths", variable=self.var_redact_paths, bg="#111726", fg="#f1f5f9", selectcolor="#070a12", activebackground="#111726", activeforeground="#00f2fe").pack(side=tk.LEFT, padx=8)
+        tk.Checkbutton(redact_row, text="Redact IP Addresses", variable=self.var_redact_ips, bg="#111726", fg="#f1f5f9", selectcolor="#070a12", activebackground="#111726", activeforeground="#00f2fe").pack(side=tk.LEFT, padx=8)
 
         btn_row = ttk.Frame(opts_frame)
         btn_row.pack(fill=tk.X, pady=(15, 5))
 
-        btn_gen = tk.Button(btn_row, text="📄 Generate Investigation Reports", bg="#238636", fg="#ffffff", font=("Segoe UI", 10, "bold"), padx=10, pady=6, command=self._generate_reports_thread)
+        btn_gen = tk.Button(btn_row, text="📄 Generate Investigation Reports", bg="#059669", activebackground="#10b981", fg="#ffffff", activeforeground="#ffffff", relief=tk.FLAT, font=("Segoe UI", 10, "bold"), padx=12, pady=6, command=self._generate_reports_thread)
         btn_gen.pack(side=tk.LEFT, padx=5)
 
         self.btn_open_html = ttk.Button(btn_row, text="🌐 Open HTML Report in Browser", command=self._open_report_in_browser, state=tk.DISABLED)
         self.btn_open_html.pack(side=tk.LEFT, padx=10)
 
         # Reports Output Box
-        rep_box_frame = tk.LabelFrame(self.tab_reports, text=" Generated Investigation Report Output ", bg="#22252e", fg="#58a6ff", font=("Segoe UI", 9, "bold"), padx=10, pady=10)
+        rep_box_frame = tk.LabelFrame(self.tab_reports, text=" Generated Investigation Report Output ", bg="#111726", fg="#00f2fe", font=("Segoe UI", 9, "bold"), padx=10, pady=10, highlightbackground="#1e2942", highlightthickness=1)
         rep_box_frame.pack(fill=tk.BOTH, expand=True, pady=10)
 
-        self.txt_reports = tk.Text(rep_box_frame, bg="#181a20", fg="#c9d1d9", relief=tk.FLAT, font=("Consolas", 9))
+        self.txt_reports = tk.Text(rep_box_frame, bg="#070a12", fg="#f1f5f9", relief=tk.FLAT, font=("Consolas", 9), padx=8, pady=8)
         self.txt_reports.pack(fill=tk.BOTH, expand=True)
 
     # ---------------- LOGIC HANDLERS ----------------
@@ -413,7 +439,7 @@ class ChronoTraceGUI:
         diag = tk.Toplevel(self.root)
         diag.title("Create New Forensic Case")
         diag.geometry("450x320")
-        diag.configure(bg="#181a20")
+        diag.configure(bg="#090d16")
 
         ttk.Label(diag, text="Case Identifier:").pack(anchor=tk.W, padx=20, pady=(15, 2))
         e_id = ttk.Entry(diag, width=40)
@@ -454,14 +480,14 @@ class ChronoTraceGUI:
                 except Exception as ex:
                     messagebox.showerror("Error", f"Case creation failed: {ex}")
 
-        btn = tk.Button(diag, text="Create Case Workspace", bg="#238636", fg="#ffffff", font=("Segoe UI", 9, "bold"), command=_create_action)
+        btn = tk.Button(diag, text="Create Case Workspace", bg="#059669", activebackground="#10b981", fg="#ffffff", activeforeground="#ffffff", relief=tk.FLAT, font=("Segoe UI", 9, "bold"), padx=12, pady=6, command=_create_action)
         btn.pack(pady=20)
 
     def _refresh_case_display(self):
         if not self.current_case:
             return
         cid = self.current_case.case_id
-        self.case_status_lbl.config(text=f"[Case: {cid}]", fg="#3fb950")
+        self.case_status_lbl.config(text=f"● [Case: {cid}]", fg="#10b981")
 
         self.case_details_text.config(state=tk.NORMAL)
         self.case_details_text.delete("1.0", tk.END)
@@ -775,7 +801,7 @@ class ChronoTraceGUI:
     def _on_integrity_verified(self, res: dict):
         status = res.get("overall_status", "FAIL")
         if status == "PASS":
-            self.lbl_verify_status.config(text="Status: PASS (Integrity Verified)", fg="#3fb950")
+            self.lbl_verify_status.config(text="Status: PASS (Integrity Verified)", fg="#10b981")
             messagebox.showinfo(
                 "Integrity Verified",
                 f"Cryptographic Integrity Verification Passed!\n\n"
@@ -785,7 +811,7 @@ class ChronoTraceGUI:
                 f"Merkle Root:    {self.current_case.manifest.data.get('merkle_root')}"
             )
         else:
-            self.lbl_verify_status.config(text="Status: FAIL (Mismatch Detected)", fg="#f85149")
+            self.lbl_verify_status.config(text="Status: FAIL (Mismatch Detected)", fg="#f43f5e")
             messagebox.showerror("Integrity Failure", f"Verification failed:\n" + "\n".join(res.get("errors", [])))
 
         self._refresh_case_display()
