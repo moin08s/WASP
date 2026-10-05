@@ -4,7 +4,7 @@
     "path": "config.effective.toml",
     "sha256": "4f4ff1deb312466eb8d988478467d12ee7558a5398a50d125033237bf5f5215d"
   },
-  "created_utc": "2026-10-05T17:33:32.304038+00:00",
+  "created_utc": "2026-10-05T18:35:05.086515+00:00",
   "derived": [
     {
       "path": "derived/browser.jsonl",
@@ -24,7 +24,7 @@
       "path": "derived/file_metadata.jsonl",
       "plugin": "file_metadata",
       "plugin_version": "1.3.0",
-      "sha256": "144345486f39f9ce0b15065c99b66f3ef034b052d34b386048b4582c912b7725",
+      "sha256": "c50fa5d7f43b57c5137b117c5380d99a2672691a96b2d7760a697ed82e16f7e2",
       "size_bytes": 17525
     },
     {
@@ -33,11 +33,25 @@
       "plugin_version": "1.2.0",
       "sha256": "d51f41eb68ade66ed6c9b08d0202ff4a1a16bdc4adeaf5c1361138cffa3cf3b2",
       "size_bytes": 6833
+    },
+    {
+      "path": "derived/corroboration.json",
+      "plugin": "core",
+      "plugin_version": "1.0.0",
+      "sha256": "a09355911667ae9f0c8b2946a4cb69db626fa9538cb53c0e8fcae0e6982af979",
+      "size_bytes": 732
+    },
+    {
+      "path": "derived/threat_alerts.json",
+      "plugin": "core",
+      "plugin_version": "1.0.0",
+      "sha256": "4f53cda18c2baa0c0354bb5f9a3ecbe5ed12ab4d8e11ba873c2f11161202b945",
+      "size_bytes": 2
     }
   ],
   "evidence": [
     {
-      "acquired_utc": "2026-10-05T17:33:32.355208+00:00",
+      "acquired_utc": "2026-10-05T18:35:05.121822+00:00",
       "container": "raw",
       "evidence_id": "EV-AUTH.L",
       "hashes": {
@@ -50,11 +64,11 @@
       "verification": {
         "method": "readback",
         "result": "match",
-        "verified_utc": "2026-10-05T17:33:32.355234+00:00"
+        "verified_utc": "2026-10-05T18:35:05.121840+00:00"
       }
     },
     {
-      "acquired_utc": "2026-10-05T17:33:32.391570+00:00",
+      "acquired_utc": "2026-10-05T18:35:05.155023+00:00",
       "container": "raw",
       "evidence_id": "EV-BASH_H",
       "hashes": {
@@ -67,15 +81,15 @@
       "verification": {
         "method": "readback",
         "result": "match",
-        "verified_utc": "2026-10-05T17:33:32.391593+00:00"
+        "verified_utc": "2026-10-05T18:35:05.155046+00:00"
       }
     },
     {
-      "acquired_utc": "2026-10-05T17:33:32.422056+00:00",
+      "acquired_utc": "2026-10-05T18:35:05.190475+00:00",
       "container": "raw",
       "evidence_id": "EV-EXFILT",
       "hashes": {
-        "sha256": "c720fbe8ec5b780648029576c2bb63d607ca03278deb6c72356ed84e7e4347d3"
+        "sha256": "4bc993c920d42446a47dadd1b7eb1f044478d7f63a5cc27cbde7cd4afc3691a2"
       },
       "path": "evidence/exfiltrated_files.zip",
       "read_errors": 0,
@@ -84,11 +98,11 @@
       "verification": {
         "method": "readback",
         "result": "match",
-        "verified_utc": "2026-10-05T17:33:32.422070+00:00"
+        "verified_utc": "2026-10-05T18:35:05.190505+00:00"
       }
     },
     {
-      "acquired_utc": "2026-10-05T17:33:32.450328+00:00",
+      "acquired_utc": "2026-10-05T18:35:05.224043+00:00",
       "container": "raw",
       "evidence_id": "EV-HISTOR",
       "hashes": {
@@ -101,15 +115,15 @@
       "verification": {
         "method": "readback",
         "result": "match",
-        "verified_utc": "2026-10-05T17:33:32.450344+00:00"
+        "verified_utc": "2026-10-05T18:35:05.224064+00:00"
       }
     },
     {
-      "acquired_utc": "2026-10-05T17:33:32.481329+00:00",
+      "acquired_utc": "2026-10-05T18:35:05.265224+00:00",
       "container": "raw",
       "evidence_id": "EV-INVEST",
       "hashes": {
-        "sha256": "47119c738b966e434a61c921bf638988ad8fa63d3ed6b772e181dd2ba14862ab"
+        "sha256": "de28e74cc75ab7bc436c1619743c6de86dbfc98363e91879bf39840a8811c7f8"
       },
       "path": "evidence/investigation_memo.docx",
       "read_errors": 0,
@@ -118,11 +132,11 @@
       "verification": {
         "method": "readback",
         "result": "match",
-        "verified_utc": "2026-10-05T17:33:32.481349+00:00"
+        "verified_utc": "2026-10-05T18:35:05.265270+00:00"
       }
     },
     {
-      "acquired_utc": "2026-10-05T17:33:32.510952+00:00",
+      "acquired_utc": "2026-10-05T18:35:05.749311+00:00",
       "container": "raw",
       "evidence_id": "EV-SECURI",
       "hashes": {
@@ -135,45 +149,45 @@
       "verification": {
         "method": "readback",
         "result": "match",
-        "verified_utc": "2026-10-05T17:33:32.510967+00:00"
+        "verified_utc": "2026-10-05T18:35:05.749338+00:00"
       }
     }
   ],
   "index": [
     {
       "path": "index/events.parquet",
-      "sha256": "09ca34b19d7fea815a23ff3f7b282755440b321481eabc5eb2532f986d02a71a",
-      "size_bytes": 10440
+      "sha256": "2f02c5a341fc5188831e9cca1b6947a9a0dd218e3243eac14dcbe150af361fc9",
+      "size_bytes": 11322
     },
     {
       "path": "index/events.sqlite",
-      "sha256": "d3a22d4ab37670d1b47abd416ac6a0e422995d8fcfce46dc4f425423fb5999d0",
-      "size_bytes": 69632
+      "sha256": "3ddc5583a26298eecff086daa8b3065ed129e0e17238aa42bf62fe8466053e65",
+      "size_bytes": 73728
     }
   ],
   "manifest_version": "1.1.0",
-  "merkle_root": "defe3975c8c2f439e8c251d4860a75cb3668c33623e2c79c0638852faf9d5542",
+  "merkle_root": "720d1b4a47084c43d5ace1663ec5a66b9453c2123b3160a06f207df08293676c",
   "reports": [
     {
       "path": "reports/CASE-2026-LIVE_full.html",
-      "sha256": "cb51dff16e806b14823a70937a86f37d29ae3cebda8a456c3c6834d9592910bc"
+      "sha256": "416f2c958414d8ce75af08959a0683e86effc30b6480e9ac14ef7e6c7558ec15"
     },
     {
       "path": "reports/CASE-2026-LIVE_summary.md",
-      "sha256": "213d980a4cace1aeece315539ae3d0d4250ac7f8d71e22e40384c147bf4252f1"
+      "sha256": "ce17d04cf3fcfa160af92ec5fd20075022faf8f2707871c6b9d7502336f17176"
     },
     {
       "path": "reports/CASE-2026-LIVE_full.json",
-      "sha256": "5191814256f94c12fc7233689dad09e7460cd8c5e8cf8752e948b5c61da6c764"
+      "sha256": "c5fea04217ec251eac938ff911f89d57eae6eec3d183839d326cd7209c4b6926"
     },
     {
       "path": "reports/CASE-2026-LIVE_full.csv",
-      "sha256": "c92986373c2b2c804b7c9870440c85e2f293ad5b959602e5e3290a76e39fa2f9"
+      "sha256": "56be4b3414bdddef6a22c755c9b53276e572d019a856fdff2540d85b07906a20"
     }
   ],
   "schema_version": "2.0.0",
   "tool": {
-    "name": "chronotrace",
-    "version": "1.3.0"
+    "name": "wasp",
+    "version": "1.4.0"
   }
 }
