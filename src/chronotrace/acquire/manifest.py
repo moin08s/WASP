@@ -19,7 +19,7 @@ class CaseManifest:
             "manifest_version": "1.1.0",
             "case_id": case_id,
             "created_utc": datetime.datetime.now(datetime.timezone.utc).isoformat(),
-            "tool": {"name": "chronotrace", "version": "1.3.0"},
+            "tool": {"name": "wasp", "version": "1.4.0"},
             "schema_version": "2.0.0",
             "evidence": [],
             "derived": [],

@@ -93,4 +93,4 @@ def test_complete_forensic_pipeline(tmp_path: Path):
     # Verify that redaction took place in the reports
     html_content = Path(reports["html"]).read_text(encoding="utf-8")
     assert "CASE-2024-TEST" in html_content
-    assert "ChronoTrace Investigation Report" in html_content
+    assert "WASP Investigation Report" in html_content

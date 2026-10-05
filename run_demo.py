@@ -88,7 +88,7 @@ def prepare_sample_evidence(evidence_dir: Path) -> None:
 
 def run_pipeline():
     print("=" * 75)
-    print("  CHRONOTRACE AUTOMATED DIGITAL FORENSICS PIPELINE")
+    print("  WASP AUTOMATED DIGITAL FORENSICS PIPELINE")
     print("=" * 75)
 
     base_dir = Path("./run_artifacts").resolve()

@@ -22,7 +22,7 @@ class ChronoTraceGUI:
 
     def __init__(self, root: tk.Tk):
         self.root = root
-        self.root.title("ChronoTrace — Digital Forensics & Timeline Reconstruction")
+        self.root.title("WASP — Forensic Evidence & Super-Timeline Platform")
         self.root.geometry("1180x760")
         self.root.minsize(980, 640)
 
@@ -91,10 +91,10 @@ class ChronoTraceGUI:
         header_frame = tk.Frame(self.root, bg="#16181d", height=60, padx=16, pady=10)
         header_frame.pack(fill=tk.X, side=tk.TOP)
 
-        title_lbl = tk.Label(header_frame, text="ChronoTrace", font=("Segoe UI", 15, "bold"), fg="#58a6ff", bg="#16181d")
+        title_lbl = tk.Label(header_frame, text="WASP", font=("Segoe UI", 16, "bold"), fg="#58a6ff", bg="#16181d")
         title_lbl.pack(side=tk.LEFT)
 
-        subtitle_lbl = tk.Label(header_frame, text=" | Forensic Artefact Parsing, Timeline & SHA-256 Integrity", font=("Segoe UI", 10), fg="#8b949e", bg="#16181d")
+        subtitle_lbl = tk.Label(header_frame, text=" | Wide-scope Artifact & Super-timeline Platform", font=("Segoe UI", 10), fg="#8b949e", bg="#16181d")
         subtitle_lbl.pack(side=tk.LEFT, padx=5)
 
         self.case_status_lbl = tk.Label(header_frame, text="[No Active Case]", font=("Segoe UI", 10, "bold"), fg="#f85149", bg="#16181d")
@@ -140,7 +140,7 @@ class ChronoTraceGUI:
         lbl_status = tk.Label(status_frame, textvariable=self.status_var, font=("Segoe UI", 9), fg="#3fb950", bg="#16181d")
         lbl_status.pack(side=tk.LEFT)
 
-        lbl_ver = tk.Label(status_frame, text="ChronoTrace v1.4.0 | Schema 2.0.0", font=("Segoe UI", 8), fg="#8b949e", bg="#16181d")
+        lbl_ver = tk.Label(status_frame, text="WASP v1.4.0 | Schema 2.0.0", font=("Segoe UI", 8), fg="#8b949e", bg="#16181d")
         lbl_ver.pack(side=tk.RIGHT)
 
     # ---------------- TAB 1: CASE DASHBOARD ----------------
@@ -897,13 +897,16 @@ class ChronoTraceGUI:
             f"SQLite Engine:   SQLite 3 with FTS5\n"
             f"Write-Guard:     ACTIVE (Forensic Read-Only)\n"
             f"Artefact Plugins: {len(plugins)} loaded, 0 failed\n\n"
-            "ChronoTrace system health is OPTIMAL."
+            "WASP system health is OPTIMAL."
         )
-        messagebox.showinfo("ChronoTrace Doctor", diag_msg)
+        messagebox.showinfo("WASP Doctor", diag_msg)
+
+
+WASPGUI = ChronoTraceGUI
 
 
 def launch_gui():
-    """Launch the ChronoTrace Desktop GUI application."""
+    """Launch the WASP Desktop GUI application."""
     root = tk.Tk()
     app = ChronoTraceGUI(root)
     root.mainloop()

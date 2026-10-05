@@ -1,10 +1,10 @@
 [project]
-name = "chronotrace"
+name = "wasp"
 version = "1.4.0"
-description = "Automated digital forensics tool for metadata extraction, artefact parsing, timeline reconstruction, SHA-256 integrity, and reporting."
+description = "WASP: Automated digital forensics tool for metadata extraction, artefact parsing, timeline reconstruction, SHA-256 integrity, and reporting."
 readme = "README.md"
 authors = [
-    { name = "ChronoTrace Contributors" }
+    { name = "WASP Forensics Contributors" }
 ]
 requires-python = ">=3.11"
 dependencies = [
@@ -23,6 +23,7 @@ test = [
 ]
 
 [project.scripts]
+wasp = "chronotrace.cli.main:app"
 chronotrace = "chronotrace.cli.main:app"
 
 [build-system]

@@ -1,4 +1,4 @@
-"""Standalone launcher for the ChronoTrace Desktop GUI."""
+"""Standalone launcher for the WASP Desktop GUI."""
 
 import sys
 from pathlib import Path

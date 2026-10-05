@@ -15,8 +15,8 @@ from chronotrace.acquire.devices import DeviceManager
 from chronotrace.gui.app import launch_gui
 
 app = typer.Typer(
-    name="chronotrace",
-    help="Deterministic digital forensics tool: metadata extraction, artefact parsing, timeline reconstruction, SHA-256 integrity, and reporting.",
+    name="wasp",
+    help="WASP: Deterministic digital forensics platform: metadata extraction, artefact parsing, timeline reconstruction, SHA-256 integrity, and reporting.",
     add_completion=False,
 )
 
@@ -32,14 +32,14 @@ app.add_typer(device_app, name="device")
 console = Console()
 
 
-@app.callback()
+@app.callback(invoke_without_command=True)
 def main_callback(
-    version: bool = typer.Option(False, "--version", "-V", help="Show ChronoTrace version"),
+    version: bool = typer.Option(False, "--version", "-V", help="Show WASP version"),
     deterministic: bool = typer.Option(False, "--deterministic", help="Strip volatile metadata from outputs"),
     strict: bool = typer.Option(False, "--strict", help="Treat parse warnings as fatal"),
 ):
     if version:
-        console.print("[bold cyan]ChronoTrace[/bold cyan] version [bold green]1.4.0[/bold green] (Schema 2.0.0)")
+        console.print("[bold cyan]WASP[/bold cyan] (Wide-scope Artifact & Super-timeline Platform) version [bold green]1.4.0[/bold green] (Schema 2.0.0)")
         raise typer.Exit()
 
 
@@ -97,8 +97,8 @@ def case_info(
 
 @app.command("gui")
 def gui_cmd():
-    """Launch the ChronoTrace Desktop Graphical User Interface (GUI)."""
-    console.print("[bold cyan]Launching ChronoTrace Graphical User Interface (GUI)...[/bold cyan]")
+    """Launch the WASP Desktop Graphical User Interface (GUI)."""
+    console.print("[bold cyan]Launching WASP Graphical User Interface (GUI)...[/bold cyan]")
     launch_gui()
 
 
@@ -333,13 +333,14 @@ def report(
 @app.command("doctor")
 def doctor():
     """Diagnose environment, write-guard, available libraries, and plugins."""
-    console.print("[bold cyan]ChronoTrace Diagnostic Doctor[/bold cyan]\n")
+    console.print("[bold cyan]WASP Diagnostic Doctor[/bold cyan]\n")
     console.print(f"[bold green][ok][/bold green]   Python {sys.version.split()[0]}")
     console.print("[bold green][ok][/bold green]   pyarrow 25.0+ (Parquet engine)")
     console.print("[bold green][ok][/bold green]   pydantic 2.x (Schema 2.0.0 engine)")
     console.print("[bold green][ok][/bold green]   sqlite3 FTS5 active")
     console.print("[bold green][ok][/bold green]   write-guard active")
 
+    import chronotrace.artifacts  # noqa: F401
     plugins = list_plugins()
     console.print(f"[bold green][ok][/bold green]   {len(plugins)} artefact plugins loaded, 0 failed")
 
@@ -349,8 +350,9 @@ def doctor():
 @plugin_app.command("list")
 def plugin_list():
     """List all discovered artefact plugins and their capabilities."""
+    import chronotrace.artifacts  # noqa: F401
     plugins = list_plugins()
-    table = Table(title="Available ChronoTrace Plugins")
+    table = Table(title="Available WASP Plugins")
     table.add_column("Plugin Name", style="cyan")
     table.add_column("Version", style="green")
     table.add_column("Capabilities", style="yellow")
