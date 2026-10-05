@@ -93,13 +93,25 @@ def case_info(
     console.print(table)
 
 
-# --- GUI COMMAND ---
+# --- GUI & WEB COMMANDS ---
 
 @app.command("gui")
 def gui_cmd():
     """Launch the WASP Desktop Graphical User Interface (GUI)."""
     console.print("[bold cyan]Launching WASP Graphical User Interface (GUI)...[/bold cyan]")
     launch_gui()
+
+
+@app.command("web")
+def web_cmd():
+    """Launch the WASP Tactical DFIR Web Application Console in browser."""
+    import webbrowser
+    web_file = Path(__file__).resolve().parent.parent.parent.parent / "web" / "index.html"
+    if not web_file.exists():
+        console.print(f"[bold red]Web console not found at:[/bold red] {web_file}")
+        raise typer.Exit(code=1)
+    console.print(f"[bold yellow]Launching WASP Tactical Web Console:[/bold yellow] [underline]{web_file.as_uri()}[/underline]")
+    webbrowser.open(web_file.as_uri())
 
 
 # --- DEVICE COMMANDS ---

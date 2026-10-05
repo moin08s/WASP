@@ -17,13 +17,22 @@ python launch_gui.py
 python wasp.py gui
 ```
 
-### B. Run Complete Automated Forensic Demonstration
+### B. Launch Tactical DFIR Web Application Console
+```powershell
+python launch_web.py
+```
+*Or via CLI launcher:*
+```powershell
+python wasp.py web
+```
+
+### C. Run Complete Automated Forensic Demonstration
 Executes sample evidence acquisition, artifact extraction, super-timeline reconstruction, cross-source corroboration, YARA scanning, integrity verification, and multi-format report generation:
 ```powershell
 python run_demo.py
 ```
 
-### C. Run Built-in Diagnostic Doctor
+### D. Run Built-in Diagnostic Doctor
 Verifies your Python environment, active plugins, write-guard protection, and database engines:
 ```powershell
 python wasp.py doctor
@@ -98,7 +107,8 @@ python wasp.py --help
 | Task | Command |
 |---|---|
 | **Show Version** | `python wasp.py --version` |
-| **System Diagnostics** | `python wasp.py doctor` |
+| **Launch Web Console** | `python wasp.py web` |
+| **Launch Desktop GUI** | `python wasp.py gui` |
 | **List Artifact Plugins** | `python wasp.py plugin list` |
 | **List Storage Devices** | `python wasp.py device list` |
 | **Real-time USB Watcher** | `python wasp.py device watch [--interval 1.5] [--timeout 60]` |
