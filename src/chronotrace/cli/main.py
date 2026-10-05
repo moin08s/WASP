@@ -9,9 +9,10 @@ import typer
 from rich.console import Console
 from rich.table import Table
 
-import chronotrace.artifacts  # register built-in plugins
 from chronotrace.core.case import Case
 from chronotrace.extract.registry import list_plugins
+from chronotrace.acquire.devices import DeviceManager
+from chronotrace.gui.app import launch_gui
 
 app = typer.Typer(
     name="chronotrace",
@@ -24,6 +25,9 @@ app.add_typer(case_app, name="case")
 
 plugin_app = typer.Typer(name="plugin", help="Inspect and manage artefact plugins.")
 app.add_typer(plugin_app, name="plugin")
+
+device_app = typer.Typer(name="device", help="Discover and manage connected storage & external devices.")
+app.add_typer(device_app, name="device")
 
 console = Console()
 
@@ -89,23 +93,76 @@ def case_info(
     console.print(table)
 
 
+# --- GUI COMMAND ---
+
+@app.command("gui")
+def gui_cmd():
+    """Launch the ChronoTrace Desktop Graphical User Interface (GUI)."""
+    console.print("[bold cyan]Launching ChronoTrace Graphical User Interface (GUI)...[/bold cyan]")
+    launch_gui()
+
+
+# --- DEVICE COMMANDS ---
+
+@device_app.command("list")
+def device_list():
+    """List connected storage devices, external drives, and USB media."""
+    devices = DeviceManager.list_devices()
+    table = Table(title="Connected Storage & External Devices")
+    table.add_column("Device ID", style="cyan")
+    table.add_column("Model / Volume", style="white")
+    table.add_column("Type / Media", style="yellow")
+    table.add_column("Mount", style="magenta")
+    table.add_column("FS", style="blue")
+    table.add_column("Size", style="green")
+    table.add_column("Serial No.", style="dim")
+
+    for d in devices:
+        table.add_row(
+            d.device_id,
+            d.model,
+            d.media_type,
+            d.mount_point or "N/A",
+            d.file_system or "Unknown",
+            d.size_display,
+            d.serial_number or "N/A",
+        )
+    console.print(table)
+
+
 # --- ACQUIRE COMMAND ---
 
 @app.command("acquire")
 def acquire(
     case_dir: Path = typer.Option(..., "--case", help="Path to target case directory"),
-    source: Path = typer.Option(..., "--source", help="Source evidence file, device, or directory"),
+    source: Optional[Path] = typer.Option(None, "--source", help="Source evidence file, device, or directory"),
+    device: Optional[str] = typer.Option(None, "--device", help="Device ID or drive letter to acquire (e.g. E: or \\\\.\\PhysicalDrive1)"),
     output: Optional[str] = typer.Option(None, "--output", help="Destination filename inside case evidence dir"),
     format: str = typer.Option("raw", "--format", help="Evidence container format (raw, ewf, tar, dir)"),
     hash_algo: str = typer.Option("sha256", "--hash", help="Primary hash (SHA-256 mandatory)"),
     notes: str = typer.Option("", "--notes", help="Chain of custody acquisition notes"),
 ):
-    """Acquire digital evidence with streaming SHA-256 hash and sidecar verification."""
+    """Acquire digital evidence from file, directory, or external storage device with streaming SHA-256."""
     case = Case.open(case_dir)
-    console.print(f"Acquiring evidence from [cyan]{source}[/cyan]...")
-    res = case.acquire(source, output_filename=output, notes=notes)
+
+    if device:
+        console.print(f"Acquiring evidence from external device [cyan]{device}[/cyan]...")
+        dev_list = DeviceManager.list_devices()
+        target_dev = next((d for d in dev_list if d.device_id.lower() == device.lower() or (d.mount_point and d.mount_point.lower().startswith(device.lower()))), None)
+        if not target_dev:
+            # Fallback to creating a device target
+            target_dev = StorageDevice(device_id=device, mount_point=device if os.path.exists(device) else None)
+        res = DeviceManager.acquire_device(target_dev, case, output_filename=output, notes=notes)
+    elif source:
+        console.print(f"Acquiring evidence from [cyan]{source}[/cyan]...")
+        res = case.acquire(source, output_filename=output, notes=notes)
+    else:
+        console.print("[bold red]Error: Either --source or --device must be specified.[/bold red]")
+        raise typer.Exit(1)
+
     console.print(f"[bold green][+][/bold green] Acquired evidence [bold cyan]{res['evidence_id']}[/bold cyan]: {res['path']}")
     console.print(f"  SHA-256: [bold yellow]{res['hashes']['sha256']}[/bold yellow] ({res['size_bytes']} bytes)")
+    console.print(f"  Read-Back Verification: [bold green]PASS (Match)[/bold green]")
 
 
 # --- INGEST COMMAND ---

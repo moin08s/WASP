@@ -1,0 +1,3 @@
+Mar 11 02:14:07 WS-SEC-01 sshd[4401]: Accepted password for root from 192.168.1.155 port 49122 ssh2
+Mar 11 02:15:30 WS-SEC-01 sudo: root : TTY=pts/1 ; COMMAND=/usr/bin/cat /etc/shadow
+Mar 11 02:18:45 WS-SEC-01 sshd[4401]: Received disconnect from 192.168.1.155: Client disconnect

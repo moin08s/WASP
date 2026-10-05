@@ -1,0 +1,4 @@
+{"TimeCreated": "2024-03-11T02:14:07.000000Z", "EventID": 4624, "TargetUserName": "admin", "Computer": "DC01"}
+{"TimeCreated": "2024-03-11T02:16:15.000000Z", "EventID": 4688, "TargetUserName": "admin", "Computer": "DC01", "NewProcessName": "C:\\Windows\\System32\\cmd.exe"}
+{"TimeCreated": "2024-03-11T02:17:30.000000Z", "EventID": 7045, "ServiceName": "BackdoorSvc", "Computer": "DC01"}
+{"TimeCreated": "2024-03-11T02:20:00.000000Z", "EventID": 1102, "TargetUserName": "admin", "Computer": "DC01"}

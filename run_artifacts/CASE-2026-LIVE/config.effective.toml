@@ -1,0 +1,33 @@
+[general]
+case_id = "CASE-2026-LIVE"
+examiner = "Alex Mercer (Senior Forensics Examiner)"
+organization = "Cyber Incident Response Unit"
+description = "Investigation into unauthorized access and privilege escalation"
+authorization_ref = "WARRANT-2026-0881"
+deterministic = true
+strict = false
+no_network = true
+locale = "C.UTF-8"
+
+[paths]
+workdir = "./work"
+tmpdir = "./tmp"
+evidence_dir = "./evidence"
+derived_dir = "./derived"
+index_dir = "./index"
+report_dir = "./reports"
+custody_dir = "./custody"
+
+[logging]
+level = "info"
+format = "text"
+scrub_pii = true
+
+[acquire]
+format = "ewf"
+hash = "sha256"
+hash_extra = [
+    "blake3",
+]
+segment_size = "2G"
+verify = "readback"

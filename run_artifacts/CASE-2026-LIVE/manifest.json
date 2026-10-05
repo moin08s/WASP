@@ -1,0 +1,179 @@
+{
+  "case_id": "CASE-2026-LIVE",
+  "config": {
+    "path": "config.effective.toml",
+    "sha256": "4f4ff1deb312466eb8d988478467d12ee7558a5398a50d125033237bf5f5215d"
+  },
+  "created_utc": "2026-10-05T17:33:32.304038+00:00",
+  "derived": [
+    {
+      "path": "derived/browser.jsonl",
+      "plugin": "browser",
+      "plugin_version": "1.3.0",
+      "sha256": "00ed75114c910ffe3db20aff4965734793a6c74888fd9ae208974036b73ec0f1",
+      "size_bytes": 2403
+    },
+    {
+      "path": "derived/evtx.jsonl",
+      "plugin": "evtx",
+      "plugin_version": "2.1.0",
+      "sha256": "63f4ca6da8be612b7293579ad7b36b5c9c221038aa6fa3596cd12988dbfaaf1c",
+      "size_bytes": 4505
+    },
+    {
+      "path": "derived/file_metadata.jsonl",
+      "plugin": "file_metadata",
+      "plugin_version": "1.3.0",
+      "sha256": "144345486f39f9ce0b15065c99b66f3ef034b052d34b386048b4582c912b7725",
+      "size_bytes": 17525
+    },
+    {
+      "path": "derived/linux_logs.jsonl",
+      "plugin": "linux_logs",
+      "plugin_version": "1.2.0",
+      "sha256": "d51f41eb68ade66ed6c9b08d0202ff4a1a16bdc4adeaf5c1361138cffa3cf3b2",
+      "size_bytes": 6833
+    }
+  ],
+  "evidence": [
+    {
+      "acquired_utc": "2026-10-05T17:33:32.355208+00:00",
+      "container": "raw",
+      "evidence_id": "EV-AUTH.L",
+      "hashes": {
+        "sha256": "b544dfd8cc0d4521f4ba801cd4b9215ef76b6a5f76149038b6171cd664e095e4"
+      },
+      "path": "evidence/auth.log",
+      "read_errors": 0,
+      "size_bytes": 283,
+      "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\auth.log",
+      "verification": {
+        "method": "readback",
+        "result": "match",
+        "verified_utc": "2026-10-05T17:33:32.355234+00:00"
+      }
+    },
+    {
+      "acquired_utc": "2026-10-05T17:33:32.391570+00:00",
+      "container": "raw",
+      "evidence_id": "EV-BASH_H",
+      "hashes": {
+        "sha256": "a45c0410ad9fea5a6fec7056a904d518673c2e1950f124d9383dbdcfbfbdf554"
+      },
+      "path": "evidence/bash_history",
+      "read_errors": 0,
+      "size_bytes": 112,
+      "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\bash_history",
+      "verification": {
+        "method": "readback",
+        "result": "match",
+        "verified_utc": "2026-10-05T17:33:32.391593+00:00"
+      }
+    },
+    {
+      "acquired_utc": "2026-10-05T17:33:32.422056+00:00",
+      "container": "raw",
+      "evidence_id": "EV-EXFILT",
+      "hashes": {
+        "sha256": "c720fbe8ec5b780648029576c2bb63d607ca03278deb6c72356ed84e7e4347d3"
+      },
+      "path": "evidence/exfiltrated_files.zip",
+      "read_errors": 0,
+      "size_bytes": 317,
+      "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\exfiltrated_files.zip",
+      "verification": {
+        "method": "readback",
+        "result": "match",
+        "verified_utc": "2026-10-05T17:33:32.422070+00:00"
+      }
+    },
+    {
+      "acquired_utc": "2026-10-05T17:33:32.450328+00:00",
+      "container": "raw",
+      "evidence_id": "EV-HISTOR",
+      "hashes": {
+        "sha256": "ddeee48ddcd3e8fd4b88dbe62d5624d7e71983919f0a12ceb3f79844e2322b95"
+      },
+      "path": "evidence/History",
+      "read_errors": 0,
+      "size_bytes": 8192,
+      "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\History",
+      "verification": {
+        "method": "readback",
+        "result": "match",
+        "verified_utc": "2026-10-05T17:33:32.450344+00:00"
+      }
+    },
+    {
+      "acquired_utc": "2026-10-05T17:33:32.481329+00:00",
+      "container": "raw",
+      "evidence_id": "EV-INVEST",
+      "hashes": {
+        "sha256": "47119c738b966e434a61c921bf638988ad8fa63d3ed6b772e181dd2ba14862ab"
+      },
+      "path": "evidence/investigation_memo.docx",
+      "read_errors": 0,
+      "size_bytes": 813,
+      "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\investigation_memo.docx",
+      "verification": {
+        "method": "readback",
+        "result": "match",
+        "verified_utc": "2026-10-05T17:33:32.481349+00:00"
+      }
+    },
+    {
+      "acquired_utc": "2026-10-05T17:33:32.510952+00:00",
+      "container": "raw",
+      "evidence_id": "EV-SECURI",
+      "hashes": {
+        "sha256": "15957efb2f1573f54296ac349387196a60825acb65518ab856a5179afe1e8ad0"
+      },
+      "path": "evidence/Security_Events.jsonl",
+      "read_errors": 0,
+      "size_bytes": 503,
+      "source": "D:\\Download\\chronotrace\\run_artifacts\\raw_evidence\\Security_Events.jsonl",
+      "verification": {
+        "method": "readback",
+        "result": "match",
+        "verified_utc": "2026-10-05T17:33:32.510967+00:00"
+      }
+    }
+  ],
+  "index": [
+    {
+      "path": "index/events.parquet",
+      "sha256": "09ca34b19d7fea815a23ff3f7b282755440b321481eabc5eb2532f986d02a71a",
+      "size_bytes": 10440
+    },
+    {
+      "path": "index/events.sqlite",
+      "sha256": "d3a22d4ab37670d1b47abd416ac6a0e422995d8fcfce46dc4f425423fb5999d0",
+      "size_bytes": 69632
+    }
+  ],
+  "manifest_version": "1.1.0",
+  "merkle_root": "defe3975c8c2f439e8c251d4860a75cb3668c33623e2c79c0638852faf9d5542",
+  "reports": [
+    {
+      "path": "reports/CASE-2026-LIVE_full.html",
+      "sha256": "cb51dff16e806b14823a70937a86f37d29ae3cebda8a456c3c6834d9592910bc"
+    },
+    {
+      "path": "reports/CASE-2026-LIVE_summary.md",
+      "sha256": "213d980a4cace1aeece315539ae3d0d4250ac7f8d71e22e40384c147bf4252f1"
+    },
+    {
+      "path": "reports/CASE-2026-LIVE_full.json",
+      "sha256": "5191814256f94c12fc7233689dad09e7460cd8c5e8cf8752e948b5c61da6c764"
+    },
+    {
+      "path": "reports/CASE-2026-LIVE_full.csv",
+      "sha256": "c92986373c2b2c804b7c9870440c85e2f293ad5b959602e5e3290a76e39fa2f9"
+    }
+  ],
+  "schema_version": "2.0.0",
+  "tool": {
+    "name": "chronotrace",
+    "version": "1.3.0"
+  }
+}
